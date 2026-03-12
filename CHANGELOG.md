@@ -19,6 +19,12 @@ This document records all notable changes to ShadCN Admin.
 ---
 
 
+## [1.3.15](https://github.com/perfect-panel/frontend/compare/v1.3.14...v1.3.15) (2026-03-12)
+
+### 🐛 Bug Fixes / 问题修复
+
+* **ci:** remove deprecated forwardRef usage in turnstile components ([89ece6e](https://github.com/perfect-panel/frontend/commit/89ece6e959892808c3a67ffb43612c9b90f1e38a))
+
 ## [1.3.14](https://github.com/perfect-panel/frontend/compare/v1.3.13...v1.3.14) (2026-03-11)
 
 ### 🐛 Bug Fixes / 问题修复
