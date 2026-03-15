@@ -48,6 +48,16 @@
   "resetTraffic": "重置流量",
   "resetTrafficDescription": "将流量重置为零，并开始新的计费周期",
   "resetTrafficTitle": "重置流量",
+  "showcase": {
+    "bundle": "{{quantity}}{{unit}} 套餐包",
+    "highlights": "核心亮点",
+    "instantAccess": "立即开通",
+    "livePlans": "{{count}} 个套餐在线",
+    "metricPlans": "可选套餐",
+    "metricStart": "起步价格",
+    "subtitle": "总有一款适合你",
+    "title": "挑一条更适合你的高速通道"
+  },
   "subscriptionNotFound": "未找到订阅",
   "unsubscribe": {
     "cancel": "取消",
