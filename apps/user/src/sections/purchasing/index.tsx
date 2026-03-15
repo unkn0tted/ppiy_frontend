@@ -27,7 +27,7 @@ export default function Purchasing() {
   );
 
   return (
-    <main className="container space-y-16">
+    <main className="container relative py-4 sm:py-6 lg:py-8">
       <Content subscription={subscription} />
     </main>
   );

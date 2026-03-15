@@ -25,8 +25,8 @@ export function SidebarRight({
 
   return (
     <Sidebar collapsible="none" side="right" {...props}>
-      <SidebarContent className="*:gap-0 *:py-0">
-        <Card>
+      <SidebarContent className="gap-3 rounded-3xl border border-primary/16 bg-card/88 p-3 shadow-primary/10 shadow-xl backdrop-blur-sm *:gap-0 *:py-0">
+        <Card className="border-primary/14 bg-card/92">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 p-3 pb-2">
             <CardTitle className="font-medium text-sm">
               {t("accountBalance", "Account Balance")}
@@ -37,7 +37,7 @@ export function SidebarRight({
             <Display type="currency" value={user?.balance} />
           </CardContent>
         </Card>
-        <Card>
+        <Card className="border-primary/14 bg-card/92">
           <CardHeader className="space-y-0 p-3 pb-2">
             <CardTitle className="font-medium text-sm">
               {t("giftAmount", "Gift Amount")}
@@ -47,7 +47,7 @@ export function SidebarRight({
             <Display type="currency" value={user?.gift_amount} />
           </CardContent>
         </Card>
-        <Card>
+        <Card className="border-primary/14 bg-card/92">
           <CardHeader className="space-y-0 p-3 pb-2">
             <CardTitle className="font-medium text-sm">
               {t("commission", "Commission")}
@@ -58,7 +58,7 @@ export function SidebarRight({
           </CardContent>
         </Card>
         {user?.refer_code && (
-          <Card>
+          <Card className="border-primary/14 bg-card/92">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 p-3 pb-2">
               <CardTitle className="font-medium text-sm">
                 {t("inviteCode", "Invite Code")}

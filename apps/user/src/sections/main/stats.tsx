@@ -1,4 +1,4 @@
-import { DotLottieReact } from "@lottiefiles/dotlottie-react";
+import { Icon } from "@workspace/ui/composed/icon";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 
@@ -9,14 +9,7 @@ export function Stats() {
     {
       name: t("users", "Users"),
       description: t("users_description", "Trusted by users worldwide"),
-      icon: (
-        <DotLottieReact
-          autoplay
-          className="size-24"
-          loop
-          src="./assets/lotties/users.json"
-        />
-      ),
+      icon: "uil:users-alt",
     },
     {
       name: t("servers", "Servers"),
@@ -24,56 +17,47 @@ export function Stats() {
         "servers_description",
         "High-performance servers globally"
       ),
-      icon: (
-        <DotLottieReact
-          autoplay
-          className="size-24"
-          loop
-          src="./assets/lotties/servers.json"
-        />
-      ),
+      icon: "uil:server",
     },
     {
       name: t("locations", "Locations"),
       description: t("locations_description", "Available in multiple regions"),
-      icon: (
-        <DotLottieReact
-          autoplay
-          className="size-24"
-          loop
-          src="./assets/lotties/locations.json"
-        />
-      ),
+      icon: "uil:map-marker",
     },
   ];
   return (
     <motion.section
       animate={{ opacity: 1, y: 0 }}
-      className="z-10 grid w-full grid-cols-1 divide-y-2 divide-muted rounded-lg sm:grid-cols-3 sm:divide-x-2 sm:divide-y-0"
+      className="z-10 grid w-full grid-cols-1 gap-4 md:grid-cols-3"
       initial={{ opacity: 0, y: 50 }}
-      transition={{ duration: 1, ease: "easeOut" }}
+      transition={{ duration: 0.8, ease: "easeOut" }}
       viewport={{ once: true, amount: 0.8 }}
       whileInView={{ opacity: 1, y: 0 }}
     >
       {list.map((item, index) => (
         <motion.div
-          className="mx-auto flex w-10/12 items-center justify-start px-4 py-4 sm:w-full sm:justify-center sm:py-6"
+          className="rose-panel group hover:-translate-y-1 min-h-[182px] p-5 transition-all duration-300"
           initial={{ opacity: 0, scale: 0.8 }}
           key={item.name}
-          transition={{ duration: 0.8, delay: index * 0.3, ease: "easeOut" }}
+          transition={{ duration: 0.6, delay: index * 0.12, ease: "easeOut" }}
           viewport={{ once: true, amount: 0.8 }}
+          whileHover={{ y: -4 }}
           whileInView={{ opacity: 1, scale: 1 }}
         >
-          <div className="flex w-full items-center sm:w-auto">
-            <div className="mr-4 flex h-20 w-20 items-center justify-center rounded-full">
-              {item.icon}
+          <span className="pointer-events-none absolute top-4 right-5 font-display text-6xl text-primary/8">
+            0{index + 1}
+          </span>
+          <div>
+            <div className="flex size-12 items-center justify-center rounded-[1.1rem] bg-primary/12 text-primary">
+              <Icon className="size-5" icon={item.icon} />
             </div>
-            <div className="flex flex-col">
-              <p className="font-semibold text-lg">{item.name}</p>
-              <p className="text-muted-foreground text-sm">
-                {item.description}
-              </p>
-            </div>
+            <p className="mt-6 font-medium text-muted-foreground text-xs uppercase tracking-[0.15em]">
+              0{index + 1}
+            </p>
+            <h3 className="mt-3 text-2xl">{item.name}</h3>
+            <p className="mt-3 max-w-xs text-muted-foreground text-sm leading-relaxed">
+              {item.description}
+            </p>
           </div>
         </motion.div>
       ))}

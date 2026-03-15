@@ -22,7 +22,7 @@ export function SidebarLeft({
   const navs = useNavs();
   return (
     <Sidebar collapsible="none" side="left" {...props}>
-      <SidebarContent>
+      <SidebarContent className="rounded-3xl border border-primary/16 bg-card/88 p-3 shadow-primary/10 shadow-xl backdrop-blur-sm">
         <SidebarMenu>
           {navs.map((nav) => (
             <SidebarGroup key={nav.title}>

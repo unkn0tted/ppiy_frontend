@@ -1,9 +1,8 @@
 "use client";
 
 import { Link } from "@tanstack/react-router";
-import { Separator } from "@workspace/ui/components/separator";
 import { Icon } from "@workspace/ui/composed/icon";
-import { Fragment, useMemo } from "react";
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useGlobalStore } from "@/stores/global";
 
@@ -85,40 +84,80 @@ export default function Footer() {
     ],
     [customData]
   );
+  const contactHref = customData.contacts?.email
+    ? `mailto:${customData.contacts.email}`
+    : customData.website;
+  const contactLabel = customData.contacts?.email
+    ? customData.contacts.email
+    : customData.website?.replace(/^https?:\/\//, "");
+
   return (
-    <footer>
-      <Separator className="my-14" />
-      <div className="container mb-14 flex flex-wrap justify-between gap-4 text-muted-foreground text-sm">
-        <nav className="flex flex-wrap items-center gap-2">
-          {links
-            .filter((item) => item.href)
-            .map((item, index) => (
-              <Fragment key={index}>
-                {index !== 0 && <Separator orientation="vertical" />}
-                <a
-                  aria-label={t(
-                    `footer.social.${item.name}`,
-                    `Visit our ${item.name}`
-                  )}
-                  href={item.href}
-                  rel="noopener noreferrer"
-                  target="_blank"
+    <footer className="pt-8 pb-12 sm:pt-10">
+      <div className="container">
+        <div className="rose-shell px-6 py-7 sm:px-8 sm:py-8">
+          <div className="rose-grid opacity-30" />
+          <div className="grid gap-8 lg:grid-cols-[minmax(0,1.2fr)_auto] lg:items-end">
+            <div className="min-w-0">
+              <p className="font-display text-3xl leading-none sm:text-4xl">
+                <span className="rose-section-title">{site.site_name}</span>
+              </p>
+              <p className="mt-4 max-w-2xl text-muted-foreground text-sm leading-relaxed sm:text-base">
+                {site.site_desc || t("footer.copyright", "All rights reserved")}
+              </p>
+            </div>
+            <div className="flex flex-col items-start gap-5 lg:items-end">
+              <div className="flex flex-wrap items-center gap-2.5">
+                {links
+                  .filter((item) => item.href)
+                  .map((item) => (
+                    <a
+                      aria-label={t(
+                        `footer.social.${item.name}`,
+                        `Visit our ${item.name}`
+                      )}
+                      className="hover:-translate-y-0.5 flex h-10 w-10 items-center justify-center rounded-full border border-primary/12 bg-white/70 transition-all duration-200 hover:border-primary/30 hover:bg-white/95 dark:border-white/8 dark:bg-white/6 dark:hover:bg-white/12"
+                      href={item.href}
+                      key={item.name}
+                      rel="noopener noreferrer"
+                      target="_blank"
+                    >
+                      <Icon
+                        className="size-4 text-foreground"
+                        icon={item.icon}
+                      />
+                    </a>
+                  ))}
+              </div>
+              <div className="flex flex-wrap items-center gap-4 text-sm">
+                <Link
+                  className="text-muted-foreground transition-colors hover:text-primary"
+                  to="/tos"
                 >
-                  <Icon className="size-5 text-foreground" icon={item.icon} />
-                </a>
-              </Fragment>
-            ))}
-        </nav>
-        <div>
-          <strong className="text-foreground">{site.site_name}</strong> ©{" "}
-          {t("footer.copyright", "All rights reserved")}.
-          <div>
-            <Link className="underline" to="/tos">
-              {t("footer.tos", "Terms of Service")}
-            </Link>
-            <Link className="ml-2 underline" to="/privacy-policy">
-              {t("footer.privacyPolicy", "Privacy Policy")}
-            </Link>
+                  {t("footer.tos", "Terms of Service")}
+                </Link>
+                <Link
+                  className="text-muted-foreground transition-colors hover:text-primary"
+                  to="/privacy-policy"
+                >
+                  {t("footer.privacyPolicy", "Privacy Policy")}
+                </Link>
+              </div>
+            </div>
+          </div>
+          <div className="mt-8 flex flex-col gap-3 border-primary/10 border-t pt-4 text-muted-foreground text-sm sm:flex-row sm:items-center sm:justify-between dark:border-white/10">
+            <p>© {t("footer.copyright", "All rights reserved")}.</p>
+            {contactHref && contactLabel ? (
+              <a
+                className="transition-colors hover:text-primary"
+                href={contactHref}
+                rel={
+                  customData.contacts?.email ? undefined : "noopener noreferrer"
+                }
+                target={customData.contacts?.email ? undefined : "_blank"}
+              >
+                {contactLabel}
+              </a>
+            ) : null}
           </div>
         </div>
       </div>
