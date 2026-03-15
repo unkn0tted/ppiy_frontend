@@ -8,8 +8,45 @@ export interface GlobalStore {
   setCommon: (common: Partial<API.GetGlobalConfigResponse>) => void;
   setUser: (user?: API.User) => void;
   getUserInfo: () => Promise<void>;
-  getUserSubscribe: (short: string, token: string, type?: string) => string[];
+  getUserSubscribe: (
+    short: string,
+    token: string,
+    protocol?: string
+  ) => string[];
   getAppSubLink: (url: string, schema?: string) => string;
+}
+
+const DEFAULT_SUBSCRIPTION_PROTOCOL = "vless";
+
+function normalizeSubscribePath(path?: string): string {
+  if (!path) return "";
+  return path.startsWith("/") ? path : `/${path}`;
+}
+
+function createSubscribeUrl({
+  domain,
+  short,
+  token,
+  protocol,
+  panDomain,
+  subscribePath,
+}: {
+  domain: string;
+  short: string;
+  token: string;
+  protocol?: string;
+  panDomain?: boolean;
+  subscribePath?: string;
+}): string {
+  const hostname = panDomain ? `${short}.${domain}` : domain;
+  const url = new URL(
+    `https://${hostname}${normalizeSubscribePath(subscribePath)}`
+  );
+
+  url.searchParams.set("token", token);
+  url.searchParams.set("protocol", protocol || DEFAULT_SUBSCRIPTION_PROTOCOL);
+
+  return url.toString();
 }
 
 /**
@@ -120,23 +157,29 @@ export const useGlobalStore = create<GlobalStore>((set, get) => ({
       console.error("Failed to refresh user:", error);
     }
   },
-  getUserSubscribe: (short: string, token: string, type?: string) => {
+  getUserSubscribe: (short: string, token: string, protocol?: string) => {
     const { pan_domain, subscribe_domain, subscribe_path } =
       get().common.subscribe || {};
+    const fallbackDomain = extractDomain(window.location.origin, pan_domain);
     const domains = subscribe_domain
-      ? subscribe_domain.split("\n")
-      : [extractDomain(window.location.origin, pan_domain)];
+      ? subscribe_domain
+          .split("\n")
+          .map((domain) => domain.trim())
+          .filter(Boolean)
+      : fallbackDomain
+        ? [fallbackDomain]
+        : [];
 
-    return domains.map((domain) => {
-      if (pan_domain) {
-        if (type)
-          return `https://${short}.${type}.${domain}${subscribe_path}?token=${token}&type=${type}`;
-        return `https://${short}.${domain}${subscribe_path}?token=${token}`;
-      }
-      if (type)
-        return `https://${domain}${subscribe_path}?token=${token}&type=${type}`;
-      return `https://${domain}${subscribe_path}?token=${token}`;
-    });
+    return domains.map((domain) =>
+      createSubscribeUrl({
+        domain,
+        short,
+        token,
+        protocol,
+        panDomain: pan_domain,
+        subscribePath: subscribe_path,
+      })
+    );
   },
   getAppSubLink: (url: string, schema?: string) => {
     const name = get().common?.site?.site_name || "";
