@@ -718,7 +718,7 @@ export function ProtocolForm() {
                           </FormLabel>
                           <FormControl>
                             <Input
-                              placeholder="clash://install-config?url=${url}&name=${name}"
+                              placeholder="clash://install-config?url=${encodeURIComponent(url)}&name=${encodeURIComponent(name)}"
                               {...field}
                             />
                           </FormControl>
