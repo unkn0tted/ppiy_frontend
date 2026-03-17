@@ -49,6 +49,22 @@ function createSubscribeUrl({
   return url.toString();
 }
 
+function replaceQueryPlaceholder(
+  template: string,
+  placeholder: "url" | "name",
+  value: string
+): string {
+  const pattern = new RegExp(
+    `([?&][^=]+)=\\$\\{${placeholder}\\}(?=(&|#|$))`,
+    "g"
+  );
+
+  return template.replace(
+    pattern,
+    (_match, prefix) => `${prefix}=${encodeURIComponent(value)}`
+  );
+}
+
 /**
  * Extracts the full domain or root domain from a URL.
  *
@@ -186,7 +202,9 @@ export const useGlobalStore = create<GlobalStore>((set, get) => ({
 
     if (!schema) return "url";
     try {
-      let result = schema.replace(/\${url}/g, url).replace(/\${name}/g, name);
+      let result = replaceQueryPlaceholder(schema, "url", url);
+      result = replaceQueryPlaceholder(result, "name", name);
+      result = result.replace(/\${url}/g, url).replace(/\${name}/g, name);
 
       const maxLoop = 10;
       let prev: string;
