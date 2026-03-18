@@ -7,9 +7,10 @@ import { EnhancedInput } from "@workspace/ui/composed/enhanced-input";
 import { Icon } from "@workspace/ui/composed/icon";
 import { cn } from "@workspace/ui/lib/utils";
 import { prePurchaseOrder, purchase } from "@workspace/ui/services/user/portal";
+import { useDebounce } from "ahooks";
 import { motion } from "framer-motion";
 import { LoaderCircle } from "lucide-react";
-import { useCallback, useEffect, useState, useTransition } from "react";
+import { useCallback, useEffect, useRef, useState, useTransition } from "react";
 import { useTranslation } from "react-i18next";
 import { SubscribeBilling } from "@/sections/subscribe/billing";
 import CouponInput from "@/sections/subscribe/coupon-input";
@@ -55,22 +56,40 @@ export default function Content({
     valid: false,
     message: "",
   });
+  const lastSuccessOrderRef = useRef<API.PrePurchaseOrderResponse | undefined>(
+    undefined
+  );
+  const debouncedCoupon = useDebounce(params.coupon, { wait: 400 });
 
   const { data: order } = useQuery({
     enabled: !!subscription?.id && params.payment !== -1,
     queryKey: [
-      "preCreateOrder",
-      params.coupon,
+      "prePurchaseOrder",
+      subscription?.id,
+      debouncedCoupon,
       params.quantity,
       params.payment,
     ],
     queryFn: async () => {
-      const { data } = await prePurchaseOrder({
-        ...params,
-        subscribe_id: subscription?.id as number,
-      } as API.PrePurchaseOrderRequest);
-      return data.data;
+      try {
+        const { data } = await prePurchaseOrder(
+          {
+            ...params,
+            coupon: debouncedCoupon,
+            subscribe_id: subscription?.id as number,
+          } as API.PrePurchaseOrderRequest,
+          { skipErrorHandler: true }
+        );
+        const result = data.data;
+        if (result) {
+          lastSuccessOrderRef.current = result;
+        }
+        return result;
+      } catch (_error) {
+        return lastSuccessOrderRef.current;
+      }
     },
+    retry: false,
   });
 
   useEffect(() => {

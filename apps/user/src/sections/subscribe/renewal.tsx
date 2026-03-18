@@ -13,6 +13,7 @@ import {
 } from "@workspace/ui/components/dialog";
 import { Separator } from "@workspace/ui/components/separator";
 import { preCreateOrder, renewal } from "@workspace/ui/services/user/order";
+import { useDebounce } from "ahooks";
 import { LoaderCircle } from "lucide-react";
 import { useCallback, useEffect, useRef, useState, useTransition } from "react";
 import { useTranslation } from "react-i18next";
@@ -40,23 +41,30 @@ export default function Renewal({ id, subscribe }: Readonly<RenewalProps>) {
     user_subscribe_id: id,
   });
   const [loading, startTransition] = useTransition();
-  const lastSuccessOrderRef = useRef<any>(null);
+  const lastSuccessOrderRef = useRef<API.PreOrderResponse | undefined>(
+    undefined
+  );
+  const debouncedCoupon = useDebounce(params.coupon, { wait: 400 });
 
   const { data: order } = useQuery({
-    enabled: !!subscribe.id && open,
+    enabled: !!subscribe.id && open && params.payment !== -1,
     queryKey: [
       "preCreateOrder",
       subscribe.id,
       params.quantity,
       params.payment,
-      params.coupon,
+      debouncedCoupon,
     ],
     queryFn: async () => {
       try {
-        const { data } = await preCreateOrder({
-          ...params,
-          subscribe_id: subscribe.id,
-        } as API.PurchaseOrderRequest);
+        const { data } = await preCreateOrder(
+          {
+            ...params,
+            coupon: debouncedCoupon,
+            subscribe_id: subscribe.id,
+          } as API.PurchaseOrderRequest,
+          { skipErrorHandler: true }
+        );
         const result = data.data;
         if (result) {
           lastSuccessOrderRef.current = result;
@@ -68,6 +76,7 @@ export default function Renewal({ id, subscribe }: Readonly<RenewalProps>) {
         }
       }
     },
+    retry: false,
   });
 
   useEffect(() => {
