@@ -4,17 +4,24 @@
   "createdAt": "Created At",
   "detail": "Detail",
   "goToPayment": "Go to Payment",
+  "invoiceLabel": "Invoice",
   "name": "Product Name",
+  "orderBureau": "Order bureau",
   "orderClosed": "Order Closed",
+  "orderClosedLead": "This order is no longer active. You can place a new order at any time.",
   "orderList": "Order List",
+  "orderLead": "Track payment, reopen checkout, and retrieve access from the same monochrome desk.",
   "orderNo": "Order No",
   "orderNumber": "Order Number",
+  "orderStatus": "Order Status",
   "payment": "Payment",
   "paymentAmount": "Amount",
   "paymentMethod": "Payment Method",
   "paymentSuccess": "Payment Successful",
+  "paymentSuccessLead": "The order is complete. Open your dashboard or continue browsing documentation.",
   "productList": "Product List",
   "rechargeAmount": "Recharge Amount",
+  "referenceLabel": "Reference",
   "resetPrice": "Reset Price",
   "resetTraffic": "Reset Traffic",
   "scanToPay": "Scan to Pay",
@@ -26,8 +33,10 @@
     "4": "Closed",
     "5": "Completed"
   },
+  "statusLabel": "Status",
   "subscribeNow": "Subscribe Now",
   "timeExpired": "Time Expired",
+  "totalLabel": "Total",
   "type": {
     "0": "Type",
     "1": "New Purchase",
@@ -36,5 +45,7 @@
     "4": "Recharge"
   },
   "viewDocument": "View Document",
-  "waitingForPayment": "Waiting for Payment"
+  "waitingForInitialization": "Waiting for initialization",
+  "waitingForPayment": "Waiting for Payment",
+  "waitingForPaymentLead": "Keep this page open while the platform waits for payment confirmation."
 }

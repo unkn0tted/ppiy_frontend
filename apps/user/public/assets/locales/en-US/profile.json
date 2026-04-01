@@ -17,15 +17,53 @@
     "updateSuccess": "Notification settings updated successfully"
   },
   "thirdParty": {
-    "bind": "thirdParty.bind",
+    "apple": {
+      "description": "Sign in with Apple",
+      "label": "Apple"
+    },
+    "areaCodePlaceholder": "Area code",
+    "areaCodeRequired": "Please select an area code",
+    "bind": "Connect",
     "bindFailed": "Bind failed",
     "bindMobile": "Bind Mobile",
     "bindSuccess": "Bind successfully",
+    "codePlaceholder": "Verification code",
+    "codeRequired": "Please enter the verification code",
     "confirm": "Confirm",
-    "save": "thirdParty.save",
+    "device": {
+      "description": "Sign in with Device ID",
+      "label": "Device"
+    },
+    "email": {
+      "description": "Link your email address",
+      "label": "Email"
+    },
+    "facebook": {
+      "description": "Sign in with Facebook",
+      "label": "Facebook"
+    },
+    "github": {
+      "description": "Sign in with GitHub",
+      "label": "GitHub"
+    },
+    "google": {
+      "description": "Sign in with Google",
+      "label": "Google"
+    },
+    "mobile": {
+      "description": "Link your mobile number",
+      "label": "Mobile"
+    },
+    "mobilePlaceholder": "Phone number",
+    "phoneRequired": "Please enter a phone number",
+    "save": "Save",
+    "telegram": {
+      "description": "Sign in with Telegram",
+      "label": "Telegram"
+    },
     "title": "Third-party Accounts",
-    "unbind": "thirdParty.unbind",
-    "update": "thirdParty.update",
+    "unbind": "Disconnect",
+    "update": "Update",
     "updateSuccess": "Update successfully"
   }
 }

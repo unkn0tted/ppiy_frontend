@@ -1,4 +1,5 @@
 {
+  "activeAccount": "Active account",
   "cancel": "Cancel",
   "confirm": "Confirm",
   "confirmResetSubscription": "Are you sure you want to reset your subscription?",
@@ -17,6 +18,7 @@
   "nextResetDays": "Next Reset Days",
   "noLimit": "No Limit",
   "noReset": "No Reset",
+  "overview": "Overview",
   "prompt": "Prompt",
   "purchaseSubscription": "Purchase Subscription",
   "qrCode": "QR Code",
@@ -29,7 +31,9 @@
   "resetSuccess": "Reset Success",
   "scanToSubscribe": "Scan to Subscribe",
   "subscriptionUrl": "Subscription URL",
+  "dashboardLead": "Monitor active plans, manage imports, and keep billing close without falling back to the old utility layout.",
   "totalTraffic": "Total Traffic",
   "unknown": "Unknown",
-  "used": "Used"
+  "used": "Used",
+  "workspaceFallback": "Workspace"
 }

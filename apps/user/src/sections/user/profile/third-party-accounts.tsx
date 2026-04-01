@@ -52,9 +52,18 @@ function MobileBindDialog({
   const [open, setOpen] = useState(false);
 
   const formSchema = z.object({
-    area_code: z.string().min(1, "Area code is required"),
-    mobile: z.string().min(5, "Phone number is required"),
-    code: z.string().min(4, "Verification code is required"),
+    area_code: z
+      .string()
+      .min(1, t("thirdParty.areaCodeRequired", "Please select an area code")),
+    mobile: z
+      .string()
+      .min(5, t("thirdParty.phoneRequired", "Please enter a phone number")),
+    code: z
+      .string()
+      .min(
+        4,
+        t("thirdParty.codeRequired", "Please enter the verification code")
+      ),
   });
 
   type MobileBindFormValues = z.infer<typeof formSchema>;
@@ -110,7 +119,10 @@ function MobileBindDialog({
                                     form.setValue(field.name, value.phone);
                                   }
                                 }}
-                                placeholder="Area code..."
+                                placeholder={t(
+                                  "thirdParty.areaCodePlaceholder",
+                                  "Area code"
+                                )}
                                 simple
                                 value={field.value}
                                 whitelist={enable_whitelist ? whitelist : []}
@@ -122,7 +134,10 @@ function MobileBindDialog({
                       />
                       <Input
                         className="rounded-l-none"
-                        placeholder="请输入手机号"
+                        placeholder={t(
+                          "thirdParty.mobilePlaceholder",
+                          "请输入手机号"
+                        )}
                         type="tel"
                         {...field}
                       />
@@ -141,7 +156,10 @@ function MobileBindDialog({
                   <FormControl>
                     <div className="flex gap-2">
                       <Input
-                        placeholder="请输入验证码"
+                        placeholder={t(
+                          "thirdParty.codePlaceholder",
+                          "请输入验证码"
+                        )}
                         type="text"
                         {...field}
                       />
@@ -179,58 +197,82 @@ export default function ThirdPartyAccounts() {
     {
       id: "email",
       icon: "logos:mailgun-icon",
-      name: "Email",
+      name: t("thirdParty.email.label", "Email"),
       type: "Basic",
-      descriptionDefault: "Link your email address",
+      descriptionDefault: t(
+        "thirdParty.email.description",
+        "Link your email address"
+      ),
     },
     {
       id: "mobile",
       icon: "mdi:telephone",
-      name: "Mobile",
+      name: t("thirdParty.mobile.label", "Mobile"),
       type: "Basic",
-      descriptionDefault: "Link your mobile number",
+      descriptionDefault: t(
+        "thirdParty.mobile.description",
+        "Link your mobile number"
+      ),
     },
     {
       id: "telegram",
       icon: "logos:telegram",
-      name: "Telegram",
+      name: t("thirdParty.telegram.label", "Telegram"),
       type: "OAuth",
-      descriptionDefault: "Sign in with Telegram",
+      descriptionDefault: t(
+        "thirdParty.telegram.description",
+        "Sign in with Telegram"
+      ),
     },
     {
       id: "apple",
       icon: "uil:apple",
-      name: "Apple",
+      name: t("thirdParty.apple.label", "Apple"),
       type: "OAuth",
-      descriptionDefault: "Sign in with Apple",
+      descriptionDefault: t(
+        "thirdParty.apple.description",
+        "Sign in with Apple"
+      ),
     },
     {
       id: "google",
       icon: "logos:google",
-      name: "Google",
+      name: t("thirdParty.google.label", "Google"),
       type: "OAuth",
-      descriptionDefault: "Sign in with Google",
+      descriptionDefault: t(
+        "thirdParty.google.description",
+        "Sign in with Google"
+      ),
     },
     {
       id: "facebook",
       icon: "logos:facebook",
-      name: "Facebook",
+      name: t("thirdParty.facebook.label", "Facebook"),
       type: "OAuth",
-      descriptionDefault: "Sign in with Facebook",
+      descriptionDefault: t(
+        "thirdParty.facebook.description",
+        "Sign in with Facebook"
+      ),
     },
     {
       id: "github",
       icon: "uil:github",
-      name: "GitHub",
+      name: t("thirdParty.github.label", "GitHub"),
       type: "OAuth",
-      descriptionDefault: "Sign in with GitHub",
+      descriptionDefault: t(
+        "thirdParty.github.description",
+        "Sign in with GitHub"
+      ),
     },
     {
       id: "device",
       icon: "mdi:devices",
-      name: "Device",
+      name: t("thirdParty.device.label", "Device"),
       type: "OAuth",
-      descriptionDefault: "Sign in with Device ID",
+      descriptionDefault: t(
+        "thirdParty.device.description",
+        "Sign in with Device ID"
+      ),
     },
   ].filter((account) => oauth_methods?.includes(account.id));
 

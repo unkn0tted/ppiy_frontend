@@ -1,7 +1,15 @@
 {
   "accountBalance": "账户余额",
+  "accountSnapshot": "账户快照",
+  "accountSnapshotDesc": "常用余额和邀请码会固定显示在这里，方便你在主工作区处理更重要的内容。",
   "commission": "佣金",
+  "controlRoomLead": "这是一个更安静的控制区，用来处理订阅、订单、文档和账户操作。",
   "copySuccess": "邀请链接复制成功",
+  "dashboardFallback": "仪表盘",
   "giftAmount": "赠送金额",
-  "inviteCode": "邀请码"
+  "inviteCode": "邀请码",
+  "ledger": "账户总览",
+  "sessionLabel": "当前会话",
+  "userCabinet": "用户总览",
+  "workspaceAccount": "当前工作账户"
 }

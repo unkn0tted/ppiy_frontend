@@ -53,9 +53,17 @@
     "unknown": "An error occurred in the system, please try again later."
   },
   "footer": {
+    "closingNote": "Weidu Closing Note",
+    "contacts": "Contacts",
     "copyright": "All rights reserved",
+    "policies": "Policies",
     "privacyPolicy": "Privacy Policy",
+    "signature": "Quiet routes. Deliberate design.",
     "tos": "Terms of Service"
+  },
+  "header": {
+    "accessLayer": "Monochrome Access Layer",
+    "editionLabel": "Weidu Edition"
   },
   "language": "Language",
   "loginRegister": "Login / Register",

@@ -4,17 +4,24 @@
   "createdAt": "创建时间",
   "detail": "详情",
   "goToPayment": "去支付",
+  "invoiceLabel": "账单信息",
   "name": "商品名称",
+  "orderBureau": "订单中心",
   "orderClosed": "订单已关闭",
+  "orderClosedLead": "这个订单已经结束，你可以随时重新下单。",
   "orderList": "订单列表",
+  "orderLead": "跟踪支付进度、重新打开收银台，并在同一处找回你的访问信息。",
   "orderNo": "订单号",
   "orderNumber": "订单编号",
+  "orderStatus": "订单状态",
   "payment": "支付",
   "paymentAmount": "支付金额",
   "paymentMethod": "支付方式",
   "paymentSuccess": "支付成功",
+  "paymentSuccessLead": "订单已经完成。你可以进入仪表盘，或继续查看相关文档。",
   "productList": "商品列表",
   "rechargeAmount": "充值金额",
+  "referenceLabel": "订单参考",
   "resetPrice": "重置价格",
   "resetTraffic": "重置流量",
   "scanToPay": "扫码支付",
@@ -26,8 +33,10 @@
     "4": "已关闭",
     "5": "已完成"
   },
+  "statusLabel": "状态",
   "subscribeNow": "立即订阅",
   "timeExpired": "时间已过期",
+  "totalLabel": "总计",
   "type": {
     "0": "类型",
     "1": "新购",
@@ -36,5 +45,7 @@
     "4": "充值"
   },
   "viewDocument": "查看文档",
-  "waitingForPayment": "等待支付"
+  "waitingForInitialization": "等待初始化",
+  "waitingForPayment": "等待支付",
+  "waitingForPaymentLead": "请保留当前页面，平台正在等待支付确认。"
 }

@@ -53,9 +53,17 @@
     "unknown": "系统发生错误，请稍后再试。"
   },
   "footer": {
+    "closingNote": "页脚说明",
+    "contacts": "联系方式",
     "copyright": "版权所有",
+    "policies": "相关政策",
     "privacyPolicy": "隐私政策",
+    "signature": "安静的路径，克制的设计。",
     "tos": "服务条款"
+  },
+  "header": {
+    "accessLayer": "极简访问层",
+    "editionLabel": "维度云版"
   },
   "language": "语言",
   "loginRegister": "登录 / 注册",

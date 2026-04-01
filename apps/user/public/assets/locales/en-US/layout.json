@@ -1,7 +1,15 @@
 {
   "accountBalance": "Account Balance",
+  "accountSnapshot": "Account snapshot",
+  "accountSnapshotDesc": "Quick balances and your invite code stay pinned here while the main workspace handles the heavier tasks.",
   "commission": "Commission",
+  "controlRoomLead": "A quieter control room for subscriptions, orders, documents, and account routines.",
   "copySuccess": "Copy Success",
+  "dashboardFallback": "Dashboard",
   "giftAmount": "Gift Amount",
-  "inviteCode": "Invite Code"
+  "inviteCode": "Invite Code",
+  "ledger": "Ledger",
+  "sessionLabel": "Session",
+  "userCabinet": "User cabinet",
+  "workspaceAccount": "Workspace account"
 }
