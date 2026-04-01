@@ -110,7 +110,7 @@ export default function RegisterForm({
                                     );
                                   }
                                 }}
-                                placeholder="Area code..."
+                                placeholder="区号"
                                 simple
                                 value={field.value}
                                 whitelist={enable_whitelist ? whitelist : []}
@@ -122,7 +122,7 @@ export default function RegisterForm({
                       />
                       <Input
                         className="rounded-l-none"
-                        placeholder="Enter your telephone..."
+                        placeholder="请输入手机号"
                         type="tel"
                         {...field}
                       />
@@ -139,7 +139,7 @@ export default function RegisterForm({
                 <FormItem>
                   <FormControl>
                     <Input
-                      placeholder="Enter your password..."
+                      placeholder="请输入密码"
                       type="password"
                       {...field}
                     />
@@ -156,7 +156,7 @@ export default function RegisterForm({
                   <FormControl>
                     <Input
                       disabled={loading}
-                      placeholder="Enter password again..."
+                      placeholder="请再次输入密码"
                       type="password"
                       {...field}
                     />
@@ -174,7 +174,7 @@ export default function RegisterForm({
                     <div className="flex items-center gap-2">
                       <Input
                         disabled={loading}
-                        placeholder="Enter code..."
+                        placeholder="请输入验证码"
                         type="text"
                         {...field}
                         value={field.value as string}
@@ -204,10 +204,7 @@ export default function RegisterForm({
                   <FormControl>
                     <Input
                       disabled={loading || !!localStorage.getItem("invite")}
-                      placeholder={t(
-                        "register.invite",
-                        "Invitation Code (Optional)"
-                      )}
+                      placeholder={t("register.invite", "邀请码（选填）")}
                       {...field}
                       value={field.value || ""}
                     />

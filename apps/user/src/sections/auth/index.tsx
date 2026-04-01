@@ -35,70 +35,10 @@ export default function Main() {
 
   return (
     <main className="min-h-screen">
-      <div className="container grid min-h-screen gap-6 py-6 xl:grid-cols-[0.92fr_1.08fr] xl:py-8">
-        <section className="weidu-panel-ink hidden xl:flex xl:flex-col xl:justify-between xl:px-10 xl:py-12">
-          <div>
-            <div className="font-medium text-[0.68rem] text-background/55 uppercase tracking-[0.36em]">
-              Access Portal
-            </div>
-            <div className="mt-8">
-              <Link className="flex items-center gap-4" to="/">
-                <div className="flex size-12 items-center justify-center rounded-full border border-white/12 bg-white/8">
-                  {site.site_logo ? (
-                    <img
-                      alt="logo"
-                      className="size-8 rounded-full object-cover"
-                      height={32}
-                      src={site.site_logo}
-                      width={32}
-                    />
-                  ) : (
-                    <span className="text-[0.65rem] uppercase tracking-[0.28em]">
-                      wd
-                    </span>
-                  )}
-                </div>
-                <div>
-                  <div className="font-medium text-[0.68rem] text-background/55 uppercase tracking-[0.32em]">
-                    Weidu Edition
-                  </div>
-                  <div className="font-semibold text-2xl">{site.site_name}</div>
-                </div>
-              </Link>
-            </div>
-            <h1 className="mt-16 max-w-lg font-semibold text-5xl leading-[0.92]">
-              {t("verifyAccount", "Verify Your Account")}
-            </h1>
-            <p className="mt-6 max-w-lg text-background/72 text-base leading-8">
-              {site.site_desc ||
-                t("verifyAccountDesc", "Please login or register to continue")}
-            </p>
-          </div>
-
-          <div className="grid gap-4 sm:grid-cols-3">
-            {[
-              t("methods.email", "Email"),
-              t("methods.mobile", "Mobile"),
-              t("tos", "Terms of Service"),
-            ].map((item, index) => (
-              <div
-                className="rounded-[1.2rem] border border-white/10 bg-white/5 px-4 py-4"
-                key={item}
-              >
-                <div className="font-medium text-[0.66rem] text-background/50 uppercase tracking-[0.3em]">
-                  {String(index + 1).padStart(2, "0")}
-                </div>
-                <p className="mt-5 font-medium text-sm uppercase tracking-[0.24em]">
-                  {item}
-                </p>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        <section className="weidu-panel flex flex-col px-6 py-8 md:px-10 md:py-12">
+      <div className="container flex min-h-screen items-center justify-center py-6 xl:py-8">
+        <section className="weidu-panel flex min-h-[760px] w-full max-w-[960px] flex-col px-6 py-8 md:px-10 md:py-12">
           <div className="flex flex-wrap items-center justify-between gap-4 border-border/70 border-b pb-6">
-            <Link className="flex items-center gap-3 xl:hidden" to="/">
+            <Link className="flex items-center gap-3" to="/">
               <div className="flex size-11 items-center justify-center rounded-full border border-border bg-background">
                 {site.site_logo ? (
                   <img
@@ -127,17 +67,18 @@ export default function Main() {
           </div>
 
           <div className="flex flex-1 items-center justify-center py-8">
-            <div className="w-full max-w-xl">
-              <div className="mb-10">
-                <div className="weidu-kicker">Account Gate</div>
+            <div className="w-full max-w-[560px]">
+              <div className="mb-10 text-center">
+                <div className="weidu-kicker justify-center">Account Gate</div>
                 <h2 className="mt-4 font-semibold text-3xl leading-tight md:text-4xl">
                   {t("verifyAccount", "Verify Your Account")}
                 </h2>
-                <p className="mt-4 max-w-lg text-base text-muted-foreground leading-8">
-                  {t(
-                    "verifyAccountDesc",
-                    "Please login or register to continue"
-                  )}
+                <p className="mt-4 text-base text-muted-foreground leading-8">
+                  {site.site_desc ||
+                    t(
+                      "verifyAccountDesc",
+                      "Please login or register to continue"
+                    )}
                 </p>
               </div>
 

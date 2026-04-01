@@ -122,7 +122,7 @@ function MobileBindDialog({
                       />
                       <Input
                         className="rounded-l-none"
-                        placeholder="Enter your telephone..."
+                        placeholder="请输入手机号"
                         type="tel"
                         {...field}
                       />
@@ -141,7 +141,7 @@ function MobileBindDialog({
                   <FormControl>
                     <div className="flex gap-2">
                       <Input
-                        placeholder="Enter code..."
+                        placeholder="请输入验证码"
                         type="text"
                         {...field}
                       />

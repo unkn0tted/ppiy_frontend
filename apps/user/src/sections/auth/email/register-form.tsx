@@ -113,11 +113,7 @@ export default function RegisterForm({
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input
-                      placeholder="Enter your email..."
-                      type="email"
-                      {...field}
-                    />
+                    <Input placeholder="请输入邮箱" type="email" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -130,7 +126,7 @@ export default function RegisterForm({
                 <FormItem>
                   <FormControl>
                     <Input
-                      placeholder="Enter your password..."
+                      placeholder="请输入密码"
                       type="password"
                       {...field}
                     />
@@ -147,7 +143,7 @@ export default function RegisterForm({
                   <FormControl>
                     <Input
                       disabled={loading}
-                      placeholder="Enter password again..."
+                      placeholder="请再次输入密码"
                       type="password"
                       {...field}
                     />
@@ -166,7 +162,7 @@ export default function RegisterForm({
                       <div className="flex items-center gap-2">
                         <Input
                           disabled={loading}
-                          placeholder="Enter code..."
+                          placeholder="请输入验证码"
                           type="text"
                           {...field}
                           value={field.value as string}
@@ -193,10 +189,7 @@ export default function RegisterForm({
                   <FormControl>
                     <Input
                       disabled={loading || !!localStorage.getItem("invite")}
-                      placeholder={t(
-                        "register.invite",
-                        "Invitation Code (Optional)"
-                      )}
+                      placeholder={t("register.invite", "邀请码（选填）")}
                       {...field}
                       value={field.value || ""}
                     />
