@@ -117,14 +117,14 @@ function projectPoint(
 
 export function GlobalMap() {
   const { t } = useTranslation("main");
-  const containerRef = useRef<HTMLDivElement>(null);
+  const stageRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
-    const container = containerRef.current;
+    const stage = stageRef.current;
     const canvas = canvasRef.current;
 
-    if (!(container && canvas)) return;
+    if (!(stage && canvas)) return;
 
     const context = canvas.getContext("2d");
 
@@ -135,7 +135,7 @@ export function GlobalMap() {
     let height = 0;
 
     const resize = () => {
-      const rect = container.getBoundingClientRect();
+      const rect = stage.getBoundingClientRect();
       const nextWidth = Math.round(rect.width);
       const nextHeight = Math.round(rect.height);
 
@@ -301,7 +301,7 @@ export function GlobalMap() {
     };
 
     const resizeObserver = new ResizeObserver(resize);
-    resizeObserver.observe(container);
+    resizeObserver.observe(stage);
     resize();
     animationFrame = requestAnimationFrame(draw);
 
@@ -312,25 +312,24 @@ export function GlobalMap() {
   }, []);
 
   return (
-    <div
-      className="flex h-full min-h-[22rem] flex-col justify-between xl:min-h-[31rem]"
-      ref={containerRef}
-    >
+    <div className="flex h-full min-h-[22rem] flex-col justify-between xl:min-h-[31rem]">
       <h2 className="font-semibold text-2xl tracking-[-0.04em]">
         {t("globalNodes", "全球节点")}
       </h2>
       <div className="relative mt-6 flex flex-1 items-center justify-center">
         <div
-          className="pointer-events-none absolute inset-0"
-          style={{
-            background:
-              "radial-gradient(circle at center, rgba(215, 226, 255, 0.42), transparent 44%), radial-gradient(circle at center, rgba(255, 255, 255, 0.8), transparent 72%)",
-          }}
-        />
-        <canvas
-          className="relative h-full w-full max-w-[38rem]"
-          ref={canvasRef}
-        />
+          className="relative aspect-square w-full max-w-[38rem]"
+          ref={stageRef}
+        >
+          <div
+            className="pointer-events-none absolute inset-0"
+            style={{
+              background:
+                "radial-gradient(circle at center, rgba(215, 226, 255, 0.42), transparent 44%), radial-gradient(circle at center, rgba(255, 255, 255, 0.8), transparent 72%)",
+            }}
+          />
+          <canvas className="absolute inset-0 h-full w-full" ref={canvasRef} />
+        </div>
       </div>
     </div>
   );
