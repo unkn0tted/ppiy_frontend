@@ -68,7 +68,7 @@ export function DocumentButton({ items }: { items: API.Document[] }) {
               animate={{
                 opacity: 1,
               }}
-              className="absolute top-2 right-2 flex h-6 w-6 items-center justify-center rounded-full bg-foreground text-white dark:text-black"
+              className="absolute top-2 right-2 flex h-6 w-6 items-center justify-center rounded-full bg-primary text-primary-foreground"
               exit={{
                 opacity: 0,
                 transition: {
@@ -105,7 +105,7 @@ export function DocumentButton({ items }: { items: API.Document[] }) {
             <div className="flex flex-row items-center gap-4">
               <motion.div layoutId={`image-${item.id}-${id}`}>
                 <Avatar className="size-12">
-                  <AvatarFallback className="bg-primary/80 text-white">
+                  <AvatarFallback className="bg-primary text-primary-foreground">
                     {item.title.split("")[0]}
                   </AvatarFallback>
                 </Avatar>

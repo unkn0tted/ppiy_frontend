@@ -136,7 +136,7 @@ const CardPaymentForm: React.FC<CardPaymentFormProps> = ({
       {succeeded ? (
         <div className="py-6 text-center">
           <div className="mb-4 flex justify-center">
-            <CheckCircle className="h-12 w-12 text-green-500" />
+            <CheckCircle className="h-12 w-12 text-primary" />
           </div>
           <p className="font-medium text-xl">
             {t("stripe.success_title", "Payment Successful")}

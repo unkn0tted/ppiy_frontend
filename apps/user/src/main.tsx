@@ -76,7 +76,7 @@ if (rootElement && !rootElement.innerHTML) {
     <StrictMode>
       <TanStackQueryProvider {...TanStackQueryProviderContext}>
         <LanguageProvider supportedLanguages={supportedLngs}>
-          <ThemeProvider>
+          <ThemeProvider defaultTheme="light" storageKey="weidu-theme">
             <DirectionProvider>
               <RouterProvider router={router} />
             </DirectionProvider>

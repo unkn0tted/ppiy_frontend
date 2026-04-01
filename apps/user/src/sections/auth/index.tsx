@@ -148,7 +148,7 @@ export default function Main() {
                       <TabsList className="mb-6 flex w-full rounded-full border border-border bg-background p-1 *:flex-1">
                         {AUTH_METHODS.map((item) => (
                           <TabsTrigger
-                            className="rounded-full data-[state=active]:bg-foreground data-[state=active]:text-background"
+                            className="rounded-full data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
                             key={item.key}
                             value={item.key}
                           >

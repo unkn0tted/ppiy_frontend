@@ -77,7 +77,7 @@ export function TutorialButton({ items }: { items: Item[] }) {
               animate={{
                 opacity: 1,
               }}
-              className="absolute top-2 right-2 flex h-6 w-6 items-center justify-center rounded-full bg-foreground text-white dark:text-black"
+              className="absolute top-2 right-2 flex h-6 w-6 items-center justify-center rounded-full bg-primary text-primary-foreground"
               exit={{
                 opacity: 0,
                 transition: {
@@ -129,7 +129,7 @@ export function TutorialButton({ items }: { items: Item[] }) {
               <motion.div layoutId={`image-${item.title}-${id}`}>
                 <Avatar className="size-12">
                   <AvatarImage alt={item.title ?? ""} src={item.icon ?? ""} />
-                  <AvatarFallback className="bg-primary/80 text-white">
+                  <AvatarFallback className="bg-primary text-primary-foreground">
                     {item.title.split("")[0]}
                   </AvatarFallback>
                 </Avatar>

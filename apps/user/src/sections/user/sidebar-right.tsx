@@ -39,7 +39,7 @@ export function SidebarRight({
         </div>
 
         <div className="weidu-panel overflow-hidden p-0">
-          <div className="flex items-center justify-between bg-foreground px-4 py-4 text-background">
+          <div className="flex items-center justify-between border-foreground/8 border-b bg-secondary/90 px-4 py-4 text-foreground">
             <span className="font-medium text-sm">
               {t("accountBalance", "Account Balance")}
             </span>

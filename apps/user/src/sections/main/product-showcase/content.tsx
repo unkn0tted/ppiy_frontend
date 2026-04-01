@@ -212,7 +212,7 @@ export function Content({ subscriptionData }: ProductShowcaseProps) {
                 <CardFooter className="px-6 pt-6 pb-6 lg:px-8 lg:pb-8">
                   <Button
                     asChild
-                    className="w-full rounded-full bg-foreground text-background hover:bg-foreground/92"
+                    className="w-full rounded-full bg-primary text-primary-foreground hover:bg-primary/90"
                     size="lg"
                   >
                     <Link

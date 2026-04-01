@@ -117,14 +117,14 @@ export default function Order() {
             </p>
           </div>
         </div>
-        <div className="rounded-[1.6rem] border border-foreground/10 bg-foreground px-5 py-6 text-background">
-          <p className="font-medium text-[0.68rem] text-background/60 uppercase tracking-[0.34em]">
+        <div className="rounded-[1.6rem] border border-foreground/10 bg-secondary/90 px-5 py-6 text-foreground">
+          <p className="font-medium text-[0.68rem] text-muted-foreground uppercase tracking-[0.34em]">
             Reference
           </p>
           <p className="mt-4 break-all font-medium text-lg">
             {data?.order_no || orderNo || "--"}
           </p>
-          <p className="mt-3 text-background/72 text-sm leading-6">
+          <p className="mt-3 text-muted-foreground text-sm leading-6">
             {data?.created_at
               ? `${t("createdAt", "Created At")}: ${formatDate(data.created_at)}`
               : t("waitingForInitialization", "Waiting for initialization")}
@@ -238,15 +238,15 @@ export default function Order() {
 
         <aside className="space-y-6 xl:sticky xl:top-24 xl:self-start">
           <section className="weidu-panel overflow-hidden p-0">
-            <div className="bg-foreground px-6 py-5 text-background">
+            <div className="bg-primary px-6 py-5 text-primary-foreground">
               <div className="space-y-3">
-                <p className="font-medium text-[0.68rem] text-background/60 uppercase tracking-[0.34em]">
+                <p className="font-medium text-[0.68rem] text-primary-foreground/60 uppercase tracking-[0.34em]">
                   Status
                 </p>
                 <div className="flex items-center gap-3">
                   <span
                     className={cn(
-                      "inline-flex size-11 items-center justify-center rounded-full border border-background/12 bg-background/8",
+                      "inline-flex size-11 items-center justify-center rounded-full border border-primary-foreground/12 bg-primary-foreground/8",
                       {
                         "bg-background text-foreground": isSuccess,
                       }
@@ -271,7 +271,7 @@ export default function Order() {
                           ? t("orderClosed", "Order Closed")
                           : t("waitingForPayment", "Waiting for Payment")}
                     </h2>
-                    <p className="mt-1 text-background/72 text-sm">
+                    <p className="mt-1 text-primary-foreground/72 text-sm">
                       {isSuccess
                         ? t(
                             "paymentSuccessLead",

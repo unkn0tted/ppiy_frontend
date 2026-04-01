@@ -68,7 +68,7 @@ const PaymentMethods: React.FC<PaymentMethodsProps> = ({
               className={cn(
                 "flex min-h-28 flex-col items-center justify-between rounded-[1.35rem] border border-foreground/10 bg-background/70 px-3 py-4 text-popover-foreground transition-all duration-200 hover:border-foreground/30 hover:bg-foreground/[0.03]",
                 String(value) === String(item.id)
-                  ? "border-foreground bg-foreground text-background"
+                  ? "border-primary/60 bg-primary text-primary-foreground"
                   : ""
               )}
               htmlFor={String(item.id)}

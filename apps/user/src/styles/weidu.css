@@ -1,63 +1,73 @@
 @layer base {
   :root {
-    --background: oklch(0.972 0.01 80);
-    --foreground: oklch(0.3 0.01 60);
-    --card: oklch(0.992 0.006 80 / 94%);
-    --card-foreground: oklch(0.3 0.01 60);
-    --popover: oklch(0.99 0.005 80);
-    --popover-foreground: oklch(0.3 0.01 60);
-    --primary: oklch(0.56 0.015 72);
-    --primary-foreground: oklch(0.985 0.004 80);
-    --secondary: oklch(0.938 0.011 78);
-    --secondary-foreground: oklch(0.34 0.01 60);
-    --muted: oklch(0.948 0.008 80);
-    --muted-foreground: oklch(0.48 0.01 65);
-    --accent: oklch(0.928 0.013 78);
-    --accent-foreground: oklch(0.32 0.01 60);
-    --border: oklch(0.86 0.01 75);
-    --input: oklch(0.892 0.009 75);
-    --ring: oklch(0.62 0.014 70);
+    --background: #f5f0e8;
+    --foreground: #4a4a4a;
+    --card: rgb(250 246 240 / 96%);
+    --card-foreground: #4a4a4a;
+    --popover: #fbf7f1;
+    --popover-foreground: #4a4a4a;
+    --primary: #686b70;
+    --primary-foreground: #faf7f2;
+    --secondary: #e5e1db;
+    --secondary-foreground: #4c4c4d;
+    --muted: #eee9e2;
+    --muted-foreground: #717277;
+    --accent: #d8d5d0;
+    --accent-foreground: #4a4b4f;
+    --border: #d4cfc7;
+    --input: #e1dbd3;
+    --ring: #898d92;
     --destructive: oklch(0.62 0.04 30);
     --destructive-foreground: oklch(0.99 0.004 80);
-    --sidebar: oklch(0.974 0.01 80);
-    --sidebar-foreground: oklch(0.3 0.01 60);
-    --sidebar-primary: oklch(0.56 0.015 72);
-    --sidebar-primary-foreground: oklch(0.985 0.004 80);
-    --sidebar-accent: oklch(0.938 0.011 78);
-    --sidebar-accent-foreground: oklch(0.32 0.01 60);
-    --sidebar-border: oklch(0.86 0.01 75);
-    --sidebar-ring: oklch(0.62 0.014 70);
+    --sidebar: #fbf7f1;
+    --sidebar-foreground: #4a4a4a;
+    --sidebar-primary: #686b70;
+    --sidebar-primary-foreground: #faf7f2;
+    --sidebar-accent: #e5e1db;
+    --sidebar-accent-foreground: #4a4b4f;
+    --sidebar-border: #d4cfc7;
+    --sidebar-ring: #898d92;
     --radius: 1.4rem;
+    --weidu-button-bg: #686b70;
+    --weidu-button-hover: #5d6065;
+    --weidu-button-fg: #faf7f2;
+    --weidu-button-border: #63666b;
+    --weidu-link: #5f646a;
   }
 
   .dark {
-    --background: oklch(0.22 0.01 70);
-    --foreground: oklch(0.94 0.006 80);
-    --card: oklch(0.265 0.01 68 / 96%);
-    --card-foreground: oklch(0.94 0.006 80);
-    --popover: oklch(0.25 0.01 68);
-    --popover-foreground: oklch(0.94 0.006 80);
-    --primary: oklch(0.72 0.014 78);
-    --primary-foreground: oklch(0.22 0.01 70);
-    --secondary: oklch(0.32 0.01 68);
-    --secondary-foreground: oklch(0.94 0.006 80);
-    --muted: oklch(0.3 0.009 68);
-    --muted-foreground: oklch(0.74 0.008 78);
-    --accent: oklch(0.35 0.011 70);
-    --accent-foreground: oklch(0.95 0.006 80);
-    --border: oklch(1 0 0 / 12%);
-    --input: oklch(1 0 0 / 14%);
-    --ring: oklch(0.74 0.012 78);
+    --background: #f3eee7;
+    --foreground: #4a4a4a;
+    --card: rgb(248 243 236 / 96%);
+    --card-foreground: #4a4a4a;
+    --popover: #f8f3ed;
+    --popover-foreground: #4a4a4a;
+    --primary: #686b70;
+    --primary-foreground: #faf7f2;
+    --secondary: #dfdbd5;
+    --secondary-foreground: #4c4c4d;
+    --muted: #e9e4dc;
+    --muted-foreground: #6f7074;
+    --accent: #d3d0ca;
+    --accent-foreground: #4a4b4f;
+    --border: #cbc6be;
+    --input: #d7d1c9;
+    --ring: #898d92;
     --destructive: oklch(0.62 0.05 32);
     --destructive-foreground: oklch(0.98 0.006 80);
-    --sidebar: oklch(0.235 0.01 70);
-    --sidebar-foreground: oklch(0.94 0.006 80);
-    --sidebar-primary: oklch(0.72 0.014 78);
-    --sidebar-primary-foreground: oklch(0.22 0.01 70);
-    --sidebar-accent: oklch(0.31 0.01 70);
-    --sidebar-accent-foreground: oklch(0.94 0.006 80);
-    --sidebar-border: oklch(1 0 0 / 12%);
-    --sidebar-ring: oklch(0.74 0.012 78);
+    --sidebar: #f6f1ea;
+    --sidebar-foreground: #4a4a4a;
+    --sidebar-primary: #686b70;
+    --sidebar-primary-foreground: #faf7f2;
+    --sidebar-accent: #dfdbd5;
+    --sidebar-accent-foreground: #4a4b4f;
+    --sidebar-border: #cbc6be;
+    --sidebar-ring: #898d92;
+    --weidu-button-bg: #686b70;
+    --weidu-button-hover: #5d6065;
+    --weidu-button-fg: #faf7f2;
+    --weidu-button-border: #63666b;
+    --weidu-link: #5f646a;
   }
 
   html {
@@ -67,20 +77,24 @@
   body {
     min-height: 100vh;
     font-family:
-      "Avenir Next", "PingFang SC", "Hiragino Sans GB", "Noto Sans SC",
+      "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Source Han Sans SC",
       "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     line-height: 1.65;
     background:
-      radial-gradient(circle at top left, oklch(1 0 0 / 0.78), transparent 32%),
+      radial-gradient(
+        circle at top left,
+        rgb(255 255 255 / 70%),
+        transparent 34%
+      ),
       radial-gradient(
         circle at bottom right,
-        oklch(0.82 0.01 78 / 0.22),
+        rgb(172 174 178 / 14%),
         transparent 24%
-      ), linear-gradient(oklch(0.38 0.01 70 / 0.03) 1px, transparent 1px),
-      linear-gradient(90deg, oklch(0.38 0.01 70 / 0.03) 1px, transparent 1px),
-      linear-gradient(180deg, oklch(0.986 0.006 80), oklch(0.952 0.01 78));
+      ), linear-gradient(rgb(97 99 103 / 2.7%) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(97 99 103 / 2.7%) 1px, transparent 1px),
+      linear-gradient(180deg, #fcf8f3, #efe9e1);
     background-size:
       auto,
       auto,
@@ -96,14 +110,18 @@
 
   .dark body {
     background:
-      radial-gradient(circle at top left, oklch(1 0 0 / 0.05), transparent 28%),
+      radial-gradient(
+        circle at top left,
+        rgb(255 255 255 / 48%),
+        transparent 28%
+      ),
       radial-gradient(
         circle at bottom right,
-        oklch(0.75 0.015 78 / 0.09),
+        rgb(169 171 175 / 12%),
         transparent 22%
-      ), linear-gradient(oklch(1 0 0 / 0.035) 1px, transparent 1px),
-      linear-gradient(90deg, oklch(1 0 0 / 0.035) 1px, transparent 1px),
-      linear-gradient(180deg, oklch(0.24 0.01 70), oklch(0.2 0.01 68));
+      ), linear-gradient(rgb(97 99 103 / 2.4%) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(97 99 103 / 2.4%) 1px, transparent 1px),
+      linear-gradient(180deg, #f4efe8, #e8e1d8);
     background-size:
       auto,
       auto,
@@ -152,22 +170,18 @@
     background: color-mix(in oklab, var(--card) 92%, transparent);
     backdrop-filter: blur(12px);
     box-shadow:
-      0 20px 60px color-mix(in oklab, var(--foreground) 5%, transparent),
-      inset 0 1px 0 color-mix(in oklab, var(--background) 75%, transparent);
+      0 10px 30px rgb(75 75 73 / 4%),
+      inset 0 1px 0 rgb(255 255 255 / 62%);
   }
 
   .weidu-panel-ink {
     border: 1px solid color-mix(in oklab, var(--foreground) 10%, transparent);
     border-radius: 1.75rem;
-    background: linear-gradient(
-      180deg,
-      color-mix(in oklab, var(--primary) 92%, white 8%),
-      color-mix(in oklab, var(--primary) 72%, var(--foreground) 28%)
-    );
+    background: linear-gradient(180deg, #c9ccd1, #aeb3bb);
     color: var(--primary-foreground);
     box-shadow:
-      0 25px 80px color-mix(in oklab, var(--foreground) 15%, transparent),
-      inset 0 1px 0 oklch(1 0 0 / 10%);
+      0 12px 30px rgb(75 75 73 / 7%),
+      inset 0 1px 0 rgb(255 255 255 / 26%);
   }
 
   .weidu-kicker {
@@ -189,9 +203,11 @@
     );
   }
 
-  .weidu-shell :where([data-slot="button"]) {
+  :where([data-slot="button"]) {
     font-weight: 500;
     letter-spacing: 0.01em;
+    background-image: none !important;
+    box-shadow: none !important;
     transition:
       background-color 180ms ease,
       border-color 180ms ease,
@@ -200,46 +216,45 @@
       transform 180ms ease;
   }
 
-  .weidu-shell
-    :where([data-slot="button"]):not(.rounded-l-none):not(.rounded-r-none) {
+  :where([data-slot="button"]):not(.rounded-l-none):not(.rounded-r-none) {
     border-radius: 999px;
   }
 
-  .weidu-shell :where([data-slot="button"].bg-primary) {
-    border: 1px solid color-mix(in oklab, var(--primary) 80%, transparent);
-    background: linear-gradient(
-      180deg,
-      color-mix(in oklab, var(--primary) 88%, white 12%),
-      color-mix(in oklab, var(--primary) 100%, black 8%)
-    );
-    box-shadow:
-      0 14px 30px color-mix(in oklab, var(--primary) 28%, transparent),
-      inset 0 1px 0 color-mix(in oklab, white 28%, transparent);
+  :where([data-slot="button"][class*="bg-primary"]),
+  :where([data-slot="button"][class*="bg-foreground"]) {
+    border: 1px solid var(--weidu-button-border) !important;
+    background: var(--weidu-button-bg) !important;
+    color: var(--weidu-button-fg) !important;
+    box-shadow: none !important;
   }
 
-  .weidu-shell :where([data-slot="button"].bg-primary:hover) {
-    box-shadow:
-      0 18px 34px color-mix(in oklab, var(--primary) 34%, transparent),
-      inset 0 1px 0 color-mix(in oklab, white 28%, transparent);
-    transform: translateY(-1px);
+  :where([data-slot="button"][class*="bg-primary"]:hover),
+  :where([data-slot="button"][class*="bg-foreground"]:hover) {
+    background: var(--weidu-button-hover) !important;
+    box-shadow: none !important;
+    transform: none;
   }
 
-  .weidu-shell :where([data-slot="button"].border.bg-background),
-  .weidu-shell :where([data-slot="button"].bg-secondary) {
+  :where([data-slot="button"].border.bg-background),
+  :where([data-slot="button"].bg-secondary) {
     border-color: color-mix(in oklab, var(--foreground) 10%, transparent);
     background: color-mix(in oklab, var(--secondary) 78%, white 22%);
-    box-shadow:
-      0 10px 24px color-mix(in oklab, var(--foreground) 7%, transparent),
-      inset 0 1px 0 color-mix(in oklab, white 70%, transparent);
+    box-shadow: none !important;
   }
 
-  .weidu-shell :where([data-slot="button"].border.bg-background:hover),
-  .weidu-shell :where([data-slot="button"].bg-secondary:hover) {
+  :where([data-slot="button"].border.bg-background:hover),
+  :where([data-slot="button"].bg-secondary:hover) {
     background: color-mix(in oklab, var(--accent) 82%, white 18%);
-    transform: translateY(-1px);
+    box-shadow: none !important;
+    transform: none;
   }
 
-  .weidu-shell :where([data-slot="button"].text-primary) {
-    color: color-mix(in oklab, var(--primary) 72%, var(--foreground) 28%);
+  :where([data-slot="button"].text-primary) {
+    color: var(--weidu-link) !important;
+  }
+
+  :where([data-slot="button"].text-primary:hover) {
+    color: var(--foreground) !important;
+    background: transparent !important;
   }
 }

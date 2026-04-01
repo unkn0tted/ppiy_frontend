@@ -177,7 +177,7 @@ export default function Page() {
                 {t("paymentSuccess", "Payment Success")}
               </h3>
               <Icon
-                className="text-7xl text-green-500"
+                className="text-7xl text-primary"
                 icon="mdi:success-circle-outline"
               />
               <div className="flex gap-4">

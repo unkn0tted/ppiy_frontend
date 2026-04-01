@@ -22,8 +22,8 @@ export default function Dashboard() {
             )}
           </p>
         </div>
-        <div className="rounded-[1.35rem] border border-foreground/10 bg-foreground px-4 py-5 text-background">
-          <p className="font-medium text-[0.68rem] text-background/60 uppercase tracking-[0.34em]">
+        <div className="rounded-[1.35rem] border border-foreground/10 bg-secondary/90 px-4 py-5 text-foreground">
+          <p className="font-medium text-[0.68rem] text-muted-foreground uppercase tracking-[0.34em]">
             Active account
           </p>
           <p className="mt-3 break-all font-medium leading-7">

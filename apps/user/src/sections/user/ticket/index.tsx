@@ -180,7 +180,7 @@ export default function Ticket() {
                         item.status === 1,
                       "before:bg-rose-500 before:ring-rose-500":
                         item.status === 2,
-                      "before:bg-green-500 before:ring-green-500":
+                      "before:bg-stone-500 before:ring-stone-500":
                         item.status === 3,
                       "before:bg-zinc-500 before:ring-zinc-500":
                         item.status === 4,

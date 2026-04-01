@@ -97,8 +97,7 @@ export default function Subscribe() {
                               {feature.icon && (
                                 <Icon
                                   className={cn("size-5 text-primary", {
-                                    "text-green-500":
-                                      feature.type === "success",
+                                    "text-primary": feature.type === "success",
                                     "text-destructive":
                                       feature.type === "destructive",
                                   })}

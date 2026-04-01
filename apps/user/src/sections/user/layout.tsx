@@ -35,12 +35,12 @@ export default function UserLayout() {
             </p>
           </div>
         </div>
-        <div className="rounded-[1.6rem] border border-foreground/10 bg-foreground px-5 py-6 text-background">
-          <p className="font-medium text-[0.68rem] text-background/60 uppercase tracking-[0.34em]">
+        <div className="rounded-[1.6rem] border border-foreground/10 bg-secondary/90 px-5 py-6 text-foreground">
+          <p className="font-medium text-[0.68rem] text-muted-foreground uppercase tracking-[0.34em]">
             Session
           </p>
           <p className="mt-4 break-all font-medium text-lg">{accountLabel}</p>
-          <p className="mt-3 text-background/72 text-sm leading-6">
+          <p className="mt-3 text-muted-foreground text-sm leading-6">
             {currentNav?.title || "Dashboard"}
           </p>
         </div>

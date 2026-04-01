@@ -8,6 +8,12 @@ export function Hero() {
   const { t } = useTranslation("main");
   const { common, user } = useGlobalStore();
   const { site } = common;
+  const scrollToPlans = () => {
+    document.getElementById("plans")?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  };
   const notes = [
     {
       index: "01",
@@ -57,7 +63,7 @@ export function Hero() {
         <div className="mt-10 flex flex-col gap-3 sm:flex-row">
           <Button
             asChild
-            className="rounded-full bg-foreground px-6 py-6 text-background hover:bg-foreground/92"
+            className="rounded-full bg-primary px-6 py-6 text-primary-foreground hover:bg-primary/90"
             size="lg"
           >
             <Link to={user ? "/dashboard" : "/auth"}>
@@ -65,14 +71,13 @@ export function Hero() {
             </Link>
           </Button>
           <Button
-            asChild
-            className="rounded-full border border-border bg-transparent px-6 py-6 hover:bg-foreground hover:text-background"
+            className="rounded-full border border-border bg-transparent px-6 py-6 hover:bg-secondary"
+            onClick={scrollToPlans}
             size="lg"
+            type="button"
             variant="outline"
           >
-            <a href="#plans">
-              {t("product_showcase_title", "Choose Your Package")}
-            </a>
+            {t("product_showcase_title", "Choose Your Package")}
           </Button>
         </div>
 

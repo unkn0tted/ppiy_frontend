@@ -64,7 +64,7 @@ export function SidebarLeft({
                             className={cn(
                               "flex w-full items-center gap-3 rounded-[1.25rem] border border-transparent px-3 py-3 transition-all duration-200",
                               isActive
-                                ? "border-foreground bg-foreground text-background shadow-[0_18px_50px_rgba(0,0,0,0.18)]"
+                                ? "border-primary/55 bg-primary text-primary-foreground"
                                 : "hover:border-foreground/12 hover:bg-foreground/[0.03]"
                             )}
                             to={item.url || "/"}
@@ -74,7 +74,7 @@ export function SidebarLeft({
                                 className={cn(
                                   "flex size-10 items-center justify-center rounded-full border",
                                   isActive
-                                    ? "border-background/15 bg-background/10 text-background"
+                                    ? "border-primary-foreground/15 bg-primary-foreground/10 text-primary-foreground"
                                     : "border-foreground/10 bg-background text-foreground"
                                 )}
                               >

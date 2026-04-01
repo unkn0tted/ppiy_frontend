@@ -50,11 +50,11 @@ export default function Purchasing() {
               Identify / Configure / Pay
             </p>
           </div>
-          <div className="rounded-[1.5rem] border border-foreground/10 bg-foreground px-4 py-5 text-background">
-            <p className="font-medium text-[0.68rem] text-background/60 uppercase tracking-[0.32em]">
+          <div className="rounded-[1.5rem] border border-foreground/10 bg-secondary/90 px-4 py-5 text-foreground">
+            <p className="font-medium text-[0.68rem] text-muted-foreground uppercase tracking-[0.32em]">
               Context
             </p>
-            <p className="mt-3 text-background/78 text-sm leading-6">
+            <p className="mt-3 text-muted-foreground text-sm leading-6">
               {subscription?.name ||
                 t("subscriptionNotFound", "Subscription not found")}
             </p>

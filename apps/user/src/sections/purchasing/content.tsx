@@ -259,23 +259,23 @@ export default function Content({
                 )}
               </div>
             </div>
-            <div className="rounded-[1.6rem] border border-foreground/10 bg-foreground px-5 py-6 text-background">
-              <p className="font-medium text-[0.68rem] text-background/60 uppercase tracking-[0.34em]">
+            <div className="rounded-[1.6rem] border border-foreground/10 bg-secondary/90 px-5 py-6 text-foreground">
+              <p className="font-medium text-[0.68rem] text-muted-foreground uppercase tracking-[0.34em]">
                 Session
               </p>
-              <ul className="mt-6 space-y-5 text-background/78 text-sm leading-6">
+              <ul className="mt-6 space-y-5 text-muted-foreground text-sm leading-6">
                 <li>
-                  <p className="font-medium text-background">Site</p>
+                  <p className="font-medium text-foreground">Site</p>
                   <p>{common.site.site_name}</p>
                 </li>
                 <li>
-                  <p className="font-medium text-background">Delivery</p>
+                  <p className="font-medium text-foreground">Delivery</p>
                   <p>
                     {t("emailOnly", "Access credentials are sent by email.")}
                   </p>
                 </li>
                 <li>
-                  <p className="font-medium text-background">Security</p>
+                  <p className="font-medium text-foreground">Security</p>
                   <p>
                     {t(
                       "passwordOptional",
@@ -322,7 +322,7 @@ export default function Content({
                       {feature.icon && (
                         <Icon
                           className={cn("mt-0.5 size-5 text-foreground", {
-                            "text-emerald-600": feature.type === "success",
+                            "text-primary": feature.type === "success",
                             "text-destructive": feature.type === "destructive",
                           })}
                           icon={feature.icon}
@@ -431,10 +431,10 @@ export default function Content({
         </section>
 
         <section className="weidu-panel overflow-hidden p-0">
-          <div className="bg-foreground px-6 py-5 text-background">
+          <div className="bg-primary px-6 py-5 text-primary-foreground">
             <div className="flex items-end justify-between gap-4">
               <div>
-                <p className="font-medium text-[0.68rem] text-background/60 uppercase tracking-[0.34em]">
+                <p className="font-medium text-[0.68rem] text-primary-foreground/60 uppercase tracking-[0.34em]">
                   Review
                 </p>
                 <h2 className="mt-3 font-semibold text-2xl tracking-[-0.05em]">
@@ -442,7 +442,7 @@ export default function Content({
                 </h2>
               </div>
               <div className="text-right">
-                <p className="text-background/60 text-xs uppercase tracking-[0.26em]">
+                <p className="text-primary-foreground/60 text-xs uppercase tracking-[0.26em]">
                   Total
                 </p>
                 <p className="mt-2 font-semibold text-3xl tracking-[-0.05em]">
