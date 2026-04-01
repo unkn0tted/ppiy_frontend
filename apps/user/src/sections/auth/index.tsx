@@ -54,10 +54,7 @@ export default function Main() {
                   </span>
                 )}
               </div>
-              <div>
-                <div className="weidu-kicker">Weidu Edition</div>
-                <div className="font-semibold text-xl">{site.site_name}</div>
-              </div>
+              <div className="font-semibold text-xl">{site.site_name}</div>
             </Link>
 
             <div className="flex items-center gap-5">
@@ -69,17 +66,9 @@ export default function Main() {
           <div className="flex flex-1 items-center justify-center py-8">
             <div className="w-full max-w-[560px]">
               <div className="mb-10 text-center">
-                <div className="weidu-kicker justify-center">Account Gate</div>
-                <h2 className="mt-4 font-semibold text-3xl leading-tight md:text-4xl">
+                <h2 className="font-semibold text-3xl text-[#111827] leading-tight md:text-4xl">
                   {t("verifyAccount", "Verify Your Account")}
                 </h2>
-                <p className="mt-4 text-base text-muted-foreground leading-8">
-                  {site.site_desc ||
-                    t(
-                      "verifyAccountDesc",
-                      "Please login or register to continue"
-                    )}
-                </p>
               </div>
 
               {AUTH_METHODS.length === 1
@@ -111,16 +100,13 @@ export default function Main() {
             </div>
           </div>
 
-          <div className="flex flex-col gap-3 border-border/70 border-t pt-6 font-medium text-muted-foreground text-sm sm:flex-row sm:items-center sm:justify-between">
+          <div className="border-border/70 border-t pt-6 font-medium text-muted-foreground text-sm">
             <div className="flex gap-2">
               <Link to="/tos">{t("tos", "Terms of Service")}</Link>
               <span className="text-foreground/25">|</span>
               <Link to="/privacy-policy">
                 {t("privacyPolicy", "Privacy Policy")}
               </Link>
-            </div>
-            <div className="text-[0.7rem] uppercase tracking-[0.3em]">
-              Monochrome access flow
             </div>
           </div>
         </section>

@@ -32,11 +32,8 @@ export default function Header() {
                   "wd"
                 )}
               </div>
-              <div className="min-w-0">
-                <div className="weidu-kicker">Weidu Edition</div>
-                <div className="truncate font-semibold text-xl leading-none">
-                  {site.site_name}
-                </div>
+              <div className="min-w-0 truncate font-semibold text-xl leading-none">
+                {site.site_name}
               </div>
             </Link>
 
@@ -46,33 +43,25 @@ export default function Header() {
             </div>
           </div>
 
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between lg:justify-end">
-            <div className="hidden items-center gap-3 xl:flex">
-              <span className="size-2 rounded-full bg-foreground" />
-              <span className="font-medium text-[0.68rem] text-muted-foreground uppercase tracking-[0.36em]">
-                Monochrome Access Layer
-              </span>
+          <div className="flex items-center justify-between gap-3 sm:justify-end">
+            <div className="flex items-center gap-2 rounded-full border border-border/70 bg-card/80 px-2 py-2 shadow-sm lg:hidden">
+              <LanguageSwitch />
+              <ThemeSwitch />
             </div>
-            <div className="flex items-center justify-between gap-3 sm:justify-end">
-              <div className="flex items-center gap-2 rounded-full border border-border/70 bg-card/80 px-2 py-2 shadow-sm lg:hidden">
-                <LanguageSwitch />
-                <ThemeSwitch />
-              </div>
-              <UserNav />
-              {!user && (
-                <Link
-                  className={cn(
-                    buttonVariants({
-                      size: "sm",
-                    }),
-                    "hover:-translate-y-0.5 rounded-full border border-foreground bg-foreground px-5 text-background shadow-foreground/15 shadow-sm transition-transform hover:bg-foreground/92"
-                  )}
-                  to="/auth"
-                >
-                  {t("loginRegister", "Login / Register")}
-                </Link>
-              )}
-            </div>
+            <UserNav />
+            {!user && (
+              <Link
+                className={cn(
+                  buttonVariants({
+                    size: "sm",
+                  }),
+                  "hover:-translate-y-0.5 rounded-full border border-foreground bg-foreground px-5 text-background shadow-foreground/15 shadow-sm transition-transform hover:bg-foreground/92"
+                )}
+                to="/auth"
+              >
+                {t("loginRegister", "Login / Register")}
+              </Link>
+            )}
           </div>
         </div>
       </div>

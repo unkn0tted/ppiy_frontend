@@ -534,7 +534,7 @@ export default function Content() {
                                 <span>{t("qrCode", "QR Code")}</span>
                                 <QRCodeCanvas
                                   bgColor="transparent"
-                                  fgColor="rgb(59, 130, 246)"
+                                  fgColor="rgb(63, 63, 70)"
                                   size={80}
                                   value={url}
                                 />

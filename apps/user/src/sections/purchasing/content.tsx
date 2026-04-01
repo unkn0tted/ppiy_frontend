@@ -149,7 +149,7 @@ export default function Content({
     );
   }
 
-  const { description, features } = parsedDescription;
+  const { features } = parsedDescription;
   const totalAmount =
     order?.amount ?? order?.price ?? subscription.unit_price ?? 0;
 
@@ -159,23 +159,9 @@ export default function Content({
         <section className="weidu-panel px-6 py-6 md:px-8 md:py-8">
           <div className="grid gap-8 md:grid-cols-[minmax(0,1fr)_15rem]">
             <div className="space-y-5">
-              <div className="space-y-3">
-                <p className="weidu-kicker">Identity</p>
-                <div className="space-y-2">
-                  <h2 className="font-semibold text-2xl tracking-[-0.05em]">
-                    {t("accessWorkspace", "Account access")}
-                  </h2>
-                  <p className="max-w-xl text-muted-foreground leading-7">
-                    {t(
-                      "emailInputTitle",
-                      "Enter the email address for your {{siteName}} account",
-                      {
-                        siteName: common.site.site_name,
-                      }
-                    )}
-                  </p>
-                </div>
-              </div>
+              <h2 className="font-semibold text-2xl tracking-[-0.05em]">
+                {t("accessWorkspace", "Account access")}
+              </h2>
               <div className="grid gap-3">
                 <div className="flex flex-col gap-2">
                   <EnhancedInput
@@ -223,7 +209,7 @@ export default function Content({
                         });
                       }
                     }}
-                    placeholder="Email"
+                    placeholder={t("emailPlaceholder", "邮箱地址")}
                     required
                     type="email"
                     value={params.identifier || ""}
@@ -245,45 +231,21 @@ export default function Content({
                       onValueChange={(value: string) =>
                         handleChange("password", value)
                       }
-                      placeholder="Password"
+                      placeholder={t("passwordPlaceholder", "账户密码")}
                       type="password"
                       value={params.password || ""}
                     />
-                    <p className="text-muted-foreground text-xs leading-6">
-                      {t(
-                        "passwordHint",
-                        "If you do not enter a password, we will automatically generate one and send it to your email."
-                      )}
-                    </p>
                   </div>
                 )}
               </div>
             </div>
             <div className="rounded-[1.6rem] border border-foreground/10 bg-secondary/90 px-5 py-6 text-foreground">
               <p className="font-medium text-[0.68rem] text-muted-foreground uppercase tracking-[0.34em]">
-                Session
+                {t("siteLabel", "Site")}
               </p>
-              <ul className="mt-6 space-y-5 text-muted-foreground text-sm leading-6">
-                <li>
-                  <p className="font-medium text-foreground">Site</p>
-                  <p>{common.site.site_name}</p>
-                </li>
-                <li>
-                  <p className="font-medium text-foreground">Delivery</p>
-                  <p>
-                    {t("emailOnly", "Access credentials are sent by email.")}
-                  </p>
-                </li>
-                <li>
-                  <p className="font-medium text-foreground">Security</p>
-                  <p>
-                    {t(
-                      "passwordOptional",
-                      "Set a password now or let the system generate one."
-                    )}
-                  </p>
-                </li>
-              </ul>
+              <p className="mt-4 break-all font-medium text-lg">
+                {common.site.site_name}
+              </p>
             </div>
           </div>
         </section>
@@ -291,21 +253,9 @@ export default function Content({
         <section className="weidu-panel px-6 py-6 md:px-8 md:py-8">
           <div className="grid gap-8 lg:grid-cols-[minmax(0,1.1fr)_minmax(14rem,0.9fr)]">
             <div className="space-y-5">
-              <div className="space-y-3">
-                <p className="weidu-kicker">Plan narrative</p>
-                <div className="space-y-2">
-                  <h2 className="font-semibold text-2xl tracking-[-0.05em]">
-                    {subscription.name}
-                  </h2>
-                  <p className="text-muted-foreground leading-7">
-                    {description ||
-                      t(
-                        "subscriptionDescriptionFallback",
-                        "A measured access plan built for stable delivery and a quieter browsing experience."
-                      )}
-                  </p>
-                </div>
-              </div>
+              <h2 className="font-semibold text-2xl tracking-[-0.05em]">
+                {subscription.name}
+              </h2>
               <ul className="grid gap-3 text-sm leading-6 md:grid-cols-2">
                 {features?.map((feature, index) => (
                   <li
@@ -335,11 +285,13 @@ export default function Content({
               </ul>
             </div>
             <div className="rounded-[1.6rem] border border-foreground/10 bg-background/75 p-5">
-              <p className="weidu-kicker">Specification</p>
+              <p className="weidu-kicker">
+                {t("specificationLabel", "Specification")}
+              </p>
               <div className="mt-6 grid gap-4">
                 <div className="rounded-[1.25rem] border border-foreground/10 bg-background px-4 py-4">
                   <p className="text-muted-foreground text-xs uppercase tracking-[0.26em]">
-                    Duration
+                    {t("durationLabel", "Duration")}
                   </p>
                   <p className="mt-2 font-medium text-lg">
                     {params.quantity} /{" "}
@@ -349,7 +301,7 @@ export default function Content({
                 </div>
                 <div className="rounded-[1.25rem] border border-foreground/10 bg-background px-4 py-4">
                   <p className="text-muted-foreground text-xs uppercase tracking-[0.26em]">
-                    Traffic
+                    {t("trafficLabel", "Traffic")}
                   </p>
                   <p className="mt-2 font-medium text-lg">
                     <Display
@@ -361,7 +313,7 @@ export default function Content({
                 </div>
                 <div className="rounded-[1.25rem] border border-foreground/10 bg-background px-4 py-4">
                   <p className="text-muted-foreground text-xs uppercase tracking-[0.26em]">
-                    Speed
+                    {t("speedLabel", "Speed")}
                   </p>
                   <p className="mt-2 font-medium text-lg">
                     <Display
@@ -373,7 +325,7 @@ export default function Content({
                 </div>
                 <div className="rounded-[1.25rem] border border-foreground/10 bg-background px-4 py-4">
                   <p className="text-muted-foreground text-xs uppercase tracking-[0.26em]">
-                    Devices
+                    {t("devicesLabel", "Devices")}
                   </p>
                   <p className="mt-2 font-medium text-lg">
                     <Display
@@ -392,20 +344,9 @@ export default function Content({
       <aside className="space-y-6 xl:sticky xl:top-24 xl:self-start">
         <section className="weidu-panel px-6 py-6">
           <div className="space-y-6">
-            <div className="space-y-3">
-              <p className="weidu-kicker">Configuration</p>
-              <div className="space-y-2">
-                <h2 className="font-semibold text-2xl tracking-[-0.05em]">
-                  {t("buildOrder", "Build your order")}
-                </h2>
-                <p className="text-muted-foreground text-sm leading-6">
-                  {t(
-                    "buildOrderLead",
-                    "Select duration, apply a coupon if needed, and choose the payment method that fits this purchase."
-                  )}
-                </p>
-              </div>
-            </div>
+            <h2 className="font-semibold text-2xl tracking-[-0.05em]">
+              {t("buildOrder", "Build your order")}
+            </h2>
             <div className="space-y-6">
               <DurationSelector
                 discounts={subscription?.discount}
@@ -434,16 +375,13 @@ export default function Content({
           <div className="bg-primary px-6 py-5 text-primary-foreground">
             <div className="flex items-end justify-between gap-4">
               <div>
-                <p className="font-medium text-[0.68rem] text-primary-foreground/60 uppercase tracking-[0.34em]">
-                  Review
-                </p>
-                <h2 className="mt-3 font-semibold text-2xl tracking-[-0.05em]">
+                <h2 className="font-semibold text-2xl tracking-[-0.05em]">
                   {t("buyNow", "Buy Now")}
                 </h2>
               </div>
               <div className="text-right">
                 <p className="text-primary-foreground/60 text-xs uppercase tracking-[0.26em]">
-                  Total
+                  {t("totalLabel", "Total")}
                 </p>
                 <p className="mt-2 font-semibold text-3xl tracking-[-0.05em]">
                   <Display type="currency" value={totalAmount} />

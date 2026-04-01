@@ -103,23 +103,14 @@ export default function Order() {
   return (
     <main className="container space-y-6 py-8 md:space-y-8 md:py-10">
       <section className="weidu-panel grid gap-6 px-6 py-8 md:grid-cols-[minmax(0,1.2fr)_18rem] md:px-8">
-        <div className="space-y-4">
-          <p className="weidu-kicker">Order bureau</p>
-          <div className="space-y-3">
-            <h1 className="font-semibold text-3xl tracking-[-0.05em] md:text-5xl">
-              {t("orderStatus", "Order Status")}
-            </h1>
-            <p className="max-w-2xl text-base text-muted-foreground leading-7 md:text-lg">
-              {t(
-                "orderLead",
-                "Track payment, reopen checkout, and retrieve access from the same monochrome desk."
-              )}
-            </p>
-          </div>
+        <div>
+          <h1 className="font-semibold text-3xl tracking-[-0.05em] md:text-5xl">
+            {t("orderStatus", "Order Status")}
+          </h1>
         </div>
         <div className="rounded-[1.6rem] border border-foreground/10 bg-secondary/90 px-5 py-6 text-foreground">
           <p className="font-medium text-[0.68rem] text-muted-foreground uppercase tracking-[0.34em]">
-            Reference
+            {t("referenceLabel", "Reference")}
           </p>
           <p className="mt-4 break-all font-medium text-lg">
             {data?.order_no || orderNo || "--"}
@@ -137,15 +128,12 @@ export default function Order() {
           <div className="space-y-6">
             <div className="flex flex-col gap-5 border-foreground/10 border-b pb-6 md:flex-row md:items-end md:justify-between">
               <div className="space-y-3">
-                <p className="weidu-kicker">Invoice</p>
-                <div className="space-y-2">
-                  <h2 className="font-semibold text-2xl tracking-[-0.05em]">
-                    {t("orderNumber", "Order Number")}
-                  </h2>
-                  <p className="break-all text-muted-foreground leading-7">
-                    {data?.order_no || orderNo || "--"}
-                  </p>
-                </div>
+                <h2 className="font-semibold text-2xl tracking-[-0.05em]">
+                  {t("orderNumber", "Order Number")}
+                </h2>
+                <p className="break-all text-muted-foreground leading-7">
+                  {data?.order_no || orderNo || "--"}
+                </p>
               </div>
               <div className="grid gap-3 text-sm sm:grid-cols-2">
                 <div className="rounded-[1.2rem] border border-foreground/10 bg-background/65 px-4 py-4">
@@ -163,7 +151,7 @@ export default function Order() {
                 </div>
                 <div className="rounded-[1.2rem] border border-foreground/10 bg-background/65 px-4 py-4">
                   <p className="text-muted-foreground text-xs uppercase tracking-[0.26em]">
-                    Total
+                    {t("totalLabel", "Total")}
                   </p>
                   <p className="mt-3 font-semibold text-2xl tracking-[-0.04em]">
                     <Display type="currency" value={data?.amount} />
@@ -240,9 +228,6 @@ export default function Order() {
           <section className="weidu-panel overflow-hidden p-0">
             <div className="bg-primary px-6 py-5 text-primary-foreground">
               <div className="space-y-3">
-                <p className="font-medium text-[0.68rem] text-primary-foreground/60 uppercase tracking-[0.34em]">
-                  Status
-                </p>
                 <div className="flex items-center gap-3">
                   <span
                     className={cn(
@@ -271,22 +256,6 @@ export default function Order() {
                           ? t("orderClosed", "Order Closed")
                           : t("waitingForPayment", "Waiting for Payment")}
                     </h2>
-                    <p className="mt-1 text-primary-foreground/72 text-sm">
-                      {isSuccess
-                        ? t(
-                            "paymentSuccessLead",
-                            "The order is complete. Open your dashboard or continue browsing documentation."
-                          )
-                        : isClosed
-                          ? t(
-                              "orderClosedLead",
-                              "This order is no longer active. You can place a new order at any time."
-                            )
-                          : t(
-                              "waitingForPaymentLead",
-                              "Keep this page open while the platform waits for payment confirmation."
-                            )}
-                    </p>
                   </div>
                 </div>
               </div>

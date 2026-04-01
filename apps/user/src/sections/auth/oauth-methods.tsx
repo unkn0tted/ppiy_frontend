@@ -22,11 +22,7 @@ export function OAuthMethods() {
   return (
     OAUTH_METHODS?.length > 0 && (
       <>
-        <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-border after:border-t">
-          <span className="relative z-10 bg-background px-2 text-muted-foreground">
-            Or continue with
-          </span>
-        </div>
+        <div className="border-border border-t" />
         <div className="mt-6 flex justify-center gap-4 *:size-12 *:p-2">
           {OAUTH_METHODS?.map((method: string) => (
             <Button

@@ -25,6 +25,8 @@ export function UserNav() {
   const { user, setUser } = useGlobalStore();
   const navigate = useNavigate();
   const navs = useNavs();
+  const avatarFallbackClassName =
+    "border border-foreground/10 bg-white font-medium text-foreground";
 
   const handleLogout = () => {
     setUser(undefined);
@@ -42,7 +44,7 @@ export function UserNav() {
                 className="object-cover"
                 src={user?.auth_methods?.[0]?.auth_identifier ?? ""}
               />
-              <AvatarFallback className="bg-linear-to-br from-primary/90 to-primary font-medium text-background">
+              <AvatarFallback className={avatarFallbackClassName}>
                 {user?.auth_methods?.[0]?.auth_identifier
                   .toUpperCase()
                   .charAt(0)}
@@ -65,7 +67,7 @@ export function UserNav() {
                 className="object-cover"
                 src={user?.avatar ?? ""}
               />
-              <AvatarFallback className="bg-linear-to-br from-primary/90 to-primary text-background">
+              <AvatarFallback className={avatarFallbackClassName}>
                 {user?.auth_methods?.[0]?.auth_identifier
                   .toUpperCase()
                   .charAt(0)}

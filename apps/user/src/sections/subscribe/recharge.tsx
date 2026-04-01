@@ -5,7 +5,6 @@ import { Button } from "@workspace/ui/components/button";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -20,9 +19,11 @@ import { useTranslation } from "react-i18next";
 import { useGlobalStore } from "@/stores/global";
 import PaymentMethods from "./payment-methods";
 
-export default function Recharge(
-  props: Readonly<React.ComponentProps<typeof Button>>
-) {
+export default function Recharge({
+  className,
+  variant,
+  ...props
+}: Readonly<React.ComponentProps<typeof Button>>) {
   const { t } = useTranslation("subscribe");
   const { common } = useGlobalStore();
   const navigate = useNavigate();
@@ -39,14 +40,17 @@ export default function Recharge(
   return (
     <Dialog onOpenChange={setOpen} open={open}>
       <DialogTrigger asChild>
-        <Button {...props}>{t("recharge", "Recharge")}</Button>
+        <Button
+          className={className}
+          variant={variant ?? "secondary"}
+          {...props}
+        >
+          {t("recharge", "Recharge")}
+        </Button>
       </DialogTrigger>
       <DialogContent className="flex h-full flex-col overflow-hidden md:h-auto">
         <DialogHeader>
           <DialogTitle>{t("balanceRecharge", "Balance Recharge")}</DialogTitle>
-          <DialogDescription>
-            {t("rechargeDescription", "Recharge your account balance")}
-          </DialogDescription>
         </DialogHeader>
         <div className="flex flex-col justify-between text-sm">
           <div className="grid gap-3">
@@ -99,6 +103,7 @@ export default function Recharge(
                 }
               });
             }}
+            variant="secondary"
           >
             {loading && <LoaderCircle className="mr-2 animate-spin" />}
             {t("rechargeNow", "Recharge Now")}

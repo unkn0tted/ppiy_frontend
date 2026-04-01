@@ -41,20 +41,10 @@ export function Content({ subscriptionData }: ProductShowcaseProps) {
       viewport={{ once: true, amount: 0.2 }}
       whileInView={{ opacity: 1 }}
     >
-      <div className="mb-10 grid gap-5 lg:grid-cols-[0.72fr_1.28fr] lg:items-end">
-        <div className="space-y-5">
-          <div className="weidu-kicker">Pricing Layout</div>
-          <div className="weidu-rule max-w-24" />
-          <h2 className="font-semibold text-4xl leading-tight lg:text-[3.4rem]">
-            {t("product_showcase_title", "Choose Your Package")}
-          </h2>
-        </div>
-        <p className="max-w-2xl text-base text-muted-foreground leading-8 lg:justify-self-end">
-          {t(
-            "product_showcase_description",
-            "Let us help you select the package that best suits you and enjoy exploring it."
-          )}
-        </p>
+      <div className="mb-10">
+        <h2 className="font-semibold text-4xl leading-tight lg:text-[3.4rem]">
+          {t("product_showcase_title", "Choose Your Package")}
+        </h2>
       </div>
 
       <div className="grid gap-5 lg:grid-cols-12">
@@ -74,7 +64,7 @@ export function Content({ subscriptionData }: ProductShowcaseProps) {
             parsedDescription = { description: "", features: [] };
           }
 
-          const { description, features } = parsedDescription;
+          const { features } = parsedDescription;
           const hasDiscount = item.discount && item.discount.length > 0;
           const shouldShowOriginal = item.show_original_price !== false;
 
@@ -121,46 +111,19 @@ export function Content({ subscriptionData }: ProductShowcaseProps) {
                 )}
               >
                 <CardHeader className="border-border/70 border-b px-6 py-6 lg:px-8 lg:py-8">
-                  <div className="flex items-start justify-between gap-4">
-                    <div>
-                      <div className="font-medium text-[0.68rem] text-muted-foreground uppercase tracking-[0.36em]">
-                        {`Plan ${String(index + 1).padStart(2, "0")}`}
-                      </div>
-                      <h3 className="mt-4 font-semibold text-3xl leading-none">
-                        {item.name}
-                      </h3>
-                    </div>
-                    {isFeatured && (
-                      <div className="rounded-full border border-border bg-background px-3 py-1 font-medium text-[0.68rem] text-muted-foreground uppercase tracking-[0.28em]">
-                        Featured
-                      </div>
-                    )}
-                  </div>
-                  {description && (
-                    <p className="mt-5 max-w-xl text-muted-foreground text-sm leading-7">
-                      {description}
-                    </p>
-                  )}
+                  <h3 className="font-semibold text-3xl leading-none">
+                    {item.name}
+                  </h3>
                 </CardHeader>
                 <CardContent className="flex flex-1 flex-col gap-8 px-6 py-6 lg:px-8 lg:py-8">
                   <div className="flex flex-wrap items-end justify-between gap-4">
-                    <div>
-                      <div className="font-medium text-[0.68rem] text-muted-foreground uppercase tracking-[0.34em]">
-                        Pricing
-                      </div>
-                      <div className="mt-3 font-semibold text-4xl leading-none sm:text-5xl">
-                        <Display type="currency" value={displayPrice} />
-                      </div>
+                    <div className="font-semibold text-4xl leading-none sm:text-5xl">
+                      <Display type="currency" value={displayPrice} />
                     </div>
-                    <div className="text-right">
-                      <div className="font-medium text-[0.68rem] text-muted-foreground uppercase tracking-[0.34em]">
-                        Cycle
-                      </div>
-                      <div className="mt-3 text-muted-foreground text-sm uppercase tracking-[0.2em]">
-                        {displayQuantity === 1
-                          ? unitTime
-                          : `${displayQuantity} ${unitTime}`}
-                      </div>
+                    <div className="text-right text-muted-foreground text-sm uppercase tracking-[0.2em]">
+                      {displayQuantity === 1
+                        ? unitTime
+                        : `${displayQuantity} ${unitTime}`}
                     </div>
                   </div>
 

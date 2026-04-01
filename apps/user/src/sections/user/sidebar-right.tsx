@@ -26,16 +26,9 @@ export function SidebarRight({
     >
       <SidebarContent className="gap-4 px-0 py-0">
         <div className="weidu-panel px-4 py-5">
-          <p className="weidu-kicker">Ledger</p>
-          <div className="mt-3 space-y-2">
-            <h2 className="font-semibold text-xl tracking-[-0.04em]">
-              Account snapshot
-            </h2>
-            <p className="text-muted-foreground text-sm leading-6">
-              Quick balances and your invite code stay pinned here while the
-              main workspace handles the heavier tasks.
-            </p>
-          </div>
+          <h2 className="font-semibold text-xl tracking-[-0.04em]">
+            {t("accountSnapshot", "Account snapshot")}
+          </h2>
         </div>
 
         <div className="weidu-panel overflow-hidden p-0">
@@ -43,7 +36,10 @@ export function SidebarRight({
             <span className="font-medium text-sm">
               {t("accountBalance", "Account Balance")}
             </span>
-            <Recharge className="p-0" variant="link" />
+            <Recharge
+              className="p-0 text-muted-foreground hover:text-foreground"
+              variant="link"
+            />
           </div>
           <div className="px-4 py-5 font-semibold text-3xl tracking-[-0.04em]">
             <Display type="currency" value={user?.balance} />

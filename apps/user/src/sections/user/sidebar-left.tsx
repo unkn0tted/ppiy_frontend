@@ -26,19 +26,7 @@ export function SidebarLeft({
       side="left"
       {...props}
     >
-      <SidebarContent className="weidu-panel gap-6 px-4 py-5">
-        <div className="space-y-3 px-2">
-          <p className="weidu-kicker">Navigator</p>
-          <div className="space-y-2">
-            <h2 className="font-semibold text-xl tracking-[-0.04em]">
-              Cabinet
-            </h2>
-            <p className="text-muted-foreground text-sm leading-6">
-              Switch between profile, subscriptions, billing, support, and
-              documentation from a single monochrome rail.
-            </p>
-          </div>
-        </div>
+      <SidebarContent className="weidu-panel gap-5 px-4 py-5">
         <SidebarMenu className="gap-5">
           {navs.map((nav) => (
             <SidebarGroup className="p-0" key={nav.title}>
