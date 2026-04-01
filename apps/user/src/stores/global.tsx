@@ -8,15 +8,9 @@ export interface GlobalStore {
   setCommon: (common: Partial<API.GetGlobalConfigResponse>) => void;
   setUser: (user?: API.User) => void;
   getUserInfo: () => Promise<void>;
-  getUserSubscribe: (
-    short: string,
-    token: string,
-    protocol?: string
-  ) => string[];
+  getUserSubscribe: (short: string, token: string) => string[];
   getAppSubLink: (url: string, schema?: string) => string;
 }
-
-const DEFAULT_SUBSCRIPTION_PROTOCOL = "vless";
 
 function normalizeSubscribePath(path?: string): string {
   if (!path) return "";
@@ -27,14 +21,12 @@ function createSubscribeUrl({
   domain,
   short,
   token,
-  protocol,
   panDomain,
   subscribePath,
 }: {
   domain: string;
   short: string;
   token: string;
-  protocol?: string;
   panDomain?: boolean;
   subscribePath?: string;
 }): string {
@@ -44,7 +36,6 @@ function createSubscribeUrl({
   );
 
   url.searchParams.set("token", token);
-  url.searchParams.set("protocol", protocol || DEFAULT_SUBSCRIPTION_PROTOCOL);
 
   return url.toString();
 }
@@ -173,7 +164,7 @@ export const useGlobalStore = create<GlobalStore>((set, get) => ({
       console.error("Failed to refresh user:", error);
     }
   },
-  getUserSubscribe: (short: string, token: string, protocol?: string) => {
+  getUserSubscribe: (short: string, token: string) => {
     const { pan_domain, subscribe_domain, subscribe_path } =
       get().common.subscribe || {};
     const fallbackDomain = extractDomain(window.location.origin, pan_domain);
@@ -191,7 +182,6 @@ export const useGlobalStore = create<GlobalStore>((set, get) => ({
         domain,
         short,
         token,
-        protocol,
         panDomain: pan_domain,
         subscribePath: subscribe_path,
       })
