@@ -26,11 +26,15 @@ export default function Main() {
   if (!showLanding) return null;
 
   return (
-    <main className="container space-y-16">
+    <main className="container pt-8 pb-24">
       <Hero />
-      <Stats />
-      <ProductShowcase />
-      <GlobalMap />
+      <div className="mt-8 grid gap-6 xl:grid-cols-[1.1fr_0.9fr]">
+        <Stats />
+        <GlobalMap />
+      </div>
+      <div className="mt-20">
+        <ProductShowcase />
+      </div>
     </main>
   );
 }

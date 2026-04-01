@@ -1,0 +1,169 @@
+@layer base {
+  :root {
+    --background: oklch(0.985 0 0);
+    --foreground: oklch(0.15 0 0);
+    --card: oklch(1 0 0 / 92%);
+    --card-foreground: oklch(0.15 0 0);
+    --popover: oklch(0.995 0 0);
+    --popover-foreground: oklch(0.15 0 0);
+    --primary: oklch(0.12 0 0);
+    --primary-foreground: oklch(0.985 0 0);
+    --secondary: oklch(0.955 0 0);
+    --secondary-foreground: oklch(0.2 0 0);
+    --muted: oklch(0.965 0 0);
+    --muted-foreground: oklch(0.44 0 0);
+    --accent: oklch(0.94 0 0);
+    --accent-foreground: oklch(0.16 0 0);
+    --border: oklch(0.86 0 0);
+    --input: oklch(0.88 0 0);
+    --ring: oklch(0.28 0 0);
+    --sidebar: oklch(0.985 0 0);
+    --sidebar-foreground: oklch(0.15 0 0);
+    --sidebar-primary: oklch(0.12 0 0);
+    --sidebar-primary-foreground: oklch(0.985 0 0);
+    --sidebar-accent: oklch(0.955 0 0);
+    --sidebar-accent-foreground: oklch(0.18 0 0);
+    --sidebar-border: oklch(0.86 0 0);
+    --sidebar-ring: oklch(0.28 0 0);
+    --radius: 1.4rem;
+  }
+
+  .dark {
+    --background: oklch(0.105 0 0);
+    --foreground: oklch(0.96 0 0);
+    --card: oklch(0.145 0 0 / 96%);
+    --card-foreground: oklch(0.96 0 0);
+    --popover: oklch(0.14 0 0);
+    --popover-foreground: oklch(0.96 0 0);
+    --primary: oklch(0.965 0 0);
+    --primary-foreground: oklch(0.12 0 0);
+    --secondary: oklch(0.18 0 0);
+    --secondary-foreground: oklch(0.96 0 0);
+    --muted: oklch(0.18 0 0);
+    --muted-foreground: oklch(0.72 0 0);
+    --accent: oklch(0.2 0 0);
+    --accent-foreground: oklch(0.96 0 0);
+    --border: oklch(1 0 0 / 12%);
+    --input: oklch(1 0 0 / 16%);
+    --ring: oklch(0.8 0 0);
+    --sidebar: oklch(0.13 0 0);
+    --sidebar-foreground: oklch(0.96 0 0);
+    --sidebar-primary: oklch(0.96 0 0);
+    --sidebar-primary-foreground: oklch(0.12 0 0);
+    --sidebar-accent: oklch(0.18 0 0);
+    --sidebar-accent-foreground: oklch(0.96 0 0);
+    --sidebar-border: oklch(1 0 0 / 12%);
+    --sidebar-ring: oklch(0.8 0 0);
+  }
+
+  html {
+    background: var(--background);
+  }
+
+  body {
+    min-height: 100vh;
+    font-family:
+      "Iowan Old Style", "Palatino Linotype", "Book Antiqua",
+      "Libre Baskerville", Georgia, serif;
+    background:
+      radial-gradient(circle at top left, oklch(1 0 0 / 0.72), transparent 28%),
+      linear-gradient(oklch(0.16 0 0 / 0.045) 1px, transparent 1px),
+      linear-gradient(90deg, oklch(0.16 0 0 / 0.045) 1px, transparent 1px),
+      linear-gradient(180deg, oklch(0.992 0 0), oklch(0.955 0 0));
+    background-size:
+      auto,
+      40px 40px,
+      40px 40px,
+      auto;
+    background-position:
+      0 0,
+      0 0,
+      0 0,
+      0 0;
+  }
+
+  .dark body {
+    background:
+      radial-gradient(circle at top left, oklch(1 0 0 / 0.04), transparent 26%),
+      linear-gradient(oklch(1 0 0 / 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, oklch(1 0 0 / 0.05) 1px, transparent 1px),
+      linear-gradient(180deg, oklch(0.11 0 0), oklch(0.085 0 0));
+    background-size:
+      auto,
+      40px 40px,
+      40px 40px,
+      auto;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    letter-spacing: -0.04em;
+  }
+
+  ::selection {
+    background: color-mix(in oklab, var(--foreground) 14%, transparent);
+  }
+}
+
+@layer components {
+  .weidu-shell {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .weidu-shell::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(
+      circle at center,
+      transparent 0,
+      transparent 62%,
+      color-mix(in oklab, var(--foreground) 6%, transparent) 100%
+    );
+    opacity: 0.75;
+    z-index: -1;
+  }
+
+  .weidu-panel {
+    border: 1px solid color-mix(in oklab, var(--border) 80%, transparent);
+    border-radius: 1.75rem;
+    background: color-mix(in oklab, var(--card) 92%, transparent);
+    backdrop-filter: blur(12px);
+    box-shadow:
+      0 20px 60px color-mix(in oklab, var(--foreground) 6%, transparent),
+      inset 0 1px 0 color-mix(in oklab, var(--background) 75%, transparent);
+  }
+
+  .weidu-panel-ink {
+    border: 1px solid color-mix(in oklab, var(--foreground) 10%, transparent);
+    border-radius: 1.75rem;
+    background: var(--foreground);
+    color: var(--background);
+    box-shadow:
+      0 25px 80px color-mix(in oklab, var(--foreground) 24%, transparent),
+      inset 0 1px 0 oklch(1 0 0 / 10%);
+  }
+
+  .weidu-kicker {
+    color: var(--muted-foreground);
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.36em;
+    text-transform: uppercase;
+  }
+
+  .weidu-rule {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      color-mix(in oklab, var(--foreground) 50%, transparent) 0%,
+      color-mix(in oklab, var(--foreground) 10%, transparent) 45%,
+      transparent 100%
+    );
+  }
+}

@@ -35,155 +35,185 @@ export function Content({ subscriptionData }: ProductShowcaseProps) {
 
   return (
     <motion.section
+      id="plans"
       initial={{ opacity: 0 }}
-      transition={{ duration: 0.5 }}
-      viewport={{ once: true }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
+      viewport={{ once: true, amount: 0.2 }}
       whileInView={{ opacity: 1 }}
     >
-      <motion.h2
-        className="mb-2 text-center font-bold text-3xl"
-        initial={{ opacity: 0, y: -20 }}
-        transition={{ duration: 0.5 }}
-        whileInView={{ opacity: 1, y: 0 }}
-      >
-        {t("product_showcase_title", "Choose Your Package")}
-      </motion.h2>
-      <motion.p
-        className="mb-8 text-center text-lg text-muted-foreground"
-        initial={{ opacity: 0, y: -20 }}
-        transition={{ duration: 0.5, delay: 0.1 }}
-        whileInView={{ opacity: 1, y: 0 }}
-      >
-        {t(
-          "product_showcase_description",
-          "Let us help you select the package that best suits you and enjoy exploring it."
-        )}
-      </motion.p>
-      <div className="mx-auto flex flex-wrap justify-center gap-8 overflow-x-auto overflow-y-hidden *:max-w-80 *:flex-auto">
-        {subscriptionData?.map((item, index) => (
-          <motion.div
-            className="w-1/2 lg:w-1/4"
-            initial={{ opacity: 0, y: 50 }}
-            key={item.id}
-            transition={{ duration: 0.5, delay: index * 0.1 }}
-            viewport={{ once: true, amount: 0.5 }}
-            whileInView={{ opacity: 1, y: 0 }}
-          >
-            <Card className="flex flex-col gap-0 overflow-hidden rounded-lg py-0 shadow-lg transition-shadow duration-300 hover:shadow-2xl">
-              <CardHeader className="bg-muted/50 p-4 font-medium text-xl">
-                {item.name}
-              </CardHeader>
-              <CardContent className="flex flex-grow flex-col gap-4 p-6 text-sm">
-                <ul className="flex flex-grow flex-col gap-3">
-                  {(() => {
-                    let parsedDescription: {
-                      description: string;
-                      features: Array<{
-                        icon: string;
-                        label: ReactNode;
-                        type: "default" | "success" | "destructive";
-                      }>;
-                    };
-                    try {
-                      parsedDescription = JSON.parse(item.description);
-                    } catch {
-                      parsedDescription = { description: "", features: [] };
-                    }
+      <div className="mb-10 grid gap-5 lg:grid-cols-[0.72fr_1.28fr] lg:items-end">
+        <div className="space-y-5">
+          <div className="weidu-kicker">Pricing Layout</div>
+          <div className="weidu-rule max-w-24" />
+          <h2 className="font-semibold text-4xl leading-tight lg:text-[3.4rem]">
+            {t("product_showcase_title", "Choose Your Package")}
+          </h2>
+        </div>
+        <p className="max-w-2xl text-base text-muted-foreground leading-8 lg:justify-self-end">
+          {t(
+            "product_showcase_description",
+            "Let us help you select the package that best suits you and enjoy exploring it."
+          )}
+        </p>
+      </div>
 
-                    const { description, features } = parsedDescription;
-                    return (
-                      <>
-                        {description && (
-                          <li className="text-muted-foreground">
-                            {description}
-                          </li>
-                        )}
-                        {features?.map(
-                          (
-                            feature: {
-                              type: string;
-                              icon: string;
-                              label: ReactNode;
-                            },
-                            index: Key
-                          ) => (
-                            <li
-                              className={cn("flex items-center gap-2", {
-                                "text-muted-foreground line-through":
-                                  feature.type === "destructive",
-                              })}
-                              key={index}
-                            >
-                              {feature.icon && (
-                                <Icon
-                                  className={cn("size-5 text-primary", {
-                                    "text-green-500":
-                                      feature.type === "success",
-                                    "text-destructive":
-                                      feature.type === "destructive",
-                                  })}
-                                  icon={feature.icon}
-                                />
-                              )}
-                              {feature.label}
-                            </li>
-                          )
-                        )}
-                      </>
-                    );
-                  })()}
-                </ul>
-                <SubscribeDetail
-                  subscribe={{
-                    ...item,
-                    name: undefined,
-                  }}
-                />
-              </CardContent>
-              <Separator />
-              <CardFooter className="relative flex flex-col gap-4 p-4">
-                {(() => {
-                  const hasDiscount = item.discount && item.discount.length > 0;
-                  const shouldShowOriginal = item.show_original_price !== false;
+      <div className="grid gap-5 lg:grid-cols-12">
+        {subscriptionData?.map((item, index) => {
+          let parsedDescription: {
+            description: string;
+            features: Array<{
+              icon: string;
+              label: ReactNode;
+              type: "default" | "success" | "destructive";
+            }>;
+          };
 
-                  const displayPrice =
-                    shouldShowOriginal || !hasDiscount
-                      ? item.unit_price
-                      : Math.round(
-                          item.unit_price *
-                            (item.discount?.[0]?.quantity ?? 1) *
-                            ((item.discount?.[0]?.discount ?? 100) / 100)
-                        );
+          try {
+            parsedDescription = JSON.parse(item.description);
+          } catch {
+            parsedDescription = { description: "", features: [] };
+          }
 
-                  const displayQuantity =
-                    shouldShowOriginal || !hasDiscount
-                      ? 1
-                      : (item.discount?.[0]?.quantity ?? 1);
+          const { description, features } = parsedDescription;
+          const hasDiscount = item.discount && item.discount.length > 0;
+          const shouldShowOriginal = item.show_original_price !== false;
 
-                  const unitTime =
-                    unitTimeMap[item.unit_time!] ||
-                    t(item.unit_time || "Month", item.unit_time || "Month");
+          const displayPrice =
+            shouldShowOriginal || !hasDiscount
+              ? item.unit_price
+              : Math.round(
+                  item.unit_price *
+                    (item.discount?.[0]?.quantity ?? 1) *
+                    ((item.discount?.[0]?.discount ?? 100) / 100)
+                );
 
-                  return (
-                    <motion.h2
-                      animate={{ opacity: 1 }}
-                      className="pb-4 font-semibold text-2xl sm:text-3xl"
-                      initial={{ opacity: 0 }}
-                      transition={{ duration: 0.5, delay: 0.2 }}
-                    >
-                      <Display type="currency" value={displayPrice} />
-                      <span className="font-medium text-base">
+          const displayQuantity =
+            shouldShowOriginal || !hasDiscount
+              ? 1
+              : (item.discount?.[0]?.quantity ?? 1);
+
+          const unitTime =
+            unitTimeMap[item.unit_time!] ||
+            t(item.unit_time || "Month", item.unit_time || "Month");
+
+          const isFeatured = index === 0 && subscriptionData.length > 1;
+
+          return (
+            <motion.div
+              className={cn(
+                "lg:col-span-4",
+                isFeatured && "lg:col-span-5 lg:row-span-2"
+              )}
+              initial={{ opacity: 0, y: 28 }}
+              key={item.id}
+              transition={{
+                duration: 0.45,
+                delay: index * 0.08,
+                ease: "easeOut",
+              }}
+              viewport={{ once: true, amount: 0.5 }}
+              whileInView={{ opacity: 1, y: 0 }}
+            >
+              <Card
+                className={cn(
+                  "weidu-panel flex h-full flex-col gap-0 overflow-hidden rounded-[1.9rem] border py-0",
+                  isFeatured && "border-foreground/20 bg-card"
+                )}
+              >
+                <CardHeader className="border-border/70 border-b px-6 py-6 lg:px-8 lg:py-8">
+                  <div className="flex items-start justify-between gap-4">
+                    <div>
+                      <div className="font-medium text-[0.68rem] text-muted-foreground uppercase tracking-[0.36em]">
+                        {`Plan ${String(index + 1).padStart(2, "0")}`}
+                      </div>
+                      <h3 className="mt-4 font-semibold text-3xl leading-none">
+                        {item.name}
+                      </h3>
+                    </div>
+                    {isFeatured && (
+                      <div className="rounded-full border border-border bg-background px-3 py-1 font-medium text-[0.68rem] text-muted-foreground uppercase tracking-[0.28em]">
+                        Featured
+                      </div>
+                    )}
+                  </div>
+                  {description && (
+                    <p className="mt-5 max-w-xl text-muted-foreground text-sm leading-7">
+                      {description}
+                    </p>
+                  )}
+                </CardHeader>
+                <CardContent className="flex flex-1 flex-col gap-8 px-6 py-6 lg:px-8 lg:py-8">
+                  <div className="flex flex-wrap items-end justify-between gap-4">
+                    <div>
+                      <div className="font-medium text-[0.68rem] text-muted-foreground uppercase tracking-[0.34em]">
+                        Pricing
+                      </div>
+                      <div className="mt-3 font-semibold text-4xl leading-none sm:text-5xl">
+                        <Display type="currency" value={displayPrice} />
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <div className="font-medium text-[0.68rem] text-muted-foreground uppercase tracking-[0.34em]">
+                        Cycle
+                      </div>
+                      <div className="mt-3 text-muted-foreground text-sm uppercase tracking-[0.2em]">
                         {displayQuantity === 1
-                          ? `/${unitTime}`
-                          : `/${displayQuantity} ${unitTime}`}
-                      </span>
-                    </motion.h2>
-                  );
-                })()}
-                <motion.div>
+                          ? unitTime
+                          : `${displayQuantity} ${unitTime}`}
+                      </div>
+                    </div>
+                  </div>
+
+                  {features?.length > 0 && (
+                    <ul className="grid gap-3 border-border/70 border-t pt-6 text-sm">
+                      {features.map(
+                        (
+                          feature: {
+                            type: string;
+                            icon: string;
+                            label: ReactNode;
+                          },
+                          featureIndex: Key
+                        ) => (
+                          <li
+                            className={cn("flex items-center gap-2 leading-6", {
+                              "text-muted-foreground line-through":
+                                feature.type === "destructive",
+                            })}
+                            key={featureIndex}
+                          >
+                            {feature.icon && (
+                              <Icon
+                                className={cn("size-4 text-foreground", {
+                                  "text-foreground": feature.type === "success",
+                                  "text-muted-foreground":
+                                    feature.type === "destructive",
+                                })}
+                                icon={feature.icon}
+                              />
+                            )}
+                            {feature.label}
+                          </li>
+                        )
+                      )}
+                    </ul>
+                  )}
+
+                  <div className="rounded-[1.35rem] border border-border/70 bg-background/70 p-4">
+                    <SubscribeDetail
+                      subscribe={{
+                        ...item,
+                        name: undefined,
+                      }}
+                    />
+                  </div>
+                </CardContent>
+                <Separator />
+                <CardFooter className="px-6 pt-6 pb-6 lg:px-8 lg:pb-8">
                   <Button
                     asChild
-                    className="absolute bottom-0 left-0 w-full rounded-t-none rounded-b-xl"
+                    className="w-full rounded-full bg-foreground text-background hover:bg-foreground/92"
+                    size="lg"
                   >
                     <Link
                       search={user ? undefined : { id: item.id }}
@@ -192,11 +222,11 @@ export function Content({ subscriptionData }: ProductShowcaseProps) {
                       {t("subscribe", "Subscribe")}
                     </Link>
                   </Button>
-                </motion.div>
-              </CardFooter>
-            </Card>
-          </motion.div>
-        ))}
+                </CardFooter>
+              </Card>
+            </motion.div>
+          );
+        })}
       </div>
     </motion.section>
   );

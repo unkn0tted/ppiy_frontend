@@ -4,10 +4,10 @@ import Header from "@/layout/header";
 
 export const Route = createLazyFileRoute("/(main)")({
   component: () => (
-    <>
+    <div className="weidu-shell min-h-screen">
       <Header />
       <Outlet />
       <Footer />
-    </>
+    </div>
   ),
 });
