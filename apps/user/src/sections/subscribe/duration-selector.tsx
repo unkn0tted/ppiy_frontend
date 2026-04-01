@@ -40,7 +40,7 @@ const DurationSelector: React.FC<DurationSelectorProps> = ({
     <div className="relative">
       <RadioGroupItem className="peer sr-only" id={value} value={value} />
       <Label
-        className="relative flex h-full flex-col items-center justify-center gap-2 rounded-md border-2 border-muted bg-popover p-2 text-popover-foreground hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary peer-data-[state=checked]:bg-primary/10 peer-data-[state=checked]:text-foreground"
+        className="relative flex h-full min-h-20 flex-col items-center justify-center gap-2 rounded-[1.35rem] border border-foreground/10 bg-background/70 p-4 text-center text-popover-foreground transition-all duration-200 hover:border-foreground/30 hover:bg-foreground/[0.03] peer-data-[state=checked]:border-foreground peer-data-[state=checked]:bg-foreground peer-data-[state=checked]:text-background"
         htmlFor={value}
       >
         {label}
@@ -79,7 +79,10 @@ const DurationSelector: React.FC<DurationSelectorProps> = ({
           {t("discountInfo", "Discount Info")}:
         </span>
         {discountPercentage > 0 ? (
-          <Badge className="h-6 text-sm" variant="destructive">
+          <Badge
+            className="h-7 rounded-full border border-foreground/15 bg-foreground px-3 text-background text-sm"
+            variant="secondary"
+          >
             -{discountPercentage.toFixed(2)}% {t("discount", "Discount")}
           </Badge>
         ) : (

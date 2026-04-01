@@ -1,12 +1,6 @@
 "use client";
 
 import { Button } from "@workspace/ui/components/button";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@workspace/ui/components/card";
 import { Sidebar, SidebarContent } from "@workspace/ui/components/sidebar";
 import { Icon } from "@workspace/ui/composed/icon";
 import { isBrowser } from "@workspace/ui/utils/index";
@@ -24,45 +18,67 @@ export function SidebarRight({
   const { t } = useTranslation("layout");
 
   return (
-    <Sidebar collapsible="none" side="right" {...props}>
-      <SidebarContent className="*:gap-0 *:py-0">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 p-3 pb-2">
-            <CardTitle className="font-medium text-sm">
+    <Sidebar
+      className="border-r-0 bg-transparent"
+      collapsible="none"
+      side="right"
+      {...props}
+    >
+      <SidebarContent className="gap-4 px-0 py-0">
+        <div className="weidu-panel px-4 py-5">
+          <p className="weidu-kicker">Ledger</p>
+          <div className="mt-3 space-y-2">
+            <h2 className="font-semibold text-xl tracking-[-0.04em]">
+              Account snapshot
+            </h2>
+            <p className="text-muted-foreground text-sm leading-6">
+              Quick balances and your invite code stay pinned here while the
+              main workspace handles the heavier tasks.
+            </p>
+          </div>
+        </div>
+
+        <div className="weidu-panel overflow-hidden p-0">
+          <div className="flex items-center justify-between bg-foreground px-4 py-4 text-background">
+            <span className="font-medium text-sm">
               {t("accountBalance", "Account Balance")}
-            </CardTitle>
+            </span>
             <Recharge className="p-0" variant="link" />
-          </CardHeader>
-          <CardContent className="p-3 font-bold text-2xl">
+          </div>
+          <div className="px-4 py-5 font-semibold text-3xl tracking-[-0.04em]">
             <Display type="currency" value={user?.balance} />
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="space-y-0 p-3 pb-2">
-            <CardTitle className="font-medium text-sm">
-              {t("giftAmount", "Gift Amount")}
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="p-3 font-bold text-2xl">
+          </div>
+        </div>
+
+        <div className="weidu-panel px-4 py-5">
+          <p className="text-muted-foreground text-xs uppercase tracking-[0.26em]">
+            {t("giftAmount", "Gift Amount")}
+          </p>
+          <p className="mt-3 font-semibold text-3xl tracking-[-0.04em]">
             <Display type="currency" value={user?.gift_amount} />
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="space-y-0 p-3 pb-2">
-            <CardTitle className="font-medium text-sm">
-              {t("commission", "Commission")}
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="p-3 font-bold text-2xl">
+          </p>
+        </div>
+
+        <div className="weidu-panel px-4 py-5">
+          <p className="text-muted-foreground text-xs uppercase tracking-[0.26em]">
+            {t("commission", "Commission")}
+          </p>
+          <p className="mt-3 font-semibold text-3xl tracking-[-0.04em]">
             <Display type="currency" value={user?.commission} />
-          </CardContent>
-        </Card>
+          </p>
+        </div>
+
         {user?.refer_code && (
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 p-3 pb-2">
-              <CardTitle className="font-medium text-sm">
-                {t("inviteCode", "Invite Code")}
-              </CardTitle>
+          <div className="weidu-panel px-4 py-5">
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <p className="text-muted-foreground text-xs uppercase tracking-[0.26em]">
+                  {t("inviteCode", "Invite Code")}
+                </p>
+                <p className="mt-3 break-all font-medium text-base">
+                  {user?.refer_code}
+                </p>
+              </div>
               <CopyToClipboard
                 onCopy={(_text: string, result: boolean) => {
                   if (result) {
@@ -71,18 +87,12 @@ export function SidebarRight({
                 }}
                 text={`${isBrowser() && location?.origin}/#/auth?invite=${user?.refer_code}`}
               >
-                <Button className="size-5 p-0" variant="ghost">
-                  <Icon
-                    className="text-2xl text-primary"
-                    icon="mdi:content-copy"
-                  />
+                <Button className="size-9 rounded-full p-0" variant="outline">
+                  <Icon className="text-lg" icon="mdi:content-copy" />
                 </Button>
               </CopyToClipboard>
-            </CardHeader>
-            <CardContent className="truncate p-3 font-bold">
-              {user?.refer_code}
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         )}
       </SidebarContent>
     </Sidebar>

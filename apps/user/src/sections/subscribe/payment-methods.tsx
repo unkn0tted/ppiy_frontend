@@ -66,9 +66,9 @@ const PaymentMethods: React.FC<PaymentMethodsProps> = ({
             />
             <Label
               className={cn(
-                "flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover py-2 text-popover-foreground hover:bg-accent hover:text-accent-foreground",
+                "flex min-h-28 flex-col items-center justify-between rounded-[1.35rem] border border-foreground/10 bg-background/70 px-3 py-4 text-popover-foreground transition-all duration-200 hover:border-foreground/30 hover:bg-foreground/[0.03]",
                 String(value) === String(item.id)
-                  ? "border-primary bg-primary/10 text-foreground"
+                  ? "border-foreground bg-foreground text-background"
                   : ""
               )}
               htmlFor={String(item.id)}
@@ -76,12 +76,16 @@ const PaymentMethods: React.FC<PaymentMethodsProps> = ({
               <div className="flex size-12 items-center justify-center">
                 <img
                   alt={item.name}
+                  className={cn("grayscale", {
+                    "brightness-[8] grayscale-0 invert":
+                      String(value) === String(item.id),
+                  })}
                   height={48}
                   src={item.icon || "./assets/payment/balance.svg"}
                   width={48}
                 />
               </div>
-              <span className="w-full overflow-hidden text-ellipsis whitespace-nowrap text-center">
+              <span className="w-full overflow-hidden text-ellipsis whitespace-nowrap text-center text-sm">
                 {item.name}
               </span>
             </Label>

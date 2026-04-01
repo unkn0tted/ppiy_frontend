@@ -128,14 +128,14 @@ export default function Content() {
     <>
       {userSubscribe.length ? (
         <>
-          <div className="flex items-center justify-between">
-            <h2 className="flex items-center gap-1.5 font-semibold">
+          <div className="flex flex-col gap-4 rounded-[1.6rem] border border-foreground/10 bg-background/70 p-5 md:flex-row md:items-center md:justify-between">
+            <h2 className="flex items-center gap-2 font-semibold text-xl tracking-[-0.04em]">
               <Icon className="size-5" icon="uil:servers" />
               {t("mySubscriptions", "My Subscriptions")}
             </h2>
             <div className="flex gap-2">
               <Button
-                className={isLoading ? "animate-pulse" : ""}
+                className={cn("rounded-full", isLoading && "animate-pulse")}
                 onClick={() => {
                   refetch();
                 }}
@@ -144,7 +144,7 @@ export default function Content() {
               >
                 <Icon icon="uil:sync" />
               </Button>
-              <Button asChild size="sm">
+              <Button asChild className="rounded-full" size="sm">
                 <Link to="/subscribe">
                   {t("purchaseSubscription", "Purchase Subscription")}
                 </Link>
@@ -161,10 +161,10 @@ export default function Content() {
                   }
                   value={platform}
                 >
-                  <TabsList className="flex *:flex-auto">
+                  <TabsList className="flex rounded-full border border-foreground/10 bg-background/70 p-1 *:flex-auto">
                     {availablePlatforms.map((item) => (
                       <TabsTrigger
-                        className="px-1 lg:px-3"
+                        className="rounded-full px-2 lg:px-4"
                         key={item}
                         value={item}
                       >
@@ -197,11 +197,14 @@ export default function Content() {
 
             return (
               <Card
-                className={cn("relative", {
-                  "relative opacity-80 grayscale": isActuallyExpired,
-                  "relative hidden opacity-60 blur-[0.3px] grayscale":
-                    item.status === 4,
-                })}
+                className={cn(
+                  "weidu-panel relative overflow-hidden border-0 bg-transparent shadow-none",
+                  {
+                    "relative opacity-80 grayscale": isActuallyExpired,
+                    "relative hidden opacity-60 blur-[0.3px] grayscale":
+                      item.status === 4,
+                  }
+                )}
                 key={item.id}
               >
                 {shouldShowWatermark && (
@@ -241,7 +244,7 @@ export default function Content() {
                     </div>
                   </div>
                 )}
-                <CardHeader className="flex flex-row flex-wrap items-center justify-between gap-2 space-y-0">
+                <CardHeader className="flex flex-row flex-wrap items-center justify-between gap-3 space-y-0 border-foreground/10 border-b px-6 py-5">
                   <CardTitle className="font-medium">
                     {item.subscribe.name}
                     <p className="mt-1 text-foreground/50 text-sm">
@@ -255,7 +258,11 @@ export default function Content() {
                     <div className="flex flex-wrap gap-2">
                       <AlertDialog>
                         <AlertDialogTrigger asChild>
-                          <Button size="sm" variant="destructive">
+                          <Button
+                            className="rounded-full"
+                            size="sm"
+                            variant="destructive"
+                          >
                             {t("resetSubscription", "Reset Subscription")}
                           </Button>
                         </AlertDialogTrigger>
@@ -306,9 +313,9 @@ export default function Content() {
                     </div>
                   )}
                 </CardHeader>
-                <CardContent>
-                  <ul className="grid grid-cols-2 gap-3 *:flex *:flex-col *:justify-between lg:grid-cols-4">
-                    <li>
+                <CardContent className="space-y-6 px-6 py-6">
+                  <ul className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+                    <li className="rounded-[1.25rem] border border-foreground/10 bg-background/65 px-4 py-4">
                       <span className="text-muted-foreground">
                         {t("used", "Used")}
                       </span>
@@ -320,7 +327,7 @@ export default function Content() {
                         />
                       </span>
                     </li>
-                    <li>
+                    <li className="rounded-[1.25rem] border border-foreground/10 bg-background/65 px-4 py-4">
                       <span className="text-muted-foreground">
                         {t("totalTraffic", "Total Traffic")}
                       </span>
@@ -332,7 +339,7 @@ export default function Content() {
                         />
                       </span>
                     </li>
-                    <li>
+                    <li className="rounded-[1.25rem] border border-foreground/10 bg-background/65 px-4 py-4">
                       <span className="text-muted-foreground">
                         {t("nextResetDays", "Next Reset Days")}
                       </span>
@@ -345,7 +352,7 @@ export default function Content() {
                           : t("noReset", "No Reset")}
                       </span>
                     </li>
-                    <li>
+                    <li className="rounded-[1.25rem] border border-foreground/10 bg-background/65 px-4 py-4">
                       <span className="text-muted-foreground">
                         {t("expirationDays", "Expiration Days")}
                       </span>
@@ -360,7 +367,7 @@ export default function Content() {
                       </span>
                     </li>
                   </ul>
-                  <Separator className="mt-4" />
+                  <Separator />
                   <Accordion
                     className="w-full"
                     collapsible
@@ -369,7 +376,11 @@ export default function Content() {
                   >
                     {getUserSubscribe(item.short, item.token)?.map(
                       (url, index) => (
-                        <AccordionItem key={url} value={String(index)}>
+                        <AccordionItem
+                          className="rounded-[1.25rem] border border-foreground/10 px-4"
+                          key={url}
+                          value={String(index)}
+                        >
                           <AccordionTrigger className="hover:no-underline">
                             <div className="flex w-full flex-row items-center justify-between">
                               <CardTitle className="font-medium text-sm">
@@ -390,7 +401,7 @@ export default function Content() {
                                 text={url}
                               >
                                 <span
-                                  className="mr-4 flex cursor-pointer rounded p-2 text-primary text-sm hover:bg-accent"
+                                  className="mr-4 flex cursor-pointer rounded-full border border-foreground/10 px-3 py-2 text-sm hover:bg-foreground/[0.03]"
                                   onClick={(e) => e.stopPropagation()}
                                 >
                                   <Icon
@@ -459,7 +470,7 @@ export default function Content() {
 
                                   return (
                                     <div
-                                      className="flex size-full flex-col items-center justify-between gap-2 text-muted-foreground text-xs"
+                                      className="flex size-full flex-col items-center justify-between gap-3 rounded-[1.2rem] border border-foreground/10 bg-background/65 p-4 text-muted-foreground text-xs"
                                       key={application.name}
                                     >
                                       <span>{application.name}</span>
@@ -479,8 +490,8 @@ export default function Content() {
                                             asChild
                                             className={
                                               application.scheme
-                                                ? "rounded-r-none px-1.5"
-                                                : "px-1.5"
+                                                ? "rounded-r-none px-2.5"
+                                                : "rounded-full px-2.5"
                                             }
                                             size="sm"
                                             variant="secondary"
@@ -506,8 +517,8 @@ export default function Content() {
                                             <Button
                                               className={
                                                 downloadUrl
-                                                  ? "rounded-l-none p-2"
-                                                  : "p-2"
+                                                  ? "rounded-l-none px-3"
+                                                  : "rounded-full px-3"
                                               }
                                               size="sm"
                                             >
