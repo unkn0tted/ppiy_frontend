@@ -1,73 +1,73 @@
 @layer base {
   :root {
     --background: #ffffff;
-    --foreground: #2f3135;
+    --foreground: #111111;
     --card: rgb(255 255 255 / 96%);
-    --card-foreground: #2f3135;
+    --card-foreground: #111111;
     --popover: #ffffff;
-    --popover-foreground: #2f3135;
-    --primary: #dcdce0;
-    --primary-foreground: #2f3135;
-    --secondary: #dcdce0;
-    --secondary-foreground: #2f3135;
-    --muted: #f5f5f7;
-    --muted-foreground: #6b6f76;
-    --accent: #dcdce0;
-    --accent-foreground: #2f3135;
-    --border: #dcdce0;
-    --input: #dcdce0;
-    --ring: #dcdce0;
+    --popover-foreground: #111111;
+    --primary: #111111;
+    --primary-foreground: #ffffff;
+    --secondary: #f1f1f1;
+    --secondary-foreground: #111111;
+    --muted: #f5f5f5;
+    --muted-foreground: #5a5a5a;
+    --accent: #ececec;
+    --accent-foreground: #111111;
+    --border: #d9d9d9;
+    --input: #d9d9d9;
+    --ring: #bdbdbd;
     --destructive: oklch(0.62 0.04 30);
     --destructive-foreground: oklch(0.99 0.004 80);
     --sidebar: #ffffff;
-    --sidebar-foreground: #2f3135;
-    --sidebar-primary: #dcdce0;
-    --sidebar-primary-foreground: #2f3135;
-    --sidebar-accent: #dcdce0;
-    --sidebar-accent-foreground: #2f3135;
-    --sidebar-border: #dcdce0;
-    --sidebar-ring: #dcdce0;
+    --sidebar-foreground: #111111;
+    --sidebar-primary: #111111;
+    --sidebar-primary-foreground: #ffffff;
+    --sidebar-accent: #ececec;
+    --sidebar-accent-foreground: #111111;
+    --sidebar-border: #d9d9d9;
+    --sidebar-ring: #bdbdbd;
     --radius: 1.4rem;
-    --weidu-button-bg: #dcdce0;
-    --weidu-button-hover: #d3d3d8;
-    --weidu-button-fg: #2f3135;
-    --weidu-button-border: #dcdce0;
-    --weidu-link: #5f646a;
+    --weidu-button-bg: #111111;
+    --weidu-button-hover: #1f1f1f;
+    --weidu-button-fg: #ffffff;
+    --weidu-button-border: #111111;
+    --weidu-link: #414141;
   }
 
   .dark {
     --background: #ffffff;
-    --foreground: #2f3135;
+    --foreground: #111111;
     --card: rgb(255 255 255 / 96%);
-    --card-foreground: #2f3135;
+    --card-foreground: #111111;
     --popover: #ffffff;
-    --popover-foreground: #2f3135;
-    --primary: #dcdce0;
-    --primary-foreground: #2f3135;
-    --secondary: #dcdce0;
-    --secondary-foreground: #2f3135;
-    --muted: #f5f5f7;
-    --muted-foreground: #6b6f76;
-    --accent: #dcdce0;
-    --accent-foreground: #2f3135;
-    --border: #dcdce0;
-    --input: #dcdce0;
-    --ring: #dcdce0;
+    --popover-foreground: #111111;
+    --primary: #111111;
+    --primary-foreground: #ffffff;
+    --secondary: #f1f1f1;
+    --secondary-foreground: #111111;
+    --muted: #f5f5f5;
+    --muted-foreground: #5a5a5a;
+    --accent: #ececec;
+    --accent-foreground: #111111;
+    --border: #d9d9d9;
+    --input: #d9d9d9;
+    --ring: #bdbdbd;
     --destructive: oklch(0.62 0.05 32);
     --destructive-foreground: oklch(0.98 0.006 80);
     --sidebar: #ffffff;
-    --sidebar-foreground: #2f3135;
-    --sidebar-primary: #dcdce0;
-    --sidebar-primary-foreground: #2f3135;
-    --sidebar-accent: #dcdce0;
-    --sidebar-accent-foreground: #2f3135;
-    --sidebar-border: #dcdce0;
-    --sidebar-ring: #dcdce0;
-    --weidu-button-bg: #dcdce0;
-    --weidu-button-hover: #d3d3d8;
-    --weidu-button-fg: #2f3135;
-    --weidu-button-border: #dcdce0;
-    --weidu-link: #5f646a;
+    --sidebar-foreground: #111111;
+    --sidebar-primary: #111111;
+    --sidebar-primary-foreground: #ffffff;
+    --sidebar-accent: #ececec;
+    --sidebar-accent-foreground: #111111;
+    --sidebar-border: #d9d9d9;
+    --sidebar-ring: #bdbdbd;
+    --weidu-button-bg: #111111;
+    --weidu-button-hover: #1f1f1f;
+    --weidu-button-fg: #ffffff;
+    --weidu-button-border: #111111;
+    --weidu-link: #414141;
   }
 
   html {
@@ -83,18 +83,14 @@
     -webkit-font-smoothing: antialiased;
     line-height: 1.65;
     background:
-      radial-gradient(
-        circle at top left,
-        rgb(255 255 255 / 70%),
-        transparent 34%
-      ),
+      radial-gradient(circle at top left, rgb(17 17 17 / 4%), transparent 28%),
       radial-gradient(
         circle at bottom right,
-        rgb(220 220 224 / 30%),
+        rgb(17 17 17 / 2%),
         transparent 24%
-      ), linear-gradient(rgb(220 220 224 / 35%) 1px, transparent 1px),
-      linear-gradient(90deg, rgb(220 220 224 / 35%) 1px, transparent 1px),
-      linear-gradient(180deg, #ffffff, #ffffff);
+      ), linear-gradient(rgb(17 17 17 / 5%) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(17 17 17 / 5%) 1px, transparent 1px),
+      linear-gradient(180deg, #ffffff, #fcfcfc);
     background-size:
       auto,
       auto,
@@ -110,18 +106,14 @@
 
   .dark body {
     background:
-      radial-gradient(
-        circle at top left,
-        rgb(255 255 255 / 48%),
-        transparent 28%
-      ),
+      radial-gradient(circle at top left, rgb(17 17 17 / 4%), transparent 28%),
       radial-gradient(
         circle at bottom right,
-        rgb(220 220 224 / 24%),
+        rgb(17 17 17 / 2%),
         transparent 22%
-      ), linear-gradient(rgb(220 220 224 / 28%) 1px, transparent 1px),
-      linear-gradient(90deg, rgb(220 220 224 / 28%) 1px, transparent 1px),
-      linear-gradient(180deg, #ffffff, #ffffff);
+      ), linear-gradient(rgb(17 17 17 / 5%) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(17 17 17 / 5%) 1px, transparent 1px),
+      linear-gradient(180deg, #ffffff, #fcfcfc);
     background-size:
       auto,
       auto,
@@ -170,7 +162,7 @@
     background: color-mix(in oklab, var(--card) 92%, transparent);
     backdrop-filter: blur(12px);
     box-shadow:
-      0 10px 30px rgb(47 49 53 / 3%),
+      0 10px 30px rgb(17 17 17 / 4%),
       inset 0 1px 0 rgb(255 255 255 / 62%);
   }
 
@@ -180,7 +172,7 @@
     background: linear-gradient(180deg, #dcdce0, #dcdce0);
     color: var(--primary-foreground);
     box-shadow:
-      0 12px 30px rgb(47 49 53 / 4%),
+      0 12px 30px rgb(17 17 17 / 5%),
       inset 0 1px 0 rgb(255 255 255 / 26%);
   }
 
@@ -256,5 +248,400 @@
   :where([data-slot="button"].text-primary:hover) {
     color: var(--foreground) !important;
     background: transparent !important;
+  }
+
+  .weidu-landing {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .weidu-landing::before {
+    content: "";
+    position: absolute;
+    inset: -2rem 0 auto;
+    height: 34rem;
+    pointer-events: none;
+    background:
+      linear-gradient(180deg, rgb(17 17 17 / 3%), rgb(17 17 17 / 0%) 30%),
+      radial-gradient(circle at top right, rgb(17 17 17 / 5%), transparent 30%);
+    z-index: -2;
+  }
+
+  .weidu-landing::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      linear-gradient(rgb(17 17 17 / 2%) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(17 17 17 / 2%) 1px, transparent 1px);
+    background-size: 64px 64px;
+    opacity: 0.65;
+    z-index: -1;
+  }
+
+  .weidu-landing-panel {
+    position: relative;
+    border: 1px solid rgb(17 17 17 / 11%);
+    border-radius: 2rem;
+    background: linear-gradient(
+      180deg,
+      rgb(255 255 255 / 95%),
+      rgb(252 252 252 / 92%)
+    );
+    box-shadow:
+      0 20px 50px rgb(17 17 17 / 5%),
+      inset 0 1px 0 rgb(255 255 255 / 85%);
+    backdrop-filter: blur(16px);
+  }
+
+  .weidu-landing-hero-glow {
+    background:
+      radial-gradient(circle at top right, rgb(17 17 17 / 6%), transparent 24%),
+      linear-gradient(180deg, rgb(17 17 17 / 3%), transparent 16%);
+  }
+
+  .weidu-landing-kicker {
+    color: rgb(17 17 17 / 58%);
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.34em;
+    text-transform: uppercase;
+  }
+
+  .weidu-callout-card {
+    border: 1px solid rgb(17 17 17 / 10%);
+    border-radius: 1.45rem;
+    background: rgb(255 255 255 / 74%);
+    padding: 1.1rem 1rem 1rem;
+    backdrop-filter: blur(10px);
+  }
+
+  .weidu-callout-rule {
+    height: 1px;
+    flex: 1;
+    background: linear-gradient(
+      90deg,
+      rgb(17 17 17 / 22%) 0%,
+      rgb(17 17 17 / 6%) 100%
+    );
+  }
+
+  .weidu-landing-button-primary {
+    min-height: 3.6rem;
+    border: 1px solid #111111 !important;
+    background: #111111 !important;
+    color: #ffffff !important;
+    border-radius: 999px !important;
+    padding-inline: 1.6rem !important;
+    box-shadow: 0 12px 24px rgb(17 17 17 / 10%) !important;
+  }
+
+  .weidu-landing-button-primary:hover {
+    background: #1f1f1f !important;
+    color: #ffffff !important;
+    transform: translateY(-1px);
+  }
+
+  .weidu-landing-button-secondary {
+    min-height: 3.6rem;
+    border: 1px solid rgb(17 17 17 / 12%) !important;
+    background: rgb(255 255 255 / 78%) !important;
+    color: #111111 !important;
+    border-radius: 999px !important;
+    padding-inline: 1.6rem !important;
+  }
+
+  .weidu-landing-button-secondary:hover {
+    background: rgb(245 245 245) !important;
+    color: #111111 !important;
+    transform: translateY(-1px);
+  }
+
+  .weidu-header-panel {
+    position: relative;
+    border: 1px solid rgb(17 17 17 / 11%);
+    border-radius: 999px;
+    background: rgb(255 255 255 / 82%);
+    box-shadow:
+      0 18px 32px rgb(17 17 17 / 5%),
+      inset 0 1px 0 rgb(255 255 255 / 90%);
+    backdrop-filter: blur(18px);
+  }
+
+  .weidu-header-panel::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgb(17 17 17 / 3%) 50%,
+      transparent 100%
+    );
+    opacity: 0.75;
+  }
+
+  .weidu-header-mark {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .weidu-header-mark-grid {
+    position: absolute;
+    inset: -0.6rem;
+    border: 1px solid rgb(17 17 17 / 8%);
+    border-radius: 999px;
+    pointer-events: none;
+  }
+
+  .weidu-header-tools {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    border: 1px solid rgb(17 17 17 / 10%);
+    border-radius: 999px;
+    background: rgb(255 255 255 / 88%);
+    padding: 0.35rem;
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 90%);
+  }
+
+  .weidu-header-tools :where([data-slot="button"]) {
+    min-height: 2.5rem;
+    min-width: 2.5rem;
+    border: 1px solid transparent !important;
+    background: transparent !important;
+    color: #111111 !important;
+    box-shadow: none !important;
+  }
+
+  .weidu-header-tools :where([data-slot="button"]):hover {
+    border-color: rgb(17 17 17 / 8%) !important;
+    background: rgb(245 245 245 / 96%) !important;
+    transform: none;
+  }
+
+  .weidu-header-login {
+    min-height: 2.75rem;
+    border: 1px solid #111111 !important;
+    background: #111111 !important;
+    color: #ffffff !important;
+    padding-inline: 1.1rem !important;
+    box-shadow: 0 12px 20px rgb(17 17 17 / 8%) !important;
+  }
+
+  .weidu-header-login:hover {
+    background: #1f1f1f !important;
+    color: #ffffff !important;
+  }
+
+  .weidu-user-nav-trigger {
+    display: flex;
+    cursor: pointer;
+    align-items: center;
+    gap: 0.55rem;
+    border: 1px solid rgb(17 17 17 / 10%);
+    border-radius: 999px;
+    background: rgb(255 255 255 / 88%);
+    padding: 0.45rem 0.65rem;
+    transition:
+      background-color 180ms ease,
+      border-color 180ms ease,
+      transform 180ms ease;
+  }
+
+  .weidu-user-nav-trigger:hover {
+    border-color: rgb(17 17 17 / 14%);
+    background: rgb(245 245 245 / 96%);
+    transform: translateY(-1px);
+  }
+
+  .weidu-signal-card {
+    border: 1px solid rgb(17 17 17 / 10%);
+    border-radius: 1.7rem;
+    background: linear-gradient(
+      180deg,
+      rgb(255 255 255 / 94%),
+      rgb(250 250 250 / 92%)
+    );
+    box-shadow: 0 12px 30px rgb(17 17 17 / 4%);
+  }
+
+  .weidu-plan-card {
+    border-radius: 1.8rem;
+    border-color: rgb(17 17 17 / 10%);
+    background: linear-gradient(
+      180deg,
+      rgb(255 255 255 / 96%),
+      rgb(250 250 250 / 94%)
+    );
+    box-shadow: 0 14px 34px rgb(17 17 17 / 4%);
+  }
+
+  .weidu-plan-card-featured {
+    background:
+      linear-gradient(180deg, rgb(17 17 17 / 2%), rgb(255 255 255 / 96%)),
+      linear-gradient(180deg, rgb(255 255 255 / 96%), rgb(250 250 250 / 94%));
+    box-shadow: 0 22px 44px rgb(17 17 17 / 7%);
+  }
+
+  .weidu-plan-badge {
+    width: fit-content;
+    border: 1px solid rgb(17 17 17 / 12%);
+    border-radius: 999px;
+    background: rgb(17 17 17 / 5%);
+    padding: 0.35rem 0.7rem;
+    color: rgb(17 17 17 / 72%);
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  .weidu-map-shell::before,
+  .weidu-map-shell::after {
+    content: "";
+    position: absolute;
+    inset: 50%;
+    translate: -50% -50%;
+    pointer-events: none;
+    border-radius: 999px;
+  }
+
+  .weidu-map-shell::before {
+    width: 86%;
+    height: 86%;
+    border: 1px solid rgb(17 17 17 / 8%);
+    box-shadow:
+      0 0 0 26px rgb(17 17 17 / 2%),
+      0 0 0 52px rgb(17 17 17 / 1%);
+  }
+
+  .weidu-map-shell::after {
+    width: 100%;
+    height: 100%;
+    background:
+      linear-gradient(rgb(17 17 17 / 4%) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(17 17 17 / 4%) 1px, transparent 1px);
+    background-size: 48px 48px;
+    opacity: 0.42;
+  }
+
+  .weidu-map-overlay {
+    background:
+      radial-gradient(circle at center, rgb(255 255 255 / 72%), transparent 62%),
+      linear-gradient(
+        90deg,
+        transparent calc(50% - 1px),
+        rgb(17 17 17 / 7%) calc(50% - 1px),
+        rgb(17 17 17 / 7%) calc(50% + 1px),
+        transparent calc(50% + 1px)
+      ),
+      linear-gradient(
+        180deg,
+        transparent calc(50% - 1px),
+        rgb(17 17 17 / 7%) calc(50% - 1px),
+        rgb(17 17 17 / 7%) calc(50% + 1px),
+        transparent calc(50% + 1px)
+      );
+  }
+
+  .weidu-footer-panel {
+    position: relative;
+    border: 1px solid rgb(17 17 17 / 11%);
+    border-radius: 2rem;
+    background: linear-gradient(
+      180deg,
+      rgb(255 255 255 / 96%),
+      rgb(250 250 250 / 92%)
+    );
+    box-shadow:
+      0 24px 50px rgb(17 17 17 / 5%),
+      inset 0 1px 0 rgb(255 255 255 / 92%);
+    overflow: hidden;
+  }
+
+  .weidu-footer-panel::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      linear-gradient(rgb(17 17 17 / 2%) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(17 17 17 / 2%) 1px, transparent 1px);
+    background-size: 54px 54px;
+    opacity: 0.38;
+  }
+
+  .weidu-footer-chip {
+    position: relative;
+    border: 1px solid rgb(17 17 17 / 9%);
+    border-radius: 1.25rem;
+    background: rgb(255 255 255 / 72%);
+    padding: 0.9rem 1rem;
+    color: rgb(17 17 17 / 68%);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-align: center;
+    text-transform: uppercase;
+  }
+
+  .weidu-footer-link {
+    width: fit-content;
+    color: rgb(17 17 17 / 76%);
+    transition:
+      opacity 180ms ease,
+      transform 180ms ease,
+      color 180ms ease;
+  }
+
+  .weidu-footer-link:hover {
+    color: #111111;
+    opacity: 0.88;
+    transform: translateX(2px);
+  }
+
+  .weidu-footer-social {
+    display: flex;
+    height: 2.9rem;
+    width: 2.9rem;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgb(17 17 17 / 10%);
+    border-radius: 999px;
+    background: rgb(255 255 255 / 78%);
+    transition:
+      transform 180ms ease,
+      background-color 180ms ease,
+      border-color 180ms ease;
+  }
+
+  .weidu-footer-social:hover {
+    border-color: rgb(17 17 17 / 14%);
+    background: rgb(245 245 245 / 96%);
+    transform: translateY(-1px);
+  }
+
+  @media (max-width: 768px) {
+    .weidu-header-panel {
+      border-radius: 1.7rem;
+    }
+
+    .weidu-landing::after {
+      background-size: 44px 44px;
+    }
+
+    .weidu-map-shell::after {
+      background-size: 32px 32px;
+    }
+
+    .weidu-footer-panel::before {
+      background-size: 40px 40px;
+    }
   }
 }

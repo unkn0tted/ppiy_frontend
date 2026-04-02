@@ -166,7 +166,7 @@ export function GlobalMap() {
       const centerX = width * 0.5;
       const centerY = height * 0.54;
       const radius = Math.min(width, height) * 0.34;
-      const rotation = -18 + time * 0.0045;
+      const rotation = -18 + time * 0.0027;
 
       const haloGradient = context.createRadialGradient(
         centerX,
@@ -176,15 +176,15 @@ export function GlobalMap() {
         centerY,
         radius * 1.55
       );
-      haloGradient.addColorStop(0, "rgba(212, 224, 255, 0.46)");
-      haloGradient.addColorStop(0.5, "rgba(212, 224, 255, 0.18)");
+      haloGradient.addColorStop(0, "rgba(17, 17, 17, 0.12)");
+      haloGradient.addColorStop(0.55, "rgba(17, 17, 17, 0.04)");
       haloGradient.addColorStop(1, "rgba(255, 255, 255, 0)");
       context.fillStyle = haloGradient;
       context.fillRect(0, 0, width, height);
 
       context.beginPath();
       context.arc(centerX, centerY, radius, 0, Math.PI * 2);
-      context.fillStyle = "#dbe4f8";
+      context.fillStyle = "rgba(244, 244, 244, 0.96)";
       context.fill();
 
       context.save();
@@ -201,10 +201,29 @@ export function GlobalMap() {
         radius * 1.12
       );
       sphereGradient.addColorStop(0, "rgba(255, 255, 255, 0.98)");
-      sphereGradient.addColorStop(0.18, "rgba(241, 246, 255, 0.98)");
-      sphereGradient.addColorStop(0.62, "rgba(207, 219, 242, 0.95)");
-      sphereGradient.addColorStop(1, "rgba(168, 182, 214, 0.96)");
+      sphereGradient.addColorStop(0.2, "rgba(240, 240, 240, 0.96)");
+      sphereGradient.addColorStop(0.64, "rgba(212, 212, 212, 0.96)");
+      sphereGradient.addColorStop(1, "rgba(166, 166, 166, 0.98)");
       context.fillStyle = sphereGradient;
+      context.fillRect(
+        centerX - radius,
+        centerY - radius,
+        radius * 2,
+        radius * 2
+      );
+
+      const sweep = (Math.sin(time * 0.0012) + 1) / 2;
+      const sweepY = centerY - radius + sweep * radius * 2;
+      const sweepGradient = context.createLinearGradient(
+        0,
+        sweepY - radius * 0.18,
+        0,
+        sweepY + radius * 0.22
+      );
+      sweepGradient.addColorStop(0, "rgba(255, 255, 255, 0)");
+      sweepGradient.addColorStop(0.5, "rgba(255, 255, 255, 0.22)");
+      sweepGradient.addColorStop(1, "rgba(255, 255, 255, 0)");
+      context.fillStyle = sweepGradient;
       context.fillRect(
         centerX - radius,
         centerY - radius,
@@ -227,14 +246,14 @@ export function GlobalMap() {
         const baseRadius = point.land ? 1.65 : 0.75;
         const dotRadius = baseRadius + projected.z * (point.land ? 1.2 : 0.45);
         const alpha = point.land
-          ? 0.22 + projected.z * 0.9
-          : 0.03 + projected.z * 0.08;
+          ? 0.18 + projected.z * 0.85
+          : 0.04 + projected.z * 0.07;
 
         context.beginPath();
         context.arc(projected.x, projected.y, dotRadius, 0, Math.PI * 2);
         context.fillStyle = point.land
           ? `rgba(255, 255, 255, ${alpha})`
-          : `rgba(108, 124, 154, ${alpha})`;
+          : `rgba(17, 17, 17, ${alpha})`;
         context.fill();
       }
 
@@ -254,7 +273,7 @@ export function GlobalMap() {
         context.moveTo(from.x, from.y);
         context.lineTo(to.x, to.y);
         context.strokeStyle = `rgba(255, 255, 255, ${
-          0.14 + Math.min(from.z, to.z) * 0.4
+          0.12 + Math.min(from.z, to.z) * 0.34
         })`;
         context.stroke();
       }
@@ -269,7 +288,7 @@ export function GlobalMap() {
 
         context.beginPath();
         context.arc(node.x, node.y, 8 + node.z * 3.5, 0, Math.PI * 2);
-        context.fillStyle = `rgba(255, 255, 255, ${0.08 + node.z * 0.06})`;
+        context.fillStyle = `rgba(255, 255, 255, ${0.06 + node.z * 0.05})`;
         context.fill();
       }
 
@@ -279,8 +298,8 @@ export function GlobalMap() {
         centerX + radius,
         centerY + radius * 0.45
       );
-      shadowGradient.addColorStop(0, "rgba(120, 136, 169, 0)");
-      shadowGradient.addColorStop(1, "rgba(96, 108, 137, 0.28)");
+      shadowGradient.addColorStop(0, "rgba(17, 17, 17, 0)");
+      shadowGradient.addColorStop(1, "rgba(17, 17, 17, 0.22)");
       context.fillStyle = shadowGradient;
       context.fillRect(
         centerX - radius,
@@ -293,7 +312,7 @@ export function GlobalMap() {
 
       context.beginPath();
       context.arc(centerX, centerY, radius, 0, Math.PI * 2);
-      context.strokeStyle = "rgba(196, 206, 230, 0.75)";
+      context.strokeStyle = "rgba(46, 46, 46, 0.36)";
       context.lineWidth = 1.2;
       context.stroke();
 
@@ -312,24 +331,45 @@ export function GlobalMap() {
   }, []);
 
   return (
-    <div className="flex h-full min-h-[22rem] flex-col justify-between xl:min-h-[31rem]">
-      <h2 className="font-semibold text-2xl tracking-[-0.04em]">
-        {t("globalNodes", "全球节点")}
-      </h2>
-      <div className="relative mt-6 flex flex-1 items-center justify-center">
+    <div className="flex h-full min-h-[24rem] flex-col justify-between xl:min-h-[32rem]">
+      <div className="space-y-3">
+        <div className="weidu-landing-kicker">
+          {t("globalNodes", "全球节点")}
+        </div>
+        <h2 className="font-semibold text-2xl leading-tight tracking-[-0.04em] md:text-3xl">
+          {t("globalMapTitle", "全球节点，持续在线")}
+        </h2>
+        <p className="max-w-lg text-muted-foreground text-sm leading-7 md:text-base">
+          {t(
+            "globalMapLead",
+            "用更安静的黑白仪表感呈现覆盖状态、连接路径与信息焦点。"
+          )}
+        </p>
+      </div>
+
+      <div className="relative mt-8 flex flex-1 items-center justify-center">
         <div
-          className="relative aspect-square w-full max-w-[38rem]"
+          className="weidu-map-shell relative aspect-square w-full max-w-[38rem]"
           ref={stageRef}
         >
-          <div
-            className="pointer-events-none absolute inset-0"
-            style={{
-              background:
-                "radial-gradient(circle at center, rgba(215, 226, 255, 0.42), transparent 44%), radial-gradient(circle at center, rgba(255, 255, 255, 0.8), transparent 72%)",
-            }}
-          />
+          <div className="weidu-map-overlay pointer-events-none absolute inset-0" />
           <canvas className="absolute inset-0 h-full w-full" ref={canvasRef} />
         </div>
+      </div>
+
+      <div className="mt-6 grid gap-3 sm:grid-cols-3">
+        {[
+          t("mapSignalCoverage", "多地区覆盖"),
+          t("mapSignalRouting", "路径直接"),
+          t("mapSignalReadability", "层级清晰"),
+        ].map((item) => (
+          <div
+            className="rounded-[1.2rem] border border-border/80 bg-white/72 px-4 py-3 text-center text-[0.72rem] text-muted-foreground uppercase tracking-[0.22em]"
+            key={item}
+          >
+            {item}
+          </div>
+        ))}
       </div>
     </div>
   );

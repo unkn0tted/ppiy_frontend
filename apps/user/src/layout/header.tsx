@@ -14,54 +14,71 @@ export default function Header() {
   const { site } = common;
 
   return (
-    <header className="sticky top-0 z-50 border-border/70 border-b bg-background/72 backdrop-blur-xl">
-      <div className="container py-4">
-        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-          <div className="flex items-center justify-between gap-4">
-            <Link className="flex min-w-0 items-center gap-4" to="/">
-              <div className="flex size-12 shrink-0 items-center justify-center rounded-full border border-border bg-card font-semibold text-[0.62rem] uppercase tracking-[0.28em]">
-                {site.site_logo ? (
-                  <img
-                    alt="logo"
-                    className="size-8 rounded-full object-cover"
-                    height={32}
-                    src={site.site_logo}
-                    width={32}
-                  />
-                ) : (
-                  "wd"
-                )}
-              </div>
-              <div className="min-w-0 truncate font-semibold text-xl leading-none">
-                {site.site_name}
-              </div>
-            </Link>
+    <header className="sticky top-0 z-50 pt-4">
+      <div className="container">
+        <div className="weidu-header-panel px-4 py-4 md:px-5">
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+            <div className="flex items-center justify-between gap-4">
+              <Link className="flex min-w-0 items-center gap-4" to="/">
+                <div className="weidu-header-mark">
+                  <span className="weidu-header-mark-grid" />
+                  <div className="flex size-12 shrink-0 items-center justify-center rounded-full border border-border/80 bg-white font-semibold text-[0.62rem] uppercase tracking-[0.28em]">
+                    {site.site_logo ? (
+                      <img
+                        alt="logo"
+                        className="size-8 rounded-full object-cover"
+                        height={32}
+                        src={site.site_logo}
+                        width={32}
+                      />
+                    ) : (
+                      "wd"
+                    )}
+                  </div>
+                </div>
 
-            <div className="hidden items-center gap-3 rounded-full border border-border/70 bg-card/80 px-3 py-2 lg:flex">
-              <LanguageSwitch />
-              <ThemeSwitch />
-            </div>
-          </div>
-
-          <div className="flex items-center justify-between gap-3 sm:justify-end">
-            <div className="flex items-center gap-2 rounded-full border border-border/70 bg-card/80 px-2 py-2 shadow-sm lg:hidden">
-              <LanguageSwitch />
-              <ThemeSwitch />
-            </div>
-            <UserNav />
-            {!user && (
-              <Link
-                className={cn(
-                  buttonVariants({
-                    size: "sm",
-                  }),
-                  "hover:-translate-y-0.5 rounded-full border border-foreground bg-foreground px-5 text-background shadow-foreground/15 shadow-sm transition-transform hover:bg-foreground/92"
-                )}
-                to="/auth"
-              >
-                {t("loginRegister", "Login / Register")}
+                <div className="min-w-0">
+                  <div className="min-w-0 truncate font-semibold text-xl leading-none">
+                    {site.site_name}
+                  </div>
+                  <div className="mt-2 flex items-center gap-3">
+                    <span className="weidu-landing-kicker">
+                      {t("header.accessLayer", "极简访问层")}
+                    </span>
+                    <span className="hidden h-px w-10 bg-border/80 md:block" />
+                    <span className="hidden text-muted-foreground text-sm md:block">
+                      {t("header.editionLabel", "维度云版")}
+                    </span>
+                  </div>
+                </div>
               </Link>
-            )}
+
+              <div className="weidu-header-tools hidden lg:flex">
+                <LanguageSwitch />
+                <ThemeSwitch />
+              </div>
+            </div>
+
+            <div className="flex items-center justify-between gap-3 sm:justify-end">
+              <div className="weidu-header-tools lg:hidden">
+                <LanguageSwitch />
+                <ThemeSwitch />
+              </div>
+              <UserNav />
+              {!user && (
+                <Link
+                  className={cn(
+                    buttonVariants({
+                      size: "sm",
+                    }),
+                    "weidu-header-login"
+                  )}
+                  to="/auth"
+                >
+                  {t("loginRegister", "登录 / 注册")}
+                </Link>
+              )}
+            </div>
           </div>
         </div>
       </div>

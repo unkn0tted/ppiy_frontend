@@ -1,8 +1,10 @@
 import { useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { useGlobalStore } from "@/stores/global";
+import { ClosingStatement } from "./closing-statement";
 import { Hero } from "./hero";
 import { ProductShowcase } from "./product-showcase";
+import { Stats } from "./stats";
 
 export default function Main() {
   const { user } = useGlobalStore();
@@ -24,10 +26,12 @@ export default function Main() {
   if (!showLanding) return null;
 
   return (
-    <main className="container pt-8 pb-24">
-      <Hero />
-      <div className="mt-20">
+    <main className="container pt-6 pb-24">
+      <div className="weidu-landing space-y-6 md:space-y-8">
+        <Hero />
+        <Stats />
         <ProductShowcase />
+        <ClosingStatement />
       </div>
     </main>
   );

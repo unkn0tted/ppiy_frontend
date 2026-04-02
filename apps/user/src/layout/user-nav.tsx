@@ -37,7 +37,7 @@ export function UserNav() {
     return (
       <DropdownMenu modal={false}>
         <DropdownMenuTrigger asChild>
-          <div className="flex cursor-pointer items-center gap-2 rounded-full border bg-background px-2 py-1.5 transition-colors duration-200 hover:bg-accent">
+          <div className="weidu-user-nav-trigger">
             <Avatar className="h-6 w-6">
               <AvatarImage
                 alt={user?.avatar ?? ""}
@@ -59,7 +59,11 @@ export function UserNav() {
             />
           </div>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="w-64" forceMount>
+        <DropdownMenuContent
+          align="end"
+          className="w-64 border-border/80"
+          forceMount
+        >
           <div className="flex items-center justify-start gap-2 p-2">
             <Avatar className="h-10 w-10">
               <AvatarImage

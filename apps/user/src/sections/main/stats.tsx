@@ -6,64 +6,66 @@ export function Stats() {
 
   const list = [
     {
-      name: t("users", "Users"),
-      description: t("users_description", "Trusted by users worldwide"),
-    },
-    {
-      name: t("servers", "Servers"),
       description: t(
-        "servers_description",
-        "High-performance servers globally"
+        "signalGlobalDesc",
+        "在统一的视觉秩序里展示多区域服务的可达性。"
       ),
+      name: t("signalGlobalTitle", "全球覆盖"),
     },
     {
-      name: t("locations", "Locations"),
-      description: t("locations_description", "Available in multiple regions"),
+      description: t(
+        "signalAccessDesc",
+        "让首页入口与方案区之间保持最短路径，减少不必要的层级跳转。"
+      ),
+      name: t("signalAccessTitle", "直接入口"),
+    },
+    {
+      description: t(
+        "signalPricingDesc",
+        "价格、周期与核心限制保持直接可读，不需要额外点击。"
+      ),
+      name: t("signalPricingTitle", "清晰定价"),
     },
   ];
 
   return (
     <motion.section
-      className="weidu-panel h-full px-6 py-8 lg:px-8 lg:py-10"
+      className="grid gap-4 xl:grid-cols-3"
       initial={{ opacity: 0, y: 28 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
       viewport={{ once: true, amount: 0.35 }}
       whileInView={{ opacity: 1, y: 0 }}
     >
-      <div className="space-y-6">
-        <div className="weidu-kicker">Service Standard</div>
-        <div className="weidu-rule max-w-24" />
-        <h2 className="max-w-lg font-semibold text-3xl leading-tight lg:text-[2.4rem]">
-          Simple blocks, clear hierarchy, and no decorative noise.
-        </h2>
-      </div>
-
-      <div className="mt-10 space-y-4">
-        {list.map((item, index) => (
-          <motion.article
-            className="grid gap-4 border-border/75 border-t pt-4 md:grid-cols-[auto_1fr]"
-            initial={{ opacity: 0, y: 16 }}
-            key={item.name}
-            transition={{
-              duration: 0.45,
-              delay: index * 0.08,
-              ease: "easeOut",
-            }}
-            viewport={{ once: true, amount: 0.45 }}
-            whileInView={{ opacity: 1, y: 0 }}
-          >
-            <div className="font-medium text-2xl text-muted-foreground">
+      {list.map((item, index) => (
+        <motion.article
+          className="weidu-signal-card px-6 py-6 md:px-7 md:py-7"
+          initial={{ opacity: 0, y: 16 }}
+          key={item.name}
+          transition={{
+            duration: 0.45,
+            delay: index * 0.08,
+            ease: "easeOut",
+          }}
+          viewport={{ once: true, amount: 0.45 }}
+          whileInView={{ opacity: 1, y: 0 }}
+        >
+          <div className="flex items-center justify-between gap-4">
+            <div className="weidu-landing-kicker">
+              {t("signalEyebrow", "信号")}
+            </div>
+            <div className="font-medium text-muted-foreground text-sm uppercase tracking-[0.16em]">
               {String(index + 1).padStart(2, "0")}
             </div>
-            <div>
-              <h3 className="font-semibold text-2xl">{item.name}</h3>
-              <p className="mt-2 max-w-xl text-muted-foreground text-sm leading-7">
-                {item.description}
-              </p>
-            </div>
-          </motion.article>
-        ))}
-      </div>
+          </div>
+
+          <h2 className="mt-8 font-semibold text-2xl leading-tight md:text-[2rem]">
+            {item.name}
+          </h2>
+          <p className="mt-4 max-w-xl text-muted-foreground text-sm leading-7">
+            {item.description}
+          </p>
+        </motion.article>
+      ))}
     </motion.section>
   );
 }

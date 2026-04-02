@@ -53,20 +53,20 @@
     "unknown": "An error occurred in the system, please try again later."
   },
   "footer": {
-    "closingNote": "Weidu Closing Note",
-    "contacts": "Contacts",
-    "copyright": "All rights reserved",
-    "policies": "Policies",
-    "privacyPolicy": "Privacy Policy",
-    "signature": "Quiet routes. Deliberate design.",
-    "tos": "Terms of Service"
+    "closingNote": "页脚说明",
+    "contacts": "联系方式",
+    "copyright": "版权所有",
+    "policies": "相关政策",
+    "privacyPolicy": "隐私政策",
+    "signature": "安静的路径，克制的设计。",
+    "tos": "服务条款"
   },
   "header": {
-    "accessLayer": "Monochrome Access Layer",
-    "editionLabel": "Weidu Edition"
+    "accessLayer": "极简访问层",
+    "editionLabel": "维度云版"
   },
   "language": "Language",
-  "loginRegister": "Login / Register",
+  "loginRegister": "登录 / 注册",
   "menu": {
     "affiliate": "Commission",
     "announcement": "Announcement Management",
@@ -93,5 +93,5 @@
     "system": "System",
     "toggle": "Toggle theme"
   },
-  "unlimited": "unlimited"
+  "unlimited": "无限制"
 }

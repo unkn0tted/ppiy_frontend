@@ -88,91 +88,108 @@ export default function Footer() {
   return (
     <footer className="pt-24 pb-12">
       <div className="container">
-        <div className="weidu-panel px-6 py-8 lg:px-10 lg:py-12">
-          <div className="grid gap-10 lg:grid-cols-[1.2fr_0.8fr_0.8fr]">
-            <div>
-              <h2 className="max-w-xl font-semibold text-3xl leading-tight lg:text-4xl">
-                {site.site_name}
-              </h2>
-            </div>
-
-            <div className="space-y-4">
-              <div className="weidu-kicker">
-                {t("footer.policies", "Policies")}
+        <div className="weidu-footer-panel px-6 py-8 lg:px-10 lg:py-12">
+          <div className="grid gap-10 xl:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)]">
+            <div className="space-y-8">
+              <div className="space-y-5">
+                <div className="weidu-landing-kicker">
+                  {t("footer.closingNote", "页脚说明")}
+                </div>
+                <h2 className="max-w-3xl font-semibold text-4xl leading-[0.96] lg:text-[4rem]">
+                  {site.site_name}
+                </h2>
+                <p className="max-w-2xl text-base text-muted-foreground leading-8">
+                  {t("footer.signature", "安静的路径，克制的设计。")}
+                </p>
               </div>
-              <div className="flex flex-col gap-3 text-sm">
-                <Link
-                  className="w-fit transition-opacity hover:opacity-60"
-                  to="/tos"
-                >
-                  {t("footer.tos", "Terms of Service")}
-                </Link>
-                <Link
-                  className="w-fit transition-opacity hover:opacity-60"
-                  to="/privacy-policy"
-                >
-                  {t("footer.privacyPolicy", "Privacy Policy")}
-                </Link>
-                {customData.website && (
-                  <a
-                    className="w-fit transition-opacity hover:opacity-60"
-                    href={customData.website}
-                    rel="noopener noreferrer"
-                    target="_blank"
-                  >
-                    {customData.website}
-                  </a>
-                )}
+
+              <div className="grid gap-4 md:grid-cols-3">
+                <div className="weidu-footer-chip">
+                  {t("header.accessLayer", "极简访问层")}
+                </div>
+                <div className="weidu-footer-chip">
+                  {t("footer.policies", "相关政策")}
+                </div>
+                <div className="weidu-footer-chip">
+                  {t("footer.contacts", "联系方式")}
+                </div>
               </div>
             </div>
 
-            <div className="space-y-4">
-              <div className="weidu-kicker">
-                {t("footer.contacts", "Contacts")}
+            <div className="grid gap-8 md:grid-cols-2">
+              <div className="space-y-4">
+                <div className="weidu-landing-kicker">
+                  {t("footer.policies", "相关政策")}
+                </div>
+                <div className="flex flex-col gap-3 text-sm">
+                  <Link className="weidu-footer-link" to="/tos">
+                    {t("footer.tos", "服务条款")}
+                  </Link>
+                  <Link className="weidu-footer-link" to="/privacy-policy">
+                    {t("footer.privacyPolicy", "隐私政策")}
+                  </Link>
+                  {customData.website && (
+                    <a
+                      className="weidu-footer-link"
+                      href={customData.website}
+                      rel="noopener noreferrer"
+                      target="_blank"
+                    >
+                      {customData.website}
+                    </a>
+                  )}
+                </div>
               </div>
-              <nav className="flex flex-wrap items-center gap-3">
-                {links
-                  .filter((item) => item.href)
-                  .map((item, index) => (
-                    <Fragment key={index}>
-                      <a
-                        aria-label={t(
-                          `footer.social.${item.name}`,
-                          `Visit our ${item.name}`
-                        )}
-                        className="hover:-translate-y-0.5 flex size-11 items-center justify-center rounded-full border border-border bg-background transition-transform"
-                        href={item.href}
-                        rel="noopener noreferrer"
-                        target="_blank"
-                      >
-                        <Icon
-                          className="size-4 text-foreground"
-                          icon={item.icon}
-                        />
-                      </a>
-                    </Fragment>
-                  ))}
-              </nav>
-              <div className="space-y-2 text-muted-foreground text-sm">
-                {customData.contacts?.email && (
-                  <p>{customData.contacts.email}</p>
-                )}
-                {customData.contacts?.telephone && (
-                  <p>{customData.contacts.telephone}</p>
-                )}
-                {customData.contacts?.address && (
-                  <p>{customData.contacts.address}</p>
-                )}
+
+              <div className="space-y-4">
+                <div className="weidu-landing-kicker">
+                  {t("footer.contacts", "联系方式")}
+                </div>
+                <nav className="flex flex-wrap items-center gap-3">
+                  {links
+                    .filter((item) => item.href)
+                    .map((item, index) => (
+                      <Fragment key={index}>
+                        <a
+                          aria-label={t(
+                            `footer.social.${item.name}`,
+                            `访问我们的${item.name}`
+                          )}
+                          className="weidu-footer-social"
+                          href={item.href}
+                          rel="noopener noreferrer"
+                          target="_blank"
+                        >
+                          <Icon
+                            className="size-4 text-foreground"
+                            icon={item.icon}
+                          />
+                        </a>
+                      </Fragment>
+                    ))}
+                </nav>
+                <div className="space-y-2 text-muted-foreground text-sm">
+                  {customData.contacts?.email && (
+                    <p>{customData.contacts.email}</p>
+                  )}
+                  {customData.contacts?.telephone && (
+                    <p>{customData.contacts.telephone}</p>
+                  )}
+                  {customData.contacts?.address && (
+                    <p>{customData.contacts.address}</p>
+                  )}
+                </div>
               </div>
             </div>
           </div>
 
-          <Separator className="my-8" />
+          <Separator className="my-8 bg-border/80" />
 
           <div className="flex flex-col gap-3 text-muted-foreground text-sm sm:flex-row sm:items-center sm:justify-between">
             <p>
-              {site.site_name} © {t("footer.copyright", "All rights reserved")}.
+              {site.site_name} © {t("footer.copyright", "版权所有")}.
             </p>
+            <p>{t("footer.signature", "安静的路径，克制的设计。")}</p>
           </div>
         </div>
       </div>
