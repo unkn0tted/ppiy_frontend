@@ -17,6 +17,7 @@ type Landmass = {
 type NetworkNode = {
   lat: number;
   lon: number;
+  label: string;
 };
 
 const landmasses: Landmass[] = [
@@ -34,24 +35,27 @@ const landmasses: Landmass[] = [
 ];
 
 const networkNodes: NetworkNode[] = [
-  { lat: 51.5, lon: -0.1 },
-  { lat: 40.7, lon: -74 },
-  { lat: 48.9, lon: 2.3 },
-  { lat: 25.2, lon: 55.3 },
-  { lat: 6.5, lon: 3.4 },
-  { lat: -26.2, lon: 28 },
-  { lat: 35.7, lon: 139.7 },
+  { lat: 39.9, lon: 116.4, label: "北京" },
+  { lat: 22.5, lon: 114.1, label: "香港" },
+  { lat: 1.3, lon: 103.8, label: "新加坡" },
+  { lat: 35.7, lon: 139.7, label: "东京" },
+  { lat: 37.6, lon: -122.4, label: "美西" },
+  { lat: 40.7, lon: -74.0, label: "美东" },
+  { lat: 51.5, lon: -0.1, label: "伦敦" },
+  { lat: 48.9, lon: 2.3, label: "法兰克福" },
 ];
 
 const networkLinks: Array<readonly [number, number]> = [
   [0, 1],
-  [0, 2],
-  [0, 3],
-  [1, 4],
+  [1, 2],
+  [1, 3],
+  [2, 3],
   [2, 4],
   [3, 4],
   [4, 5],
-  [3, 6],
+  [5, 6],
+  [6, 7],
+  [0, 2],
 ];
 
 const globePoints = createGlobePoints();
@@ -68,26 +72,18 @@ function isLand(lat: number, lon: number) {
     const noise =
       0.08 * Math.sin((lon + lat) * 0.14) +
       0.05 * Math.cos(lon * 0.09 - lat * 0.18);
-
     return dx * dx + dy * dy <= 1 + noise;
   });
 }
 
 function createGlobePoints() {
   const points: GlobePoint[] = [];
-
   for (let lat = -78; lat <= 78; lat += 4) {
     const lonStep = lat > 56 || lat < -56 ? 8 : 5;
-
     for (let lon = -180; lon < 180; lon += lonStep) {
-      points.push({
-        land: isLand(lat, lon),
-        lat,
-        lon,
-      });
+      points.push({ land: isLand(lat, lon), lat, lon });
     }
   }
-
   return points;
 }
 
@@ -106,9 +102,8 @@ function projectPoint(
   const x = cosLat * Math.sin(lonRad);
   const y = sinLat;
   const z = cosLat * Math.cos(lonRad);
-
   return {
-    visible: z > 0,
+    visible: z > -0.08,
     x: centerX + x * radius,
     y: centerY - y * radius,
     z,
@@ -123,11 +118,8 @@ export function GlobalMap() {
   useEffect(() => {
     const stage = stageRef.current;
     const canvas = canvasRef.current;
-
     if (!(stage && canvas)) return;
-
     const context = canvas.getContext("2d");
-
     if (!context) return;
 
     let animationFrame = 0;
@@ -138,13 +130,10 @@ export function GlobalMap() {
       const rect = stage.getBoundingClientRect();
       const nextWidth = Math.round(rect.width);
       const nextHeight = Math.round(rect.height);
-
       if (!(nextWidth && nextHeight)) return;
       if (nextWidth === width && nextHeight === height) return;
-
       width = nextWidth;
       height = nextHeight;
-
       const dpr = window.devicePixelRatio || 1;
       canvas.width = Math.round(nextWidth * dpr);
       canvas.height = Math.round(nextHeight * dpr);
@@ -155,7 +144,6 @@ export function GlobalMap() {
 
     const draw = (time: number) => {
       resize();
-
       if (!(width && height)) {
         animationFrame = requestAnimationFrame(draw);
         return;
@@ -164,157 +152,160 @@ export function GlobalMap() {
       context.clearRect(0, 0, width, height);
 
       const centerX = width * 0.5;
-      const centerY = height * 0.54;
-      const radius = Math.min(width, height) * 0.34;
-      const rotation = -18 + time * 0.0027;
+      const centerY = height * 0.52;
+      const radius = Math.min(width, height) * 0.36;
+      const rotation = -20 + time * 0.0022;
 
-      const haloGradient = context.createRadialGradient(
-        centerX,
-        centerY,
-        radius * 0.25,
-        centerX,
-        centerY,
-        radius * 1.55
+      // ── Outer ambient glow ──────────────────────────────────────────────
+      const outerGlow = context.createRadialGradient(
+        centerX, centerY, radius * 0.6,
+        centerX, centerY, radius * 1.7
       );
-      haloGradient.addColorStop(0, "rgba(17, 17, 17, 0.12)");
-      haloGradient.addColorStop(0.55, "rgba(17, 17, 17, 0.04)");
-      haloGradient.addColorStop(1, "rgba(255, 255, 255, 0)");
-      context.fillStyle = haloGradient;
+      outerGlow.addColorStop(0, "rgba(17, 17, 17, 0.08)");
+      outerGlow.addColorStop(0.5, "rgba(17, 17, 17, 0.03)");
+      outerGlow.addColorStop(1, "rgba(17, 17, 17, 0)");
+      context.fillStyle = outerGlow;
       context.fillRect(0, 0, width, height);
 
+      // ── Globe base (deep charcoal) ──────────────────────────────────────
       context.beginPath();
       context.arc(centerX, centerY, radius, 0, Math.PI * 2);
-      context.fillStyle = "rgba(244, 244, 244, 0.96)";
+      const baseGrad = context.createRadialGradient(
+        centerX - radius * 0.28, centerY - radius * 0.32, radius * 0.05,
+        centerX + radius * 0.1, centerY + radius * 0.1, radius * 1.15
+      );
+      baseGrad.addColorStop(0, "rgba(52, 52, 52, 1)");
+      baseGrad.addColorStop(0.38, "rgba(28, 28, 28, 1)");
+      baseGrad.addColorStop(0.72, "rgba(16, 16, 16, 1)");
+      baseGrad.addColorStop(1, "rgba(8, 8, 8, 1)");
+      context.fillStyle = baseGrad;
       context.fill();
 
+      // ── Clip everything to sphere ───────────────────────────────────────
       context.save();
       context.beginPath();
       context.arc(centerX, centerY, radius, 0, Math.PI * 2);
       context.clip();
 
-      const sphereGradient = context.createRadialGradient(
-        centerX - radius * 0.35,
-        centerY - radius * 0.42,
-        radius * 0.12,
-        centerX,
-        centerY,
-        radius * 1.12
+      // ── Specular highlight (top-left) ───────────────────────────────────
+      const specular = context.createRadialGradient(
+        centerX - radius * 0.38, centerY - radius * 0.44, 0,
+        centerX - radius * 0.38, centerY - radius * 0.44, radius * 0.72
       );
-      sphereGradient.addColorStop(0, "rgba(255, 255, 255, 0.98)");
-      sphereGradient.addColorStop(0.2, "rgba(240, 240, 240, 0.96)");
-      sphereGradient.addColorStop(0.64, "rgba(212, 212, 212, 0.96)");
-      sphereGradient.addColorStop(1, "rgba(166, 166, 166, 0.98)");
-      context.fillStyle = sphereGradient;
-      context.fillRect(
-        centerX - radius,
-        centerY - radius,
-        radius * 2,
-        radius * 2
-      );
+      specular.addColorStop(0, "rgba(255, 255, 255, 0.13)");
+      specular.addColorStop(0.45, "rgba(255, 255, 255, 0.04)");
+      specular.addColorStop(1, "rgba(255, 255, 255, 0)");
+      context.fillStyle = specular;
+      context.fillRect(centerX - radius, centerY - radius, radius * 2, radius * 2);
 
-      const sweep = (Math.sin(time * 0.0012) + 1) / 2;
+      // ── Animated scan line ──────────────────────────────────────────────
+      const sweep = (Math.sin(time * 0.0009) + 1) / 2;
       const sweepY = centerY - radius + sweep * radius * 2;
-      const sweepGradient = context.createLinearGradient(
-        0,
-        sweepY - radius * 0.18,
-        0,
-        sweepY + radius * 0.22
-      );
-      sweepGradient.addColorStop(0, "rgba(255, 255, 255, 0)");
-      sweepGradient.addColorStop(0.5, "rgba(255, 255, 255, 0.22)");
-      sweepGradient.addColorStop(1, "rgba(255, 255, 255, 0)");
-      context.fillStyle = sweepGradient;
-      context.fillRect(
-        centerX - radius,
-        centerY - radius,
-        radius * 2,
-        radius * 2
-      );
+      const sweepGrad = context.createLinearGradient(0, sweepY - radius * 0.14, 0, sweepY + radius * 0.18);
+      sweepGrad.addColorStop(0, "rgba(255,255,255,0)");
+      sweepGrad.addColorStop(0.5, "rgba(255,255,255,0.06)");
+      sweepGrad.addColorStop(1, "rgba(255,255,255,0)");
+      context.fillStyle = sweepGrad;
+      context.fillRect(centerX - radius, centerY - radius, radius * 2, radius * 2);
 
+      // ── Grid dots ──────────────────────────────────────────────────────
       for (const point of globePoints) {
-        const projected = projectPoint(
-          point.lat,
-          point.lon,
-          rotation,
-          radius,
-          centerX,
-          centerY
-        );
+        const proj = projectPoint(point.lat, point.lon, rotation, radius, centerX, centerY);
+        if (!proj.visible) continue;
 
-        if (!projected.visible) continue;
-
-        const baseRadius = point.land ? 1.65 : 0.75;
-        const dotRadius = baseRadius + projected.z * (point.land ? 1.2 : 0.45);
-        const alpha = point.land
-          ? 0.18 + projected.z * 0.85
-          : 0.04 + projected.z * 0.07;
-
-        context.beginPath();
-        context.arc(projected.x, projected.y, dotRadius, 0, Math.PI * 2);
-        context.fillStyle = point.land
-          ? `rgba(255, 255, 255, ${alpha})`
-          : `rgba(17, 17, 17, ${alpha})`;
-        context.fill();
+        const fade = Math.max(0, proj.z);
+        if (point.land) {
+          const dotR = 1.3 + fade * 1.1;
+          const alpha = 0.22 + fade * 0.62;
+          context.beginPath();
+          context.arc(proj.x, proj.y, dotR, 0, Math.PI * 2);
+          context.fillStyle = `rgba(200, 200, 200, ${alpha})`;
+          context.fill();
+        } else {
+          const dotR = 0.55 + fade * 0.35;
+          const alpha = 0.06 + fade * 0.1;
+          context.beginPath();
+          context.arc(proj.x, proj.y, dotR, 0, Math.PI * 2);
+          context.fillStyle = `rgba(120, 120, 120, ${alpha})`;
+          context.fill();
+        }
       }
 
+      // ── Network links ──────────────────────────────────────────────────
       const projectedNodes = networkNodes.map((node) =>
         projectPoint(node.lat, node.lon, rotation, radius, centerX, centerY)
       );
 
-      context.lineWidth = 1;
-
-      for (const [fromIndex, toIndex] of networkLinks) {
-        const from = projectedNodes[fromIndex];
-        const to = projectedNodes[toIndex];
-
+      for (const [fromIdx, toIdx] of networkLinks) {
+        const from = projectedNodes[fromIdx];
+        const to = projectedNodes[toIdx];
         if (!(from?.visible && to?.visible)) continue;
-
+        const linkAlpha = 0.18 + Math.min(from.z, to.z) * 0.38;
         context.beginPath();
         context.moveTo(from.x, from.y);
         context.lineTo(to.x, to.y);
-        context.strokeStyle = `rgba(255, 255, 255, ${
-          0.12 + Math.min(from.z, to.z) * 0.34
-        })`;
+        context.strokeStyle = `rgba(180, 180, 180, ${linkAlpha})`;
+        context.lineWidth = 0.8;
         context.stroke();
       }
 
+      // ── Network nodes ──────────────────────────────────────────────────
       for (const node of projectedNodes) {
         if (!node.visible) continue;
+        const fade = Math.max(0, node.z);
+        const pulse = 0.72 + 0.28 * Math.sin(time * 0.0014 + node.x * 0.02);
 
+        // Outer glow ring
         context.beginPath();
-        context.arc(node.x, node.y, 3.4 + node.z * 2.1, 0, Math.PI * 2);
-        context.fillStyle = `rgba(255, 255, 255, ${0.52 + node.z * 0.4})`;
+        context.arc(node.x, node.y, 11 + fade * 4, 0, Math.PI * 2);
+        context.fillStyle = `rgba(220, 220, 220, ${0.04 + fade * 0.05})`;
         context.fill();
 
+        // Mid ring
         context.beginPath();
-        context.arc(node.x, node.y, 8 + node.z * 3.5, 0, Math.PI * 2);
-        context.fillStyle = `rgba(255, 255, 255, ${0.06 + node.z * 0.05})`;
+        context.arc(node.x, node.y, 6 + fade * 2.5, 0, Math.PI * 2);
+        context.fillStyle = `rgba(230, 230, 230, ${0.09 + fade * 0.09})`;
+        context.fill();
+
+        // Core dot
+        context.beginPath();
+        context.arc(node.x, node.y, 2.8 + fade * 1.4, 0, Math.PI * 2);
+        context.fillStyle = `rgba(255, 255, 255, ${(0.78 + fade * 0.22) * pulse})`;
         context.fill();
       }
 
-      const shadowGradient = context.createLinearGradient(
-        centerX + radius * 0.18,
-        centerY - radius * 0.4,
-        centerX + radius,
-        centerY + radius * 0.45
+      // ── Rim / terminator shadow ─────────────────────────────────────────
+      const rimShadow = context.createRadialGradient(
+        centerX + radius * 0.22, centerY + radius * 0.12, radius * 0.52,
+        centerX + radius * 0.22, centerY + radius * 0.12, radius * 1.05
       );
-      shadowGradient.addColorStop(0, "rgba(17, 17, 17, 0)");
-      shadowGradient.addColorStop(1, "rgba(17, 17, 17, 0.22)");
-      context.fillStyle = shadowGradient;
-      context.fillRect(
-        centerX - radius,
-        centerY - radius,
-        radius * 2,
-        radius * 2
-      );
+      rimShadow.addColorStop(0, "rgba(0,0,0,0)");
+      rimShadow.addColorStop(0.7, "rgba(0,0,0,0.08)");
+      rimShadow.addColorStop(1, "rgba(0,0,0,0.42)");
+      context.fillStyle = rimShadow;
+      context.fillRect(centerX - radius, centerY - radius, radius * 2, radius * 2);
 
       context.restore();
 
+      // ── Globe border ──────────────────────────────────────────────────
       context.beginPath();
       context.arc(centerX, centerY, radius, 0, Math.PI * 2);
-      context.strokeStyle = "rgba(46, 46, 46, 0.36)";
-      context.lineWidth = 1.2;
+      context.strokeStyle = "rgba(80, 80, 80, 0.5)";
+      context.lineWidth = 1;
       context.stroke();
+
+      // ── Rim atmosphere glow ────────────────────────────────────────────
+      const rimAtmo = context.createRadialGradient(
+        centerX, centerY, radius * 0.92,
+        centerX, centerY, radius * 1.12
+      );
+      rimAtmo.addColorStop(0, "rgba(100, 100, 100, 0)");
+      rimAtmo.addColorStop(0.6, "rgba(80, 80, 80, 0.12)");
+      rimAtmo.addColorStop(1, "rgba(50, 50, 50, 0)");
+      context.beginPath();
+      context.arc(centerX, centerY, radius * 1.06, 0, Math.PI * 2);
+      context.fillStyle = rimAtmo;
+      context.fill();
 
       animationFrame = requestAnimationFrame(draw);
     };
@@ -331,40 +322,39 @@ export function GlobalMap() {
   }, []);
 
   return (
-    <div className="flex h-full min-h-[24rem] flex-col justify-between xl:min-h-[32rem]">
-      <div className="space-y-3">
+    <div className="flex h-full min-h-[22rem] flex-col justify-between xl:min-h-[30rem]">
+      <div className="space-y-2">
         <div className="weidu-landing-kicker">
           {t("globalNodes", "全球节点")}
         </div>
         <h2 className="font-semibold text-2xl leading-tight tracking-[-0.04em] md:text-3xl">
           {t("globalMapTitle", "全球节点，持续在线")}
         </h2>
-        <p className="max-w-lg text-muted-foreground text-sm leading-7 md:text-base">
+        <p className="max-w-lg text-muted-foreground text-sm leading-7">
           {t(
             "globalMapLead",
-            "用更安静的黑白仪表感呈现覆盖状态、连接路径与信息焦点。"
+            "覆盖亚太、欧美核心机房，三网优化直连，全天候低延迟稳定运行。"
           )}
         </p>
       </div>
 
-      <div className="relative mt-8 flex flex-1 items-center justify-center">
+      <div className="relative mt-6 flex flex-1 items-center justify-center">
         <div
-          className="weidu-map-shell relative aspect-square w-full max-w-[38rem]"
+          className="weidu-map-shell relative aspect-square w-full max-w-[36rem]"
           ref={stageRef}
         >
-          <div className="weidu-map-overlay pointer-events-none absolute inset-0" />
           <canvas className="absolute inset-0 h-full w-full" ref={canvasRef} />
         </div>
       </div>
 
-      <div className="mt-6 grid gap-3 sm:grid-cols-3">
+      <div className="mt-5 grid gap-2 sm:grid-cols-3">
         {[
-          t("mapSignalCoverage", "多地区覆盖"),
-          t("mapSignalRouting", "路径直接"),
-          t("mapSignalReadability", "层级清晰"),
+          t("mapSignalCoverage", "CN2 GIA 直连"),
+          t("mapSignalRouting", "BGP 智能路由"),
+          t("mapSignalReadability", "三网全覆盖"),
         ].map((item) => (
           <div
-            className="rounded-[1.2rem] border border-border/80 bg-white/72 px-4 py-3 text-center text-[0.72rem] text-muted-foreground uppercase tracking-[0.22em]"
+            className="rounded-[1.1rem] border border-border/80 bg-white/72 px-3 py-2.5 text-center text-[0.7rem] text-muted-foreground uppercase tracking-[0.18em] transition-colors duration-200 hover:bg-foreground/[0.04] hover:text-foreground"
             key={item}
           >
             {item}

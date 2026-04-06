@@ -40,7 +40,7 @@ const DurationSelector: React.FC<DurationSelectorProps> = ({
     <div className="relative">
       <RadioGroupItem className="peer sr-only" id={value} value={value} />
       <Label
-        className="relative flex h-full min-h-20 flex-col items-center justify-center gap-2 rounded-[1.35rem] border border-foreground/10 bg-background/70 p-4 text-center text-popover-foreground transition-all duration-200 hover:border-foreground/30 hover:bg-foreground/[0.03] peer-data-[state=checked]:border-primary/60 peer-data-[state=checked]:bg-primary peer-data-[state=checked]:text-primary-foreground"
+        className="relative flex h-full min-h-20 flex-col items-center justify-center gap-2 rounded-[1.35rem] border border-foreground/10 bg-background/70 p-4 text-center text-foreground transition-all duration-200 hover:border-foreground/30 hover:bg-foreground/[0.03] peer-data-[state=checked]:border-primary/60 peer-data-[state=checked]:bg-primary peer-data-[state=checked]:text-primary-foreground"
         htmlFor={value}
       >
         {label}

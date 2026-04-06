@@ -41,15 +41,6 @@ export default function Header() {
                   <div className="min-w-0 truncate font-semibold text-xl leading-none">
                     {site.site_name}
                   </div>
-                  <div className="mt-2 flex items-center gap-3">
-                    <span className="weidu-landing-kicker">
-                      {t("header.accessLayer", "极简访问层")}
-                    </span>
-                    <span className="hidden h-px w-10 bg-border/80 md:block" />
-                    <span className="hidden text-muted-foreground text-sm md:block">
-                      {t("header.editionLabel", "维度云版")}
-                    </span>
-                  </div>
                 </div>
               </Link>
 

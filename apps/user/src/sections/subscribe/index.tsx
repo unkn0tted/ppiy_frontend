@@ -48,7 +48,7 @@ export default function Subscribe() {
       <div className="space-y-4">
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3">
           {filteredData?.map((item) => (
-            <Card className="relative flex flex-col" key={item.id}>
+            <Card className="weidu-subscribe-card relative flex flex-col overflow-hidden rounded-[1.6rem] border-none shadow-none" key={item.id}>
               <CardHeader className="font-medium text-xl">
                 {item.name}
               </CardHeader>
@@ -155,7 +155,7 @@ export default function Subscribe() {
                   );
                 })()}
                 <Button
-                  className="absolute bottom-0 w-full rounded-t-none rounded-b-xl"
+                  className="absolute bottom-0 w-full rounded-t-none rounded-b-[1.6rem]"
                   onClick={() => {
                     setSubscribe(item);
                   }}

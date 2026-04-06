@@ -1,3 +1,34 @@
+/* ─── Weidu monochrome overrides ───────────────────────────────────────────
+   These are intentionally NOT inside @layer base so they cascade ABOVE any
+   layered defaults (including Tailwind's @theme inline from globals.css).
+   ──────────────────────────────────────────────────────────────────────── */
+:root,
+.dark {
+  --background: #ffffff;
+  --foreground: #111111;
+  --card: rgb(255 255 255 / 96%);
+  --card-foreground: #111111;
+  --popover: #ffffff;
+  --popover-foreground: #111111;
+  --primary: #111111;
+  --primary-foreground: #ffffff;
+  --secondary: #f1f1f1;
+  --secondary-foreground: #111111;
+  --muted: #f5f5f5;
+  --muted-foreground: #5a5a5a;
+  --accent: #ececec;
+  --accent-foreground: #111111;
+  --border: #d9d9d9;
+  --input: #d9d9d9;
+  --ring: #bdbdbd;
+  /* Chart colors — monochrome grayscale spectrum */
+  --chart-1: oklch(0.18 0 0);
+  --chart-2: oklch(0.34 0 0);
+  --chart-3: oklch(0.52 0 0);
+  --chart-4: oklch(0.68 0 0);
+  --chart-5: oklch(0.82 0 0);
+}
+
 @layer base {
   :root {
     --background: #ffffff;
@@ -128,6 +159,17 @@
   h4 {
     letter-spacing: -0.025em;
     line-height: 1.1;
+  }
+
+  /* ── Global type scale: slightly smaller across the board ─────────────── */
+  html {
+    font-size: 15px;
+  }
+
+  @media (min-width: 768px) {
+    html {
+      font-size: 15.5px;
+    }
   }
 
   ::selection {
@@ -643,5 +685,109 @@
     .weidu-footer-panel::before {
       background-size: 40px 40px;
     }
+  }
+
+  /* ── Monochrome icon enforcement ─────────────────────────────────────── */
+  /* Force Iconify SVG icons to respect currentColor, preventing colored
+     icon sets from breaking the monochrome theme.                          */
+  .iconify svg,
+  [class*="iconify"] svg {
+    fill: currentColor;
+    stroke: currentColor;
+  }
+
+  .iconify svg [fill]:not([fill="none"]):not([fill="currentColor"]),
+  [class*="iconify"] svg [fill]:not([fill="none"]):not([fill="currentColor"]) {
+    fill: currentColor;
+  }
+
+  .iconify svg [stroke]:not([stroke="none"]):not([stroke="currentColor"]),
+  [class*="iconify"] svg [stroke]:not([stroke="none"]):not([stroke="currentColor"]) {
+    stroke: currentColor;
+  }
+
+  /* ── Subscribe / order flow ──────────────────────────────────────────── */
+  /* Ensure the dashboard subscribe card grid uses consistent panel style    */
+  .weidu-subscribe-card {
+    border-radius: 1.6rem;
+    border: 1px solid color-mix(in oklab, var(--border) 80%, transparent);
+    background: color-mix(in oklab, var(--card) 92%, transparent);
+    backdrop-filter: blur(12px);
+    box-shadow:
+      0 10px 30px rgb(17 17 17 / 4%),
+      inset 0 1px 0 rgb(255 255 255 / 62%);
+  }
+
+  /* ── Hover interactions ───────────────────────────────────────────────── */
+
+  /* Panel cards: subtle lift on hover */
+  .weidu-panel {
+    transition:
+      box-shadow 220ms ease,
+      transform 220ms ease;
+  }
+
+  .weidu-panel:hover {
+    box-shadow:
+      0 14px 36px rgb(17 17 17 / 7%),
+      inset 0 1px 0 rgb(255 255 255 / 72%);
+  }
+
+  /* Callout & signal cards */
+  .weidu-callout-card,
+  .weidu-signal-card {
+    transition:
+      box-shadow 220ms ease,
+      transform 220ms ease,
+      background 220ms ease;
+  }
+
+  .weidu-callout-card:hover {
+    background: rgb(255 255 255 / 90%);
+    box-shadow: 0 6px 18px rgb(17 17 17 / 6%);
+    transform: translateY(-2px);
+  }
+
+  .weidu-signal-card:hover {
+    box-shadow: 0 16px 36px rgb(17 17 17 / 7%);
+    transform: translateY(-2px);
+  }
+
+  /* Plan cards */
+  .weidu-plan-card {
+    transition:
+      box-shadow 220ms ease,
+      transform 220ms ease;
+  }
+
+  .weidu-plan-card:hover {
+    box-shadow: 0 20px 44px rgb(17 17 17 / 8%);
+    transform: translateY(-3px);
+  }
+
+  /* Subscribe cards */
+  .weidu-subscribe-card {
+    transition:
+      box-shadow 220ms ease,
+      transform 220ms ease;
+  }
+
+  .weidu-subscribe-card:hover {
+    box-shadow:
+      0 14px 34px rgb(17 17 17 / 6%),
+      inset 0 1px 0 rgb(255 255 255 / 72%);
+    transform: translateY(-2px);
+  }
+
+  /* Landing panel hover */
+  .weidu-landing-panel {
+    transition:
+      box-shadow 220ms ease;
+  }
+
+  .weidu-landing-panel:hover {
+    box-shadow:
+      0 24px 56px rgb(17 17 17 / 7%),
+      inset 0 1px 0 rgb(255 255 255 / 88%);
   }
 }

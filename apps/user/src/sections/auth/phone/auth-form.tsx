@@ -21,7 +21,9 @@ export default function PhoneAuthForm() {
   const navigate = useNavigate();
   const { getUserInfo } = useGlobalStore();
   const searchParams = useSearch({ strict: false }) as { invite?: string };
-  const [type, setType] = useState<"login" | "register" | "reset">("login");
+  const [type, setType] = useState<"login" | "register" | "reset">(
+    searchParams.invite ? "register" : "login"
+  );
   const [loading, startTransition] = useTransition();
   const [initialValues, setInitialValues] = useState<API.TelephoneLoginRequest>(
     {

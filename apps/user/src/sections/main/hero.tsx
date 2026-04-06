@@ -7,32 +7,31 @@ import { GlobalMap } from "./global-map";
 
 export function Hero() {
   const { t } = useTranslation("main");
-  const { common, user } = useGlobalStore();
-  const { site } = common;
+  const { user } = useGlobalStore();
   const callouts = [
     {
       code: "01",
       description: t(
-        "heroCalloutEntryDesc",
-        "关键动作在首屏内保持可见，不把视线带离主路径。"
+        "heroCalloutTripleDesc",
+        "电信、联通、移动三网同步优化，全运营商无感知切换，覆盖国内所有主流网络。"
       ),
-      title: t("heroCalloutEntryTitle", "入口有序"),
+      title: t("heroCalloutTripleTitle", "三网优化"),
     },
     {
       code: "02",
       description: t(
-        "heroCalloutVisualDesc",
-        "只用黑、白、灰三种层级组织页面视觉语言。"
+        "heroCalloutLatencyDesc",
+        "BGP 智能路由 + CN2 GIA 直连线路，本地延迟极低，峰值时段依然流畅稳定。"
       ),
-      title: t("heroCalloutVisualTitle", "黑白系统"),
+      title: t("heroCalloutLatencyTitle", "低延迟直连"),
     },
     {
       code: "03",
       description: t(
-        "heroCalloutFlowDesc",
-        "从首页到方案区只需要一次滚动，不额外绕路。"
+        "heroCalloutUptimeDesc",
+        "多节点热备冗余，链路故障秒级切换，SLA 保障 99.9% 可用率，全天候在线。"
       ),
-      title: t("heroCalloutFlowTitle", "流程直接"),
+      title: t("heroCalloutUptimeTitle", "高可用保障"),
     },
   ];
 
@@ -60,11 +59,8 @@ export function Hero() {
               <div className="weidu-landing-kicker">
                 {t("heroEyebrow", "黑白访问网络")}
               </div>
-              <h1 className="max-w-5xl font-semibold text-5xl leading-[0.88] md:text-7xl xl:text-[5.8rem]">
-                <span className="block">{site.site_name}</span>
-                <span className="mt-4 block text-[0.44em] text-foreground/72 leading-[1.02] md:text-[0.38em]">
-                  {t("heroHeadline", "为直接、清晰的访问体验而构建")}
-                </span>
+              <h1 className="max-w-4xl font-semibold text-4xl leading-[1.08] md:text-5xl xl:text-[4.4rem]">
+                {t("heroHeadline", "为直接、清晰的访问体验而构建")}
               </h1>
               <p className="max-w-2xl text-base text-muted-foreground leading-8 md:text-lg">
                 {t(

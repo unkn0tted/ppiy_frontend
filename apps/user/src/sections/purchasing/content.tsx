@@ -251,59 +251,67 @@ export default function Content({
         </section>
 
         <section className="weidu-panel px-6 py-6 md:px-8 md:py-8">
-          <div className="grid gap-8 lg:grid-cols-[minmax(0,1.1fr)_minmax(14rem,0.9fr)]">
-            <div className="space-y-5">
-              <h2 className="font-semibold text-2xl tracking-[-0.05em]">
-                {subscription.name}
-              </h2>
-              <ul className="grid gap-3 text-sm leading-6 md:grid-cols-2">
-                {features?.map((feature, index) => (
-                  <li
-                    className={cn(
-                      "rounded-[1.15rem] border border-foreground/10 bg-background/65 px-4 py-3",
-                      {
-                        "text-muted-foreground line-through":
-                          feature.type === "destructive",
-                      }
-                    )}
-                    key={index}
-                  >
-                    <div className="flex items-start gap-3">
-                      {feature.icon && (
-                        <Icon
-                          className={cn("mt-0.5 size-5 text-foreground", {
-                            "text-primary": feature.type === "success",
-                            "text-destructive": feature.type === "destructive",
-                          })}
-                          icon={feature.icon}
-                        />
+          <div className={cn(
+            "grid gap-6",
+            features?.length > 0 ? "lg:grid-cols-[minmax(0,1.1fr)_minmax(14rem,0.9fr)]" : ""
+          )}>
+            {features?.length > 0 && (
+              <div className="space-y-4">
+                <h2 className="font-semibold text-xl tracking-[-0.05em]">
+                  {subscription.name}
+                </h2>
+                <ul className="grid gap-2 text-sm leading-6 md:grid-cols-2">
+                  {features.map((feature, index) => (
+                    <li
+                      className={cn(
+                        "rounded-[1.15rem] border border-foreground/10 bg-background/65 px-4 py-3",
+                        {
+                          "text-muted-foreground line-through":
+                            feature.type === "destructive",
+                        }
                       )}
-                      <span>{feature.label}</span>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className="rounded-[1.6rem] border border-foreground/10 bg-background/75 p-5">
+                      key={index}
+                    >
+                      <div className="flex items-start gap-3">
+                        {feature.icon && (
+                          <Icon
+                            className={cn("mt-0.5 size-4 shrink-0 text-foreground", {
+                              "text-foreground": feature.type === "success",
+                              "text-destructive": feature.type === "destructive",
+                            })}
+                            icon={feature.icon}
+                          />
+                        )}
+                        <span>{feature.label}</span>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            <div className={cn(
+              "rounded-[1.6rem] border border-foreground/10 bg-background/75 p-5",
+              features?.length === 0 && "w-full"
+            )}>
               <p className="weidu-kicker">
                 {t("specificationLabel", "Specification")}
               </p>
-              <div className="mt-6 grid gap-4">
-                <div className="rounded-[1.25rem] border border-foreground/10 bg-background px-4 py-4">
-                  <p className="text-muted-foreground text-xs uppercase tracking-[0.26em]">
+              <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
+                <div className="rounded-[1.15rem] border border-foreground/10 bg-background px-4 py-3">
+                  <p className="text-muted-foreground text-xs uppercase tracking-[0.22em]">
                     {t("durationLabel", "Duration")}
                   </p>
-                  <p className="mt-2 font-medium text-lg">
+                  <p className="mt-1.5 font-medium">
                     {params.quantity} /{" "}
                     {unitTimeMap[subscription.unit_time!] ||
                       subscription.unit_time}
                   </p>
                 </div>
-                <div className="rounded-[1.25rem] border border-foreground/10 bg-background px-4 py-4">
-                  <p className="text-muted-foreground text-xs uppercase tracking-[0.26em]">
+                <div className="rounded-[1.15rem] border border-foreground/10 bg-background px-4 py-3">
+                  <p className="text-muted-foreground text-xs uppercase tracking-[0.22em]">
                     {t("trafficLabel", "Traffic")}
                   </p>
-                  <p className="mt-2 font-medium text-lg">
+                  <p className="mt-1.5 font-medium">
                     <Display
                       type="traffic"
                       unlimited
@@ -311,11 +319,11 @@ export default function Content({
                     />
                   </p>
                 </div>
-                <div className="rounded-[1.25rem] border border-foreground/10 bg-background px-4 py-4">
-                  <p className="text-muted-foreground text-xs uppercase tracking-[0.26em]">
+                <div className="rounded-[1.15rem] border border-foreground/10 bg-background px-4 py-3">
+                  <p className="text-muted-foreground text-xs uppercase tracking-[0.22em]">
                     {t("speedLabel", "Speed")}
                   </p>
-                  <p className="mt-2 font-medium text-lg">
+                  <p className="mt-1.5 font-medium">
                     <Display
                       type="trafficSpeed"
                       unlimited
@@ -323,11 +331,11 @@ export default function Content({
                     />
                   </p>
                 </div>
-                <div className="rounded-[1.25rem] border border-foreground/10 bg-background px-4 py-4">
-                  <p className="text-muted-foreground text-xs uppercase tracking-[0.26em]">
+                <div className="rounded-[1.15rem] border border-foreground/10 bg-background px-4 py-3">
+                  <p className="text-muted-foreground text-xs uppercase tracking-[0.22em]">
                     {t("devicesLabel", "Devices")}
                   </p>
-                  <p className="mt-2 font-medium text-lg">
+                  <p className="mt-1.5 font-medium">
                     <Display
                       type="number"
                       unlimited
@@ -341,9 +349,9 @@ export default function Content({
         </section>
       </div>
 
-      <aside className="space-y-6 xl:sticky xl:top-24 xl:self-start">
-        <section className="weidu-panel px-6 py-6">
-          <div className="space-y-6">
+      <aside className="xl:sticky xl:top-24 xl:self-start">
+        <section className="weidu-panel overflow-hidden p-0">
+          <div className="space-y-6 px-6 py-6">
             <h2 className="font-semibold text-2xl tracking-[-0.05em]">
               {t("buildOrder", "Build your order")}
             </h2>
@@ -369,9 +377,6 @@ export default function Content({
               />
             </div>
           </div>
-        </section>
-
-        <section className="weidu-panel overflow-hidden p-0">
           <div className="bg-primary px-6 py-5 text-primary-foreground">
             <div className="flex items-end justify-between gap-4">
               <div>

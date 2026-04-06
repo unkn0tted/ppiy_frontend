@@ -315,11 +315,11 @@ export default function Content() {
                 </CardHeader>
                 <CardContent className="space-y-6 px-6 py-6">
                   <ul className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-                    <li className="rounded-[1.25rem] border border-foreground/10 bg-background/65 px-4 py-4">
-                      <span className="text-muted-foreground">
+                    <li className="flex min-h-[5.5rem] flex-col justify-between rounded-[1.25rem] border border-foreground/10 bg-background/65 px-4 py-3">
+                      <span className="text-muted-foreground text-xs uppercase tracking-[0.18em]">
                         {t("used", "Used")}
                       </span>
-                      <span className="font-bold text-2xl">
+                      <span className="mt-2 font-bold text-xl leading-none">
                         <Display
                           type="traffic"
                           unlimited={!item.traffic}
@@ -327,11 +327,11 @@ export default function Content() {
                         />
                       </span>
                     </li>
-                    <li className="rounded-[1.25rem] border border-foreground/10 bg-background/65 px-4 py-4">
-                      <span className="text-muted-foreground">
+                    <li className="flex min-h-[5.5rem] flex-col justify-between rounded-[1.25rem] border border-foreground/10 bg-background/65 px-4 py-3">
+                      <span className="text-muted-foreground text-xs uppercase tracking-[0.18em]">
                         {t("totalTraffic", "Total Traffic")}
                       </span>
-                      <span className="font-bold text-2xl">
+                      <span className="mt-2 font-bold text-xl leading-none">
                         <Display
                           type="traffic"
                           unlimited={!item.traffic}
@@ -339,11 +339,11 @@ export default function Content() {
                         />
                       </span>
                     </li>
-                    <li className="rounded-[1.25rem] border border-foreground/10 bg-background/65 px-4 py-4">
-                      <span className="text-muted-foreground">
+                    <li className="flex min-h-[5.5rem] flex-col justify-between rounded-[1.25rem] border border-foreground/10 bg-background/65 px-4 py-3">
+                      <span className="text-muted-foreground text-xs uppercase tracking-[0.18em]">
                         {t("nextResetDays", "Next Reset Days")}
                       </span>
-                      <span className="font-semibold text-2xl">
+                      <span className="mt-2 font-semibold text-xl leading-none">
                         {item.reset_time
                           ? differenceInDays(
                               new Date(item.reset_time),
@@ -352,11 +352,11 @@ export default function Content() {
                           : t("noReset", "No Reset")}
                       </span>
                     </li>
-                    <li className="rounded-[1.25rem] border border-foreground/10 bg-background/65 px-4 py-4">
-                      <span className="text-muted-foreground">
+                    <li className="flex min-h-[5.5rem] flex-col justify-between rounded-[1.25rem] border border-foreground/10 bg-background/65 px-4 py-3">
+                      <span className="text-muted-foreground text-xs uppercase tracking-[0.18em]">
                         {t("expirationDays", "Expiration Days")}
                       </span>
-                      <span className="font-semibold text-2xl">
+                      <span className="mt-2 font-semibold text-xl leading-none">
                         {}
                         {item.expire_time
                           ? differenceInDays(
