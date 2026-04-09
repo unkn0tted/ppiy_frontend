@@ -6,6 +6,8 @@ import Backend from "i18next-http-backend";
 import { initReactI18next } from "react-i18next";
 
 export function initializeI18n(i18nConfig?: InitOptions) {
+  const translationVersion = import.meta.env.VITE_APP_BUILD_ID || "dev";
+
   i18n
     // Load translation using http backend
     // Learn more: https://github.com/i18next/i18next-http-backend
@@ -34,6 +36,12 @@ export function initializeI18n(i18nConfig?: InitOptions) {
         crossDomain: false, // Disable cross-domain requests
         withCredentials: false, // Don't send credentials with requests
         allowMultiLoading: true, // Load namespaces individually
+        queryStringParams: {
+          v: translationVersion,
+        },
+        requestOptions: {
+          cache: import.meta.env.DEV ? "no-store" : "default",
+        },
       },
 
       // Language detection configuration

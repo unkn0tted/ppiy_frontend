@@ -36,7 +36,7 @@
   "NoLimit": "No Limit",
   "passwordHint": "If you do not enter a password, we will automatically generate one and send it to your email.",
   "paymentMethod": "Payment Method",
-  "productDescription": "productDescription",
+  "productDescription": "Product Description",
   "purchaseDuration": "Purchase Duration",
   "recharge": "Recharge",
   "rechargeAmount": "Recharge Amount",
@@ -48,6 +48,16 @@
   "resetTraffic": "Reset Traffic",
   "resetTrafficDescription": "Reset traffic to zero, and start a new billing cycle",
   "resetTrafficTitle": "Reset Traffic",
+  "showcase": {
+    "bundle": "{{quantity}} {{unit}} bundle",
+    "highlights": "Highlights",
+    "instantAccess": "Instant Access",
+    "livePlans": "{{count}} live plans",
+    "metricPlans": "Plans",
+    "metricStart": "Starting at",
+    "subtitle": "all for you.",
+    "title": "Pick your next high-speed lane"
+  },
   "subscriptionNotFound": "Subscription not found",
   "unsubscribe": {
     "cancel": "Cancel",

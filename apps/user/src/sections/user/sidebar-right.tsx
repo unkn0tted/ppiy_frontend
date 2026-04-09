@@ -1,14 +1,9 @@
 "use client";
 
 import { Button } from "@workspace/ui/components/button";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@workspace/ui/components/card";
 import { Sidebar, SidebarContent } from "@workspace/ui/components/sidebar";
 import { Icon } from "@workspace/ui/composed/icon";
+import { cn } from "@workspace/ui/lib/utils";
 import { isBrowser } from "@workspace/ui/utils/index";
 import CopyToClipboard from "react-copy-to-clipboard";
 import { useTranslation } from "react-i18next";
@@ -17,72 +12,113 @@ import { Display } from "@/components/display";
 import Recharge from "@/sections/subscribe/recharge";
 import { useGlobalStore } from "@/stores/global";
 
+interface SidebarRightProps extends React.ComponentProps<typeof Sidebar> {
+  isSubscribePage?: boolean;
+}
+
 export function SidebarRight({
+  className,
+  isSubscribePage = false,
   ...props
-}: React.ComponentProps<typeof Sidebar>) {
+}: Readonly<SidebarRightProps>) {
   const { user } = useGlobalStore();
   const { t } = useTranslation("layout");
+  const inviteLink = `${isBrowser() && location?.origin}/#/auth?invite=${user?.refer_code}`;
+  const shouldShowReferralPanel = isSubscribePage || Boolean(user?.refer_code);
 
   return (
-    <Sidebar collapsible="none" side="right" {...props}>
-      <SidebarContent className="*:gap-0 *:py-0">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 p-3 pb-2">
-            <CardTitle className="font-medium text-sm">
+    <Sidebar className={className} collapsible="none" side="right" {...props}>
+      <SidebarContent className="subscribe-side-rail p-0 shadow-none backdrop-blur-none">
+        <section className="subscribe-side-rail__panel">
+          <div className="subscribe-side-rail__panel-header">
+            <div className="space-y-1">
+              <p className="subscribe-side-rail__eyebrow">
+                {t("accountOverview", "Account Overview")}
+              </p>
+              <h3 className="subscribe-side-rail__title">
+                {t("accountBalance", "Account Balance")}
+              </h3>
+            </div>
+            <Recharge
+              className="subscribe-side-rail__action"
+              size="sm"
+              variant="secondary"
+            />
+          </div>
+
+          <div className="subscribe-side-rail__balance">
+            <span className="subscribe-side-rail__balance-label">
               {t("accountBalance", "Account Balance")}
-            </CardTitle>
-            <Recharge className="p-0" variant="link" />
-          </CardHeader>
-          <CardContent className="p-3 font-bold text-2xl">
-            <Display type="currency" value={user?.balance} />
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="space-y-0 p-3 pb-2">
-            <CardTitle className="font-medium text-sm">
-              {t("giftAmount", "Gift Amount")}
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="p-3 font-bold text-2xl">
-            <Display type="currency" value={user?.gift_amount} />
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="space-y-0 p-3 pb-2">
-            <CardTitle className="font-medium text-sm">
-              {t("commission", "Commission")}
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="p-3 font-bold text-2xl">
-            <Display type="currency" value={user?.commission} />
-          </CardContent>
-        </Card>
-        {user?.refer_code && (
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 p-3 pb-2">
-              <CardTitle className="font-medium text-sm">
+            </span>
+            <strong className="subscribe-side-rail__balance-value">
+              <Display type="currency" value={user?.balance} />
+            </strong>
+          </div>
+
+          <div className="subscribe-side-rail__metric-list">
+            <div className="subscribe-side-rail__metric">
+              <span className="subscribe-side-rail__metric-label">
+                {t("giftAmount", "Gift Amount")}
+              </span>
+              <span className="subscribe-side-rail__metric-value">
+                <Display type="currency" value={user?.gift_amount} />
+              </span>
+            </div>
+            <div className="subscribe-side-rail__metric">
+              <span className="subscribe-side-rail__metric-label">
+                {t("commission", "Commission")}
+              </span>
+              <span className="subscribe-side-rail__metric-value">
+                <Display type="currency" value={user?.commission} />
+              </span>
+            </div>
+          </div>
+        </section>
+
+        {shouldShowReferralPanel && (
+          <section className="subscribe-side-rail__panel">
+            <div className="subscribe-side-rail__panel-header">
+              <div className="space-y-1">
+                <p className="subscribe-side-rail__eyebrow">
+                  {t("referralOverview", "Referral Overview")}
+                </p>
+                <h3 className="subscribe-side-rail__title">
+                  {t("inviteCode", "Invite Code")}
+                </h3>
+              </div>
+              {user?.refer_code && (
+                <CopyToClipboard
+                  onCopy={(_text: string, result: boolean) => {
+                    if (result) {
+                      toast.success(t("copySuccess", "Copy Success"));
+                    }
+                  }}
+                  text={inviteLink}
+                >
+                  <Button
+                    className="subscribe-side-rail__copy"
+                    size="icon"
+                    variant="ghost"
+                  >
+                    <Icon className="size-4" icon="mdi:content-copy" />
+                  </Button>
+                </CopyToClipboard>
+              )}
+            </div>
+
+            <div className="subscribe-side-rail__invite">
+              <span className="subscribe-side-rail__metric-label">
                 {t("inviteCode", "Invite Code")}
-              </CardTitle>
-              <CopyToClipboard
-                onCopy={(_text: string, result: boolean) => {
-                  if (result) {
-                    toast.success(t("copySuccess", "Copy Success"));
-                  }
-                }}
-                text={`${isBrowser() && location?.origin}/#/auth?invite=${user?.refer_code}`}
+              </span>
+              <span
+                className={cn("subscribe-side-rail__invite-code", {
+                  "text-foreground/42": !user?.refer_code,
+                })}
               >
-                <Button className="size-5 p-0" variant="ghost">
-                  <Icon
-                    className="text-2xl text-primary"
-                    icon="mdi:content-copy"
-                  />
-                </Button>
-              </CopyToClipboard>
-            </CardHeader>
-            <CardContent className="truncate p-3 font-bold">
-              {user?.refer_code}
-            </CardContent>
-          </Card>
+                {user?.refer_code || "--"}
+              </span>
+            </div>
+          </section>
         )}
       </SidebarContent>
     </Sidebar>

@@ -1,7 +1,9 @@
 {
+  "accountOverview": "Account Overview",
   "accountBalance": "Account Balance",
   "commission": "Commission",
   "copySuccess": "Copy Success",
   "giftAmount": "Gift Amount",
-  "inviteCode": "Invite Code"
+  "inviteCode": "Invite Code",
+  "referralOverview": "Referral Overview"
 }

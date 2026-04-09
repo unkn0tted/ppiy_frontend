@@ -57,10 +57,36 @@ const platforms: (keyof API.DownloadLink)[] = [
   "harmony",
 ];
 
+type SubscriptionProtocol = "vless" | "anytls";
+
+const protocolOptions: Array<{
+  value: SubscriptionProtocol;
+  label: string;
+  icon: string;
+  descriptionKey: string;
+  descriptionDefault: string;
+}> = [
+  {
+    value: "vless",
+    label: "VLESS",
+    icon: "mdi:rocket-launch-outline",
+    descriptionKey: "protocolSelectorVlessDescription",
+    descriptionDefault: "Default recommended protocol",
+  },
+  {
+    value: "anytls",
+    label: "AnyTLS",
+    icon: "mdi:shield-lock-outline",
+    descriptionKey: "protocolSelectorAnytlsDescription",
+    descriptionDefault: "Only get AnyTLS nodes",
+  },
+];
+
 export default function Content() {
   const { t } = useTranslation("dashboard");
   const { getUserSubscribe, getAppSubLink } = useGlobalStore();
 
+  const [protocol, setProtocol] = useState<SubscriptionProtocol>("vless");
   const {
     data: userSubscribe = [],
     refetch,
@@ -151,39 +177,132 @@ export default function Content() {
               </Button>
             </div>
           </div>
-          <div className="flex flex-wrap justify-between gap-4">
+          <div className="space-y-5">
+            <div className="rounded-3xl border border-primary/20 bg-gradient-to-br from-primary/12 via-card to-card p-5 shadow-primary/10 shadow-sm">
+              <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
+                <div className="space-y-2">
+                  <div className="flex items-center gap-3">
+                    <div className="flex size-11 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-md shadow-primary/20">
+                      <Icon className="size-5" icon="mdi:tune-variant" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-base">
+                        {t("protocolSelectorTitle", "Subscription Protocol")}
+                      </h3>
+                      <p className="text-muted-foreground text-sm">
+                        {t(
+                          "protocolSelectorDescription",
+                          "Copy links, import links, and QR codes will follow the selected protocol."
+                        )}
+                      </p>
+                    </div>
+                  </div>
+                  <span className="inline-flex w-fit rounded-full border border-primary/15 bg-background/85 px-3 py-1 font-medium text-primary text-xs">
+                    {t("protocolSelectorDefault", "Default: VLESS")}
+                  </span>
+                </div>
+
+                <div className="grid gap-2 sm:grid-cols-2 lg:min-w-[420px]">
+                  {protocolOptions.map((option) => {
+                    const isActive = protocol === option.value;
+
+                    return (
+                      <button
+                        aria-pressed={isActive}
+                        className={cn(
+                          "rounded-2xl border px-4 py-3 text-left transition-all",
+                          isActive
+                            ? "border-primary bg-primary text-primary-foreground shadow-lg shadow-primary/20"
+                            : "border-border/70 bg-background/85 hover:border-primary/35 hover:bg-background"
+                        )}
+                        key={option.value}
+                        onClick={() => setProtocol(option.value)}
+                        type="button"
+                      >
+                        <div className="flex items-start justify-between gap-3">
+                          <div className="flex items-start gap-3">
+                            <div
+                              className={cn(
+                                "mt-0.5 flex size-9 items-center justify-center rounded-xl transition-colors",
+                                isActive
+                                  ? "bg-primary-foreground/15 text-primary-foreground"
+                                  : "bg-primary/10 text-primary"
+                              )}
+                            >
+                              <Icon className="size-5" icon={option.icon} />
+                            </div>
+                            <div>
+                              <p className="font-semibold text-sm uppercase tracking-[0.18em]">
+                                {option.label}
+                              </p>
+                              <p
+                                className={cn(
+                                  "mt-1 text-xs",
+                                  isActive
+                                    ? "text-primary-foreground/80"
+                                    : "text-muted-foreground"
+                                )}
+                              >
+                                {t(
+                                  option.descriptionKey,
+                                  option.descriptionDefault
+                                )}
+                              </p>
+                            </div>
+                          </div>
+                          <Icon
+                            className={cn(
+                              "mt-1 size-5 transition-opacity",
+                              isActive ? "opacity-100" : "opacity-20"
+                            )}
+                            icon={
+                              isActive
+                                ? "mdi:check-circle"
+                                : "mdi:circle-outline"
+                            }
+                          />
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+
             {availablePlatforms.length > 0 && (
-              <Tabs
-                className="w-full max-w-full md:w-auto"
-                onValueChange={(value) =>
-                  setPlatform(value as keyof API.DownloadLink)
-                }
-                value={platform}
-              >
-                <TabsList className="flex *:flex-auto">
-                  {availablePlatforms.map((item) => (
-                    <TabsTrigger
-                      className="px-1 lg:px-3"
-                      key={item}
-                      value={item}
-                    >
-                      <Icon
-                        className="size-5"
-                        icon={`${
-                          {
-                            windows: "mdi:microsoft-windows",
-                            mac: "uil:apple",
-                            linux: "uil:linux",
-                            ios: "simple-icons:ios",
-                            android: "uil:android",
-                            harmony: "simple-icons:harmonyos",
-                          }[item]
-                        }`}
-                      />
-                    </TabsTrigger>
-                  ))}
-                </TabsList>
-              </Tabs>
+              <div className="flex flex-wrap justify-between gap-4">
+                <Tabs
+                  className="w-full max-w-full md:w-auto"
+                  onValueChange={(value) =>
+                    setPlatform(value as keyof API.DownloadLink)
+                  }
+                  value={platform}
+                >
+                  <TabsList className="flex *:flex-auto">
+                    {availablePlatforms.map((item) => (
+                      <TabsTrigger
+                        className="px-1 lg:px-3"
+                        key={item}
+                        value={item}
+                      >
+                        <Icon
+                          className="size-5"
+                          icon={`${
+                            {
+                              windows: "mdi:microsoft-windows",
+                              mac: "uil:apple",
+                              linux: "uil:linux",
+                              ios: "simple-icons:ios",
+                              android: "uil:android",
+                              harmony: "simple-icons:harmonyos",
+                            }[item]
+                          }`}
+                        />
+                      </TabsTrigger>
+                    ))}
+                  </TabsList>
+                </Tabs>
+              </div>
             )}
           </div>
           {userSubscribe.map((item) => {
@@ -195,7 +314,7 @@ export default function Content() {
 
             return (
               <Card
-                className={cn("relative", {
+                className={cn("dashboard-subscription-card relative", {
                   "relative opacity-80 grayscale": isActuallyExpired,
                   "relative hidden opacity-60 blur-[0.3px] grayscale":
                     item.status === 4,
@@ -239,10 +358,17 @@ export default function Content() {
                     </div>
                   </div>
                 )}
-                <CardHeader className="flex flex-row flex-wrap items-center justify-between gap-2 space-y-0">
-                  <CardTitle className="font-medium">
-                    {item.subscribe.name}
-                    <p className="mt-1 text-foreground/50 text-sm">
+                <CardHeader className="flex flex-row flex-wrap items-start justify-between gap-3 space-y-0">
+                  <CardTitle className="flex min-w-0 flex-1 flex-col gap-2">
+                    <span
+                      className="dashboard-subscription-name"
+                      title={item.subscribe.name}
+                    >
+                      <span className="dashboard-subscription-name__text font-display">
+                        {item.subscribe.name}
+                      </span>
+                    </span>
+                    <p className="pl-0.5 text-foreground/55 text-sm">
                       {t("expireAt", "Expires At")}:{" "}
                       {item.expire_time
                         ? formatDate(item.expire_time)
@@ -305,7 +431,7 @@ export default function Content() {
                   )}
                 </CardHeader>
                 <CardContent>
-                  <ul className="grid grid-cols-2 gap-3 *:flex *:flex-col *:justify-between lg:grid-cols-4">
+                  <ul className="grid grid-cols-2 gap-4 *:flex *:flex-col *:justify-between lg:grid-cols-4">
                     <li>
                       <span className="text-muted-foreground">
                         {t("used", "Used")}
@@ -358,21 +484,23 @@ export default function Content() {
                       </span>
                     </li>
                   </ul>
-                  <Separator className="mt-4" />
+                  <Separator className="mt-6" />
                   <Accordion
                     className="w-full"
                     collapsible
                     defaultValue="0"
                     type="single"
                   >
-                    {getUserSubscribe(item.short, item.token)?.map(
+                    {getUserSubscribe(item.short, item.token, protocol)?.map(
                       (url, index) => (
                         <AccordionItem key={url} value={String(index)}>
                           <AccordionTrigger className="hover:no-underline">
                             <div className="flex w-full flex-row items-center justify-between">
                               <CardTitle className="font-medium text-sm">
-                                {t("subscriptionUrl", "Subscription URL")}{" "}
-                                {index + 1}
+                                <span className="sr-only">
+                                  {t("subscriptionUrl", "Subscription URL")}{" "}
+                                  {index + 1}
+                                </span>
                               </CardTitle>
 
                               <CopyToClipboard
@@ -519,7 +647,7 @@ export default function Content() {
                                 <span>{t("qrCode", "QR Code")}</span>
                                 <QRCodeCanvas
                                   bgColor="transparent"
-                                  fgColor="rgb(59, 130, 246)"
+                                  fgColor="rgb(190, 120, 145)"
                                   size={80}
                                   value={url}
                                 />

@@ -3,13 +3,12 @@
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { Button } from "@workspace/ui/components/button";
-import { Card, CardContent, CardHeader } from "@workspace/ui/components/card";
-import { Separator } from "@workspace/ui/components/separator";
 import { EnhancedInput } from "@workspace/ui/composed/enhanced-input";
 import { Icon } from "@workspace/ui/composed/icon";
 import { cn } from "@workspace/ui/lib/utils";
 import { prePurchaseOrder, purchase } from "@workspace/ui/services/user/portal";
 import { useDebounce } from "ahooks";
+import { motion } from "framer-motion";
 import { LoaderCircle } from "lucide-react";
 import { useCallback, useEffect, useRef, useState, useTransition } from "react";
 import { useTranslation } from "react-i18next";
@@ -34,6 +33,13 @@ export default function Content({
     NoLimit: t("NoLimit", "No Limit"),
     Year: t("Year", "Year"),
   };
+  const checkoutTags = [
+    t("purchaseDuration", "Purchase Duration"),
+    t("coupon", "Coupon"),
+    t("paymentMethod", "Payment Method"),
+  ];
+  const fieldClassName =
+    "rounded-[1rem] border-primary/12 bg-white/75 shadow-[0_18px_34px_-28px_oklch(0.64_0.16_11_/0.4)] dark:border-white/8 dark:bg-white/6";
   const { common } = useGlobalStore();
   const navigate = useNavigate();
   const [params, setParams] = useState<API.PortalPurchaseRequest>({
@@ -129,111 +135,169 @@ export default function Content({
 
   if (!subscription) {
     return (
-      <div className="p-6 text-center">
+      <div className="rose-panel mx-auto mt-8 max-w-xl p-8 text-center">
         {t("subscriptionNotFound", "Subscription not found")}
       </div>
     );
   }
 
   return (
-    <div className="mx-auto mt-8 flex max-w-4xl flex-col gap-8 md:grid md:grid-cols-2 md:flex-row">
-      <div className="flex flex-col gap-6">
-        <Card>
-          <CardHeader>
-            {t(
-              "emailInputTitle",
-              "Enter the email address for your {{siteName}} account",
-              {
-                siteName: common.site.site_name,
-              }
-            )}
-          </CardHeader>
-          <CardContent className="flex flex-col gap-2">
-            <div className="flex flex-col gap-2">
-              <EnhancedInput
-                className={cn({
-                  "border-destructive":
-                    !isEmailValid.valid && params.identifier !== "",
-                })}
-                onValueChange={(value: string) => {
-                  const email = value as string;
-                  setParams((prev) => ({
-                    ...prev,
-                    identifier: email,
-                  }));
-                  const reg = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                  if (!reg.test(email)) {
-                    setIsEmailValid({
-                      valid: false,
-                      message: t(
-                        "invalidEmail",
-                        "Please enter a valid email address"
-                      ),
-                    });
-                  } else if (common.auth.email.enable_domain_suffix) {
-                    const domain = email.split("@")[1];
-                    const isValid = common.auth.email?.domain_suffix_list
-                      .split("\n")
-                      .includes(domain || "");
-                    if (!isValid) {
+    <div className="rose-form mx-auto mt-4 max-w-6xl space-y-6 sm:mt-6">
+      <motion.section
+        className="rose-shell px-6 py-7 sm:px-8 lg:px-10 lg:py-9"
+        initial={{ opacity: 0, y: 24 }}
+        transition={{ duration: 0.4 }}
+        whileInView={{ opacity: 1, y: 0 }}
+      >
+        <div className="rose-grid" />
+        <div className="grid gap-6 lg:grid-cols-[0.92fr_1.08fr] lg:items-end">
+          <div>
+            <span className="rose-pill">
+              {t("buySubscription", "Buy Subscription")}
+            </span>
+            <h1 className="mt-6 max-w-2xl font-display text-4xl leading-[0.95] tracking-[-0.04em] sm:text-5xl">
+              <span className="rose-section-title">{subscription.name}</span>
+            </h1>
+            <p className="mt-4 max-w-2xl text-base text-muted-foreground leading-8">
+              {t(
+                "emailInputTitle",
+                "Enter the email address for your {{siteName}} account",
+                {
+                  siteName: common.site.site_name,
+                }
+              )}
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-2.5 lg:justify-end">
+            {checkoutTags.map((item) => (
+              <span
+                className="rounded-full border border-primary/12 bg-white/70 px-3.5 py-2 font-medium text-foreground/90 text-sm shadow-[0_14px_28px_-26px_oklch(0.64_0.16_11_/0.4)] dark:border-white/8 dark:bg-white/6"
+                key={item}
+              >
+                {item}
+              </span>
+            ))}
+          </div>
+        </div>
+      </motion.section>
+
+      <div className="grid gap-6 lg:grid-cols-[1.04fr_0.96fr] lg:items-start">
+        <div className="flex flex-col gap-6">
+          <motion.section
+            className="rose-panel p-6 sm:p-7"
+            initial={{ opacity: 0, y: 24 }}
+            transition={{ duration: 0.4, delay: 0.05 }}
+            whileInView={{ opacity: 1, y: 0 }}
+          >
+            <p className="font-medium text-muted-foreground text-xs uppercase tracking-[0.16em]">
+              {t("buySubscription", "Buy Subscription")}
+            </p>
+            <h2 className="mt-3 font-display text-2xl leading-tight">
+              {t(
+                "emailInputTitle",
+                "Enter the email address for your {{siteName}} account",
+                {
+                  siteName: common.site.site_name,
+                }
+              )}
+            </h2>
+            <div className="mt-6 flex flex-col gap-4">
+              <div className="flex flex-col gap-2">
+                <EnhancedInput
+                  className={cn(fieldClassName, {
+                    "border-destructive":
+                      !isEmailValid.valid && params.identifier !== "",
+                  })}
+                  onValueChange={(value: string) => {
+                    const email = value as string;
+                    setParams((prev) => ({
+                      ...prev,
+                      identifier: email,
+                    }));
+                    const reg = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    if (!reg.test(email)) {
                       setIsEmailValid({
                         valid: false,
                         message: t(
-                          "emailDomainNotAllowed",
-                          "Email domain is not in the whitelist"
+                          "invalidEmail",
+                          "Please enter a valid email address"
                         ),
                       });
                       return;
                     }
-                  } else {
+
+                    if (common.auth.email.enable_domain_suffix) {
+                      const domain = email.split("@")[1];
+                      const isValid = common.auth.email?.domain_suffix_list
+                        .split("\n")
+                        .includes(domain || "");
+                      if (!isValid) {
+                        setIsEmailValid({
+                          valid: false,
+                          message: t(
+                            "emailDomainNotAllowed",
+                            "Email domain is not in the whitelist"
+                          ),
+                        });
+                        return;
+                      }
+                    }
+
                     setIsEmailValid({
                       valid: true,
                       message: "",
                     });
-                  }
-                }}
-                placeholder="Email"
-                required
-                type="email"
-                value={params.identifier || ""}
-              />
-              <p
-                className={cn("text-muted-foreground text-xs", {
-                  "text-destructive":
-                    !isEmailValid.valid && params.identifier !== "",
-                })}
-              >
-                {isEmailValid.message ||
-                  t("emailRequired", "Please enter your email address.")}
-              </p>
-            </div>
-            {params.identifier && isEmailValid.valid && (
-              <div className="flex flex-col gap-2">
-                <EnhancedInput
-                  onValueChange={(value: string) =>
-                    handleChange("password", value)
-                  }
-                  placeholder="Password"
-                  type="password"
-                  value={params.password || ""}
+                  }}
+                  placeholder="Email"
+                  required
+                  type="email"
+                  value={params.identifier || ""}
                 />
-                <p className="text-muted-foreground text-xs">
-                  {t(
-                    "passwordHint",
-                    "If you do not enter a password, we will automatically generate one and send it to your email."
-                  )}
+                <p
+                  className={cn("text-muted-foreground text-xs", {
+                    "text-destructive":
+                      !isEmailValid.valid && params.identifier !== "",
+                  })}
+                >
+                  {isEmailValid.message ||
+                    t("emailRequired", "Please enter your email address.")}
                 </p>
               </div>
-            )}
-            {/* <div>
-              <OAuthMethods />
-            </div> */}
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="grid gap-3 text-sm">
-            <h2 className="font-semibold text-xl">{subscription.name}</h2>
-            <ul className="flex flex-grow flex-col gap-3">
+              {params.identifier && isEmailValid.valid && (
+                <div className="flex flex-col gap-2">
+                  <EnhancedInput
+                    className={fieldClassName}
+                    onValueChange={(value: string) =>
+                      handleChange("password", value)
+                    }
+                    placeholder="Password"
+                    type="password"
+                    value={params.password || ""}
+                  />
+                  <p className="text-muted-foreground text-xs">
+                    {t(
+                      "passwordHint",
+                      "If you do not enter a password, we will automatically generate one and send it to your email."
+                    )}
+                  </p>
+                </div>
+              )}
+            </div>
+          </motion.section>
+
+          <motion.section
+            className="rose-panel p-6 sm:p-7"
+            initial={{ opacity: 0, y: 24 }}
+            transition={{ duration: 0.4, delay: 0.1 }}
+            whileInView={{ opacity: 1, y: 0 }}
+          >
+            <p className="font-medium text-muted-foreground text-xs uppercase tracking-[0.16em]">
+              {t("detail.productDetail", "Product Details")}
+            </p>
+            <h2 className="mt-3 font-display text-2xl leading-tight">
+              {subscription.name}
+            </h2>
+            <ul className="mt-6 flex flex-col gap-3 text-sm">
               {(() => {
                 let parsedDescription: {
                   description: string;
@@ -265,7 +329,7 @@ export default function Content({
                         index: number
                       ) => (
                         <li
-                          className={cn("flex items-center gap-1", {
+                          className={cn("flex items-center gap-2", {
                             "text-muted-foreground line-through":
                               feature.type === "destructive",
                           })}
@@ -289,13 +353,50 @@ export default function Content({
                 );
               })()}
             </ul>
-            <SubscribeDetail
-              subscribe={{
-                ...subscription,
-                quantity: params.quantity,
-              }}
+            <div className="mt-6">
+              <SubscribeDetail
+                subscribe={{
+                  ...subscription,
+                  quantity: params.quantity,
+                }}
+              />
+            </div>
+          </motion.section>
+        </div>
+
+        <motion.section
+          className="rose-panel p-6 sm:p-7 lg:sticky lg:top-28"
+          initial={{ opacity: 0, y: 24 }}
+          transition={{ duration: 0.4, delay: 0.15 }}
+          whileInView={{ opacity: 1, y: 0 }}
+        >
+          <p className="font-medium text-muted-foreground text-xs uppercase tracking-[0.16em]">
+            {t("buyNow", "Buy Now")}
+          </p>
+          <h2 className="mt-3 font-display text-2xl leading-tight">
+            {t("paymentMethod", "Payment Method")}
+          </h2>
+          <div className="mt-6 grid gap-6">
+            <DurationSelector
+              discounts={subscription?.discount}
+              onChange={(value: number) => handleChange("quantity", value)}
+              quantity={params.quantity!}
+              unitTime={
+                unitTimeMap[subscription.unit_time!] || subscription.unit_time
+              }
             />
-            <Separator />
+            <CouponInput
+              coupon={params.coupon}
+              onChange={(value: string) => handleChange("coupon", value)}
+            />
+            <PaymentMethods
+              balance={false}
+              onChange={(value: number) => handleChange("payment", value)}
+              value={params.payment!}
+            />
+          </div>
+          <div className="mt-6 h-px bg-gradient-to-r from-primary/10 via-primary/35 to-transparent" />
+          <div className="mt-6">
             <SubscribeBilling
               order={{
                 ...order,
@@ -304,44 +405,17 @@ export default function Content({
                 show_original_price: subscription?.show_original_price,
               }}
             />
-          </CardContent>
-        </Card>
-      </div>
-
-      <div className="flex flex-col gap-6">
-        <Card>
-          <CardContent className="p-6">
-            <div className="grid gap-6">
-              <DurationSelector
-                discounts={subscription?.discount}
-                onChange={(value: number) => handleChange("quantity", value)}
-                quantity={params.quantity!}
-                unitTime={
-                  unitTimeMap[subscription.unit_time!] || subscription.unit_time
-                }
-              />
-              <CouponInput
-                coupon={params.coupon}
-                onChange={(value: string) => handleChange("coupon", value)}
-              />
-              <PaymentMethods
-                balance={false}
-                onChange={(value: number) => handleChange("payment", value)}
-                value={params.payment!}
-              />
-            </div>
-          </CardContent>
-        </Card>
-
-        <Button
-          className="w-full"
-          disabled={!isEmailValid.valid || loading}
-          onClick={handleSubmit}
-          size="lg"
-        >
-          {loading && <LoaderCircle className="mr-2 animate-spin" />}
-          {t("buyNow", "Buy Now")}
-        </Button>
+          </div>
+          <Button
+            className="mt-6 h-12 w-full rounded-[1.15rem] font-semibold shadow-lg shadow-primary/20"
+            disabled={!isEmailValid.valid || loading || params.payment === -1}
+            onClick={handleSubmit}
+            size="lg"
+          >
+            {loading && <LoaderCircle className="mr-2 animate-spin" />}
+            {t("buyNow", "Buy Now")}
+          </Button>
+        </motion.section>
       </div>
     </div>
   );

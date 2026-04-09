@@ -2,6 +2,10 @@
 
 import type i18n from "i18next";
 
+interface ImportMetaEnv {
+  readonly VITE_APP_BUILD_ID?: string;
+}
+
 declare global {
   interface Window {
     logout: () => void;

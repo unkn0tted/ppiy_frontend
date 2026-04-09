@@ -24,7 +24,7 @@ export default function BindPage({
             <Spinner className="size-8" />
           </div>
           <div className="flex flex-col items-center gap-2">
-            <h1 className="bg-gradient-to-r from-blue-500 via-indigo-500 to-violet-500 bg-clip-text font-black text-transparent text-xl uppercase md:text-2xl dark:from-blue-400 dark:via-indigo-300 dark:to-violet-400">
+            <h1 className="bg-gradient-to-r from-pink-400 via-rose-400 to-red-400 bg-clip-text font-black text-transparent text-xl uppercase md:text-2xl dark:from-pink-300 dark:via-rose-300 dark:to-red-300">
               {platform}
             </h1>
             <p className="text-lg text-muted-foreground md:text-xl">

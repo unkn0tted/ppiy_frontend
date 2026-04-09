@@ -46,7 +46,7 @@ export function HoverBorderGradient({
   };
 
   const highlight =
-    "radial-gradient(75% 181.15942028985506% at 50% 50%, #3275F8 0%, rgba(255, 255, 255, 0) 100%)";
+    "radial-gradient(75% 181.15942028985506% at 50% 50%, var(--primary) 0%, rgba(255, 255, 255, 0) 100%)";
 
   useEffect(() => {
     if (!hovered) {
@@ -59,7 +59,7 @@ export function HoverBorderGradient({
   return (
     <Tag
       className={cn(
-        "relative flex h-min w-fit flex-col flex-nowrap content-center items-center justify-center gap-10 overflow-visible rounded-full border bg-black/20 decoration-clone p-px transition duration-500 hover:bg-black/10 dark:bg-white/20",
+        "relative flex h-min w-fit flex-col flex-nowrap content-center items-center justify-center gap-10 overflow-visible rounded-full border border-primary/18 bg-primary/7 decoration-clone p-px transition duration-500 hover:bg-primary/12 dark:bg-primary/18 dark:hover:bg-primary/24",
         containerClassName
       )}
       onMouseEnter={(_event: React.MouseEvent<HTMLDivElement>) => {
@@ -70,7 +70,7 @@ export function HoverBorderGradient({
     >
       <div
         className={cn(
-          "z-10 w-auto rounded-[inherit] bg-black px-4 py-2 text-white",
+          "z-10 w-auto rounded-[inherit] bg-primary/92 px-4 py-2 text-primary-foreground",
           className
         )}
       >
@@ -94,7 +94,7 @@ export function HoverBorderGradient({
         }}
         transition={{ ease: "linear", duration: duration ?? 1 }}
       />
-      <div className="absolute inset-[2px] z-1 flex-none rounded-[100px] bg-black" />
+      <div className="absolute inset-[2px] z-1 flex-none rounded-[100px] bg-background/95" />
     </Tag>
   );
 }

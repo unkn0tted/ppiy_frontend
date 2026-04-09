@@ -13,15 +13,25 @@ import { useTranslation } from "react-i18next";
 
 export function ThemeSwitch() {
   const { t } = useTranslation("components");
-  const { theme, setTheme } = useTheme();
+  const { theme, resolvedTheme, setTheme } = useTheme();
 
   /* Update theme-color meta tag
    * when theme is updated */
   useEffect(() => {
-    const themeColor = theme === "dark" ? "#020817" : "#fff";
-    const metaThemeColor = document.querySelector("meta[name='theme-color']");
-    if (metaThemeColor) metaThemeColor.setAttribute("content", themeColor);
-  }, [theme]);
+    const rootStyles = getComputedStyle(document.documentElement);
+    const lightThemeColor =
+      rootStyles.getPropertyValue("--theme-color-light").trim() || "#fff";
+    const darkThemeColor =
+      rootStyles.getPropertyValue("--theme-color-dark").trim() || "#020817";
+    const themeColor =
+      resolvedTheme === "dark" ? darkThemeColor : lightThemeColor;
+    const metaThemeColors = document.querySelectorAll(
+      "meta[name='theme-color']"
+    );
+    metaThemeColors.forEach((metaThemeColor) => {
+      metaThemeColor.setAttribute("content", themeColor);
+    });
+  }, [resolvedTheme]);
 
   return (
     <DropdownMenu modal={false}>

@@ -1,7 +1,9 @@
 {
+  "accountOverview": "账户概览",
   "accountBalance": "账户余额",
   "commission": "佣金",
   "copySuccess": "邀请链接复制成功",
   "giftAmount": "赠送金额",
-  "inviteCode": "邀请码"
+  "inviteCode": "邀请码",
+  "referralOverview": "推广信息"
 }
