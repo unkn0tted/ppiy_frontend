@@ -28,7 +28,7 @@ import { Separator } from "@workspace/ui/components/separator";
 import { Tabs, TabsList, TabsTrigger } from "@workspace/ui/components/tabs";
 import { Icon } from "@workspace/ui/composed/icon";
 import { cn } from "@workspace/ui/lib/utils";
-import { getClient, getStat } from "@workspace/ui/services/common/common";
+import { getClient } from "@workspace/ui/services/common/common";
 import {
   queryUserSubscribe,
   resetUserSubscribeToken,
@@ -60,8 +60,6 @@ const platforms: (keyof API.DownloadLink)[] = [
 export default function Content() {
   const { t } = useTranslation("dashboard");
   const { getUserSubscribe, getAppSubLink } = useGlobalStore();
-
-  const [protocol, setProtocol] = useState("");
 
   const {
     data: userSubscribe = [],
@@ -119,17 +117,6 @@ export default function Content() {
       }
     }
   }, [availablePlatforms, platform]);
-
-  const { data } = useQuery({
-    queryKey: ["getStat"],
-    queryFn: async () => {
-      const { data } = await getStat({
-        skipErrorHandler: true,
-      });
-      return data.data;
-    },
-    refetchOnWindowFocus: false,
-  });
 
   const statusWatermarks = {
     2: t("finished", "Finished"),
@@ -193,25 +180,6 @@ export default function Content() {
                           }[item]
                         }`}
                       />
-                    </TabsTrigger>
-                  ))}
-                </TabsList>
-              </Tabs>
-            )}
-            {data?.protocol && data?.protocol.length > 1 && (
-              <Tabs
-                className="w-full max-w-full md:w-auto"
-                onValueChange={setProtocol}
-                value={protocol}
-              >
-                <TabsList className="flex *:flex-auto">
-                  {["all", ...(data?.protocol || [])].map((item) => (
-                    <TabsTrigger
-                      className="px-1 uppercase lg:px-3"
-                      key={item}
-                      value={item === "all" ? "" : item}
-                    >
-                      {item}
                     </TabsTrigger>
                   ))}
                 </TabsList>
@@ -397,7 +365,7 @@ export default function Content() {
                     defaultValue="0"
                     type="single"
                   >
-                    {getUserSubscribe(item.short, item.token, protocol)?.map(
+                    {getUserSubscribe(item.short, item.token)?.map(
                       (url, index) => (
                         <AccordionItem key={url} value={String(index)}>
                           <AccordionTrigger className="hover:no-underline">

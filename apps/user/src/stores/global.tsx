@@ -8,10 +8,53 @@ export interface GlobalStore {
   setCommon: (common: Partial<API.GetGlobalConfigResponse>) => void;
   setUser: (user?: API.User) => void;
   getUserInfo: () => Promise<void>;
-  getUserSubscribe: (short: string, token: string, type?: string) => string[];
+  getUserSubscribe: (short: string, token: string) => string[];
   getAppSubLink: (url: string, schema?: string) => string;
 }
 
+function normalizeSubscribePath(path?: string): string {
+  if (!path) return "";
+  return path.startsWith("/") ? path : `/${path}`;
+}
+
+function createSubscribeUrl({
+  domain,
+  short,
+  token,
+  panDomain,
+  subscribePath,
+}: {
+  domain: string;
+  short: string;
+  token: string;
+  panDomain?: boolean;
+  subscribePath?: string;
+}): string {
+  const hostname = panDomain ? `${short}.${domain}` : domain;
+  const url = new URL(
+    `https://${hostname}${normalizeSubscribePath(subscribePath)}`
+  );
+
+  url.searchParams.set("token", token);
+
+  return url.toString();
+}
+
+function replaceQueryPlaceholder(
+  template: string,
+  placeholder: "url" | "name",
+  value: string
+): string {
+  const pattern = new RegExp(
+    `([?&][^=]+)=\\$\\{${placeholder}\\}(?=(&|#|$))`,
+    "g"
+  );
+
+  return template.replace(
+    pattern,
+    (_match, prefix) => `${prefix}=${encodeURIComponent(value)}`
+  );
+}
 /**
  * Extracts the full domain or root domain from a URL.
  *
@@ -120,30 +163,37 @@ export const useGlobalStore = create<GlobalStore>((set, get) => ({
       console.error("Failed to refresh user:", error);
     }
   },
-  getUserSubscribe: (short: string, token: string, type?: string) => {
+  getUserSubscribe: (short: string, token: string) => {
     const { pan_domain, subscribe_domain, subscribe_path } =
       get().common.subscribe || {};
+    const fallbackDomain = extractDomain(window.location.origin, pan_domain);
     const domains = subscribe_domain
-      ? subscribe_domain.split("\n")
-      : [extractDomain(window.location.origin, pan_domain)];
+      ? subscribe_domain
+          .split("\n")
+          .map((domain) => domain.trim())
+          .filter(Boolean)
+      : fallbackDomain
+        ? [fallbackDomain]
+        : [];
 
-    return domains.map((domain) => {
-      if (pan_domain) {
-        if (type)
-          return `https://${short}.${type}.${domain}${subscribe_path}?token=${token}&type=${type}`;
-        return `https://${short}.${domain}${subscribe_path}?token=${token}`;
-      }
-      if (type)
-        return `https://${domain}${subscribe_path}?token=${token}&type=${type}`;
-      return `https://${domain}${subscribe_path}?token=${token}`;
-    });
+    return domains.map((domain) =>
+      createSubscribeUrl({
+        domain,
+        short,
+        token,
+        panDomain: pan_domain,
+        subscribePath: subscribe_path,
+      })
+    );
   },
   getAppSubLink: (url: string, schema?: string) => {
     const name = get().common?.site?.site_name || "";
 
     if (!schema) return "url";
     try {
-      let result = schema.replace(/\${url}/g, url).replace(/\${name}/g, name);
+      let result = replaceQueryPlaceholder(schema, "url", url);
+      result = replaceQueryPlaceholder(result, "name", name);
+      result = result.replace(/\${url}/g, url).replace(/\${name}/g, name);
 
       const maxLoop = 10;
       let prev: string;
