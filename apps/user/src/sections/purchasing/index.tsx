@@ -53,7 +53,7 @@ export default function Purchasing() {
           <Empty
             border
             description={t(
-              "product_showcase_description",
+              "product_showcase_empty_description",
               "No packages are currently available."
             )}
           />

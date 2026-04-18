@@ -2,6 +2,7 @@ import { useTranslation } from "react-i18next";
 import { Display } from "@/components/display";
 
 interface SubscribeDetailProps {
+  title?: string;
   subscribe?: Partial<
     API.Subscribe & {
       name: string;
@@ -10,13 +11,16 @@ interface SubscribeDetailProps {
   >;
 }
 
-export function SubscribeDetail({ subscribe }: Readonly<SubscribeDetailProps>) {
+export function SubscribeDetail({
+  title,
+  subscribe,
+}: Readonly<SubscribeDetailProps>) {
   const { t } = useTranslation("subscribe");
 
   return (
     <>
       <div className="font-semibold">
-        {t("detail.productDetail", "Product Detail")}
+        {title || t("detail.productDetail", "Product Detail")}
       </div>
       <ul className="grid grid-cols-1 gap-3 *:flex *:items-center *:justify-between lg:grid-cols-1">
         {subscribe?.name && (
