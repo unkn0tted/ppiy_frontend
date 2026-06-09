@@ -26,7 +26,9 @@ function versionLockPlugin(): Plugin {
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), "");
-  const rootPkgPath = fileURLToPath(new URL("../../package.json", import.meta.url));
+  const rootPkgPath = fileURLToPath(
+    new URL("../../package.json", import.meta.url)
+  );
   const rootPkg = JSON.parse(readFileSync(rootPkgPath, "utf-8"));
   const appBuildId = `${rootPkg.version || "0.0.0"}-${Date.now()}`;
 
