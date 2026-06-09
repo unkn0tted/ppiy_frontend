@@ -178,11 +178,11 @@ export default function Content() {
             </div>
           </div>
           <div className="space-y-5">
-            <div className="rounded-3xl border border-primary/20 bg-gradient-to-br from-primary/12 via-card to-card p-5 shadow-primary/10 shadow-sm">
+            <div className="rounded-xl border border-primary/20 bg-card/88 p-5 shadow-primary/10 shadow-sm">
               <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
                 <div className="space-y-2">
                   <div className="flex items-center gap-3">
-                    <div className="flex size-11 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-md shadow-primary/20">
+                    <div className="flex size-11 items-center justify-center rounded-md bg-primary text-primary-foreground shadow-primary/20 shadow-sm">
                       <Icon className="size-5" icon="mdi:tune-variant" />
                     </div>
                     <div>
@@ -197,7 +197,7 @@ export default function Content() {
                       </p>
                     </div>
                   </div>
-                  <span className="inline-flex w-fit rounded-full border border-primary/15 bg-background/85 px-3 py-1 font-medium text-primary text-xs">
+                  <span className="inline-flex w-fit rounded-md border border-primary/15 bg-background/85 px-3 py-1 font-medium text-primary text-xs">
                     {t("protocolSelectorDefault", "Default: VLESS")}
                   </span>
                 </div>
@@ -210,7 +210,7 @@ export default function Content() {
                       <button
                         aria-pressed={isActive}
                         className={cn(
-                          "rounded-2xl border px-4 py-3 text-left transition-all",
+                          "rounded-md border px-4 py-3 text-left transition-all",
                           isActive
                             ? "border-primary bg-primary text-primary-foreground shadow-lg shadow-primary/20"
                             : "border-border/70 bg-background/85 hover:border-primary/35 hover:bg-background"
@@ -223,7 +223,7 @@ export default function Content() {
                           <div className="flex items-start gap-3">
                             <div
                               className={cn(
-                                "mt-0.5 flex size-9 items-center justify-center rounded-xl transition-colors",
+                                "mt-0.5 flex size-9 items-center justify-center rounded-md transition-colors",
                                 isActive
                                   ? "bg-primary-foreground/15 text-primary-foreground"
                                   : "bg-primary/10 text-primary"

@@ -11,7 +11,6 @@ import { queryUserSubscribe } from "@workspace/ui/services/user/user";
 import type { TFunction } from "i18next";
 import { type CSSProperties, type ReactNode, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { AmbientMist } from "@/components/ambient-mist";
 import { Display } from "@/components/display";
 import Purchase from "./purchase";
 
@@ -54,7 +53,7 @@ const PLAN_THEMES: PlanTheme[] = [
     accentDeep: "oklch(0.69 0.14 31)",
     accentSoft: "oklch(0.92 0.09 40 / 0.36)",
     shadow: "oklch(0.72 0.13 34 / 0.42)",
-    icon: "lucide:sparkles",
+    icon: "lucide:package",
   },
   {
     accent: "oklch(0.73 0.15 200)",
@@ -139,7 +138,6 @@ function getPricing(subscribe: API.Subscribe) {
       )
     : undefined;
   const shouldShowOriginal = subscribe.show_original_price !== false;
-  const hasBundle = Boolean(primaryDiscount);
   const hasSavings =
     bundleOriginalPrice !== undefined &&
     bundleTotal !== undefined &&
@@ -147,7 +145,6 @@ function getPricing(subscribe: API.Subscribe) {
 
   return {
     bundleOriginalPrice,
-    bundleQuantity,
     bundleTotal,
     discountPercent:
       hasSavings && primaryDiscount
@@ -159,7 +156,6 @@ function getPricing(subscribe: API.Subscribe) {
         : bundleTotal,
     displayQuantity:
       shouldShowOriginal || primaryDiscount === undefined ? 1 : bundleQuantity,
-    hasBundle,
     hasSavings,
     shouldShowOriginal,
   };
@@ -213,13 +209,11 @@ export default function Subscribe() {
     <>
       <div className="space-y-6">
         <section className="rose-shell subscribe-hero px-6 py-6 sm:px-7 sm:py-7">
-          <AmbientMist variant="subscribe" />
-          <div className="subscribe-hero__beam" />
           <div className="flex flex-col gap-6 xl:flex-row xl:items-end xl:justify-between">
             <div className="max-w-2xl space-y-4">
               <div className="flex flex-wrap items-center gap-2.5">
                 <span className="rose-pill">
-                  <span className="size-2 rounded-full bg-primary shadow-[0_0_18px_var(--primary)]" />
+                  <span className="size-2 rounded-[3px] bg-primary shadow-[0_0_18px_var(--primary)]" />
                   {t("buySubscription", "Buy Subscription")}
                 </span>
                 {filteredData.length > 0 && (
@@ -231,13 +225,13 @@ export default function Subscribe() {
                 )}
               </div>
               <div className="space-y-3">
-                <h1 className="rose-section-title font-display text-3xl leading-none sm:text-4xl">
-                  {t("showcase.title", "Pick your next high-speed lane")}
+                <h1 className="rose-section-title font-display text-3xl leading-tight sm:text-4xl">
+                  {t("showcase.title", "Choose a plan for your usage")}
                 </h1>
                 <p className="max-w-2xl text-muted-foreground text-sm leading-7 sm:text-base">
                   {t(
                     "showcase.subtitle",
-                    "Sharper hierarchy, richer motion, and pricing that reads at a glance."
+                    "Compare duration, traffic, devices, and price before you purchase."
                   )}
                 </p>
               </div>
@@ -248,7 +242,7 @@ export default function Subscribe() {
                   <span className="subscribe-hero__metric-label">
                     {t("showcase.metricPlans", "Plans")}
                   </span>
-                  <strong className="font-display text-3xl tracking-[-0.04em]">
+                  <strong className="font-display text-3xl">
                     {filteredData.length}
                   </strong>
                 </div>
@@ -256,7 +250,7 @@ export default function Subscribe() {
                   <span className="subscribe-hero__metric-label">
                     {t("showcase.metricStart", "Starting at")}
                   </span>
-                  <strong className="font-display text-2xl tracking-[-0.04em] sm:text-3xl">
+                  <strong className="font-display text-2xl sm:text-3xl">
                     <Display type="currency" value={startingPrice} />
                   </strong>
                 </div>
@@ -308,12 +302,10 @@ function CardPlan({
   const { description, features } = parseDescription(item.description);
   const {
     bundleOriginalPrice,
-    bundleQuantity,
     bundleTotal,
     discountPercent,
     displayPrice,
     displayQuantity,
-    hasBundle,
     hasSavings,
     shouldShowOriginal,
   } = getPricing(item);
@@ -357,14 +349,6 @@ function CardPlan({
             {discountPercent > 0 && (
               <span className="subscribe-card__badge subscribe-card__badge--discount">
                 -{discountPercent}%
-              </span>
-            )}
-            {hasBundle && bundleQuantity > 1 && (
-              <span className="subscribe-card__badge">
-                {t("showcase.bundle", "{{quantity}} {{unit}} bundle", {
-                  quantity: bundleQuantity,
-                  unit: unitTime,
-                })}
               </span>
             )}
           </div>

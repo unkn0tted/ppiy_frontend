@@ -10,6 +10,7 @@ interface SubscribeBillingProps {
       unit_price: number;
       unit_time: string;
       subscribe_discount: number;
+      discount_rules?: API.SubscribeDiscount[];
       show_original_price?: boolean;
     }
   >;
@@ -17,6 +18,29 @@ interface SubscribeBillingProps {
 
 export function SubscribeBilling({ order }: Readonly<SubscribeBillingProps>) {
   const { t } = useTranslation("subscribe");
+  const quantity = order?.quantity ?? 1;
+  const discountRule = order?.discount_rules?.find(
+    (item) => item.quantity === quantity
+  );
+  const estimatedPrice =
+    order?.unit_price !== undefined ? order.unit_price * quantity : undefined;
+  const estimatedProductDiscount =
+    estimatedPrice !== undefined && discountRule
+      ? Math.round(estimatedPrice * (1 - (discountRule.discount ?? 100) / 100))
+      : 0;
+  const price = order?.price ?? estimatedPrice;
+  const productDiscount = order?.discount ?? estimatedProductDiscount;
+  const couponDiscount = order?.coupon_discount ?? 0;
+  const feeAmount = order?.fee_amount ?? 0;
+  const giftAmount = order?.gift_amount ?? 0;
+  const estimatedAmount =
+    price === undefined
+      ? undefined
+      : Math.max(
+          0,
+          price - productDiscount - couponDiscount + feeAmount - giftAmount
+        );
+  const amount = order?.amount ?? estimatedAmount;
 
   return (
     <>
@@ -30,7 +54,7 @@ export function SubscribeBilling({ order }: Readonly<SubscribeBillingProps>) {
               {t("billing.duration", "Duration")}
             </span>
             <span>
-              {order?.quantity || 1}{" "}
+              {quantity}{" "}
               {t(order?.unit_time || "Month", order?.unit_time || "Month")}
             </span>
           </li>
@@ -52,10 +76,7 @@ export function SubscribeBilling({ order }: Readonly<SubscribeBillingProps>) {
             {t("billing.price", "Price")}
           </span>
           <span>
-            <Display
-              type="currency"
-              value={order?.price || order?.unit_price}
-            />
+            <Display type="currency" value={price} />
           </span>
         </li>
         <li>
@@ -63,7 +84,7 @@ export function SubscribeBilling({ order }: Readonly<SubscribeBillingProps>) {
             {t("billing.productDiscount", "Product Discount")}
           </span>
           <span>
-            <Display type="currency" value={order?.discount} />
+            <Display type="currency" value={productDiscount} />
           </span>
         </li>
         <li>
@@ -71,7 +92,7 @@ export function SubscribeBilling({ order }: Readonly<SubscribeBillingProps>) {
             {t("billing.couponDiscount", "Coupon Discount")}
           </span>
           <span>
-            <Display type="currency" value={order?.coupon_discount} />
+            <Display type="currency" value={couponDiscount} />
           </span>
         </li>
         <li>
@@ -79,7 +100,7 @@ export function SubscribeBilling({ order }: Readonly<SubscribeBillingProps>) {
             {t("billing.fee", "Fee")}
           </span>
           <span>
-            <Display type="currency" value={order?.fee_amount} />
+            <Display type="currency" value={feeAmount} />
           </span>
         </li>
         <li>
@@ -87,7 +108,7 @@ export function SubscribeBilling({ order }: Readonly<SubscribeBillingProps>) {
             {t("billing.gift", "Gift")}
           </span>
           <span>
-            <Display type="currency" value={order?.gift_amount} />
+            <Display type="currency" value={giftAmount} />
           </span>
         </li>
       </ul>
@@ -97,7 +118,7 @@ export function SubscribeBilling({ order }: Readonly<SubscribeBillingProps>) {
           {t("billing.total", "Total")}
         </span>
         <span>
-          <Display type="currency" value={order?.amount} />
+          <Display type="currency" value={amount} />
         </span>
       </div>
     </>

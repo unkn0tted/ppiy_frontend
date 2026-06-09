@@ -14,7 +14,7 @@ import { Separator } from "@workspace/ui/components/separator";
 import { preCreateOrder, purchase } from "@workspace/ui/services/user/order";
 import { useDebounce } from "ahooks";
 import { LoaderCircle } from "lucide-react";
-import { useCallback, useEffect, useRef, useState, useTransition } from "react";
+import { useCallback, useEffect, useState, useTransition } from "react";
 import { useTranslation } from "react-i18next";
 import CouponInput from "@/sections/subscribe/coupon-input";
 import DurationSelector from "@/sections/subscribe/duration-selector";
@@ -38,17 +38,14 @@ export default function Purchase({
   const [params, setParams] = useState<Partial<API.PurchaseOrderRequest>>({
     quantity: 1,
     subscribe_id: 0,
-    payment: -1,
+    payment: undefined,
     coupon: "",
   });
   const [loading, startTransition] = useTransition();
-  const lastSuccessOrderRef = useRef<API.PreOrderResponse | undefined>(
-    undefined
-  );
   const debouncedCoupon = useDebounce(params.coupon, { wait: 400 });
 
   const { data: order } = useQuery({
-    enabled: !!subscribe?.id && params.payment !== -1,
+    enabled: !!subscribe?.id && params.payment !== undefined,
     queryKey: [
       "preCreateOrder",
       subscribe?.id,
@@ -67,12 +64,9 @@ export default function Purchase({
           { skipErrorHandler: true }
         );
         const result = data.data;
-        if (result) {
-          lastSuccessOrderRef.current = result;
-        }
         return result;
       } catch (_error) {
-        return lastSuccessOrderRef.current;
+        return;
       }
     },
     retry: false,
@@ -103,6 +97,8 @@ export default function Purchase({
   );
 
   const handleSubmit = useCallback(async () => {
+    if (params.payment === undefined) return;
+
     startTransition(async () => {
       try {
         const response = await purchase(params as API.PurchaseOrderRequest);
@@ -143,6 +139,8 @@ export default function Purchase({
                   ...order,
                   quantity: params.quantity,
                   unit_price: subscribe?.unit_price,
+                  discount_rules: subscribe?.discount,
+                  unit_time: subscribe?.unit_time,
                   show_original_price: subscribe?.show_original_price,
                 }}
               />
@@ -167,12 +165,12 @@ export default function Purchase({
                 onChange={(value) => {
                   handleChange("payment", value);
                 }}
-                value={params.payment as number}
+                value={params.payment}
               />
             </div>
             <Button
               className="fixed bottom-0 left-0 w-full md:relative md:mt-6"
-              disabled={loading}
+              disabled={loading || params.payment === undefined}
               onClick={handleSubmit}
             >
               {loading && <LoaderCircle className="mr-2 animate-spin" />}

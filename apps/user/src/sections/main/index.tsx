@@ -31,9 +31,8 @@ export default function Main() {
   if (!showLanding) return null;
 
   return (
-    <main className="container relative py-4 sm:py-6 lg:py-8">
-      <div className="pointer-events-none absolute inset-x-8 top-6 h-40 rounded-full bg-primary/8 blur-3xl" />
-      <div className="relative space-y-5 sm:space-y-6 lg:space-y-8">
+    <main className="container relative pt-6 pb-4 sm:pt-8 sm:pb-6 lg:pt-10 lg:pb-8">
+      <div className="relative grid gap-6 sm:gap-7 lg:gap-9">
         <Hero />
         <Stats />
         <ProductShowcase />

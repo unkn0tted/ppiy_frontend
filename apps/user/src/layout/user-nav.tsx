@@ -35,7 +35,7 @@ export function UserNav() {
     return (
       <DropdownMenu modal={false}>
         <DropdownMenuTrigger asChild>
-          <div className="flex cursor-pointer items-center gap-2 rounded-full border border-primary/18 bg-background/90 px-2 py-1.5 shadow-lg shadow-primary/10 transition-all duration-200 hover:border-primary/30 hover:bg-accent/65">
+          <div className="flex cursor-pointer items-center gap-2 rounded-md border border-primary/18 bg-background/90 px-2 py-1.5 shadow-lg shadow-primary/10 transition-all duration-200 hover:border-primary/30 hover:bg-accent/65">
             <Avatar className="h-6 w-6">
               <AvatarImage
                 alt={user?.avatar ?? ""}

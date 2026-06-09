@@ -10,7 +10,7 @@ import { prePurchaseOrder, purchase } from "@workspace/ui/services/user/portal";
 import { useDebounce } from "ahooks";
 import { motion } from "framer-motion";
 import { LoaderCircle } from "lucide-react";
-import { useCallback, useEffect, useRef, useState, useTransition } from "react";
+import { useCallback, useEffect, useState, useTransition } from "react";
 import { useTranslation } from "react-i18next";
 import { SubscribeBilling } from "@/sections/subscribe/billing";
 import CouponInput from "@/sections/subscribe/coupon-input";
@@ -39,13 +39,15 @@ export default function Content({
     t("paymentMethod", "Payment Method"),
   ];
   const fieldClassName =
-    "rounded-[1rem] border-primary/12 bg-white/75 shadow-[0_18px_34px_-28px_oklch(0.64_0.16_11_/0.4)] dark:border-white/8 dark:bg-white/6";
+    "border-primary/12 bg-white/75 shadow-[0_18px_34px_-28px_oklch(0.64_0.16_11_/0.4)] dark:border-white/8 dark:bg-white/6";
   const { common } = useGlobalStore();
   const navigate = useNavigate();
-  const [params, setParams] = useState<API.PortalPurchaseRequest>({
+  const [params, setParams] = useState<
+    Omit<API.PortalPurchaseRequest, "payment"> & { payment?: number }
+  >({
     quantity: 1,
     subscribe_id: 0,
-    payment: -1,
+    payment: undefined,
     coupon: "",
     auth_type: "email",
     identifier: "",
@@ -56,13 +58,10 @@ export default function Content({
     valid: false,
     message: "",
   });
-  const lastSuccessOrderRef = useRef<API.PrePurchaseOrderResponse | undefined>(
-    undefined
-  );
   const debouncedCoupon = useDebounce(params.coupon, { wait: 400 });
 
   const { data: order } = useQuery({
-    enabled: !!subscription?.id && params.payment !== -1,
+    enabled: !!subscription?.id && params.payment !== undefined,
     queryKey: [
       "prePurchaseOrder",
       subscription?.id,
@@ -81,12 +80,9 @@ export default function Content({
           { skipErrorHandler: true }
         );
         const result = data.data;
-        if (result) {
-          lastSuccessOrderRef.current = result;
-        }
         return result;
       } catch (_error) {
-        return lastSuccessOrderRef.current;
+        return;
       }
     },
     retry: false,
@@ -113,9 +109,11 @@ export default function Content({
   );
 
   const handleSubmit = useCallback(async () => {
+    if (params.payment === undefined) return;
+
     startTransition(async () => {
       try {
-        const { data } = await purchase(params);
+        const { data } = await purchase(params as API.PortalPurchaseRequest);
         const { order_no } = data.data!;
         if (order_no) {
           localStorage.setItem(
@@ -155,7 +153,7 @@ export default function Content({
             <span className="rose-pill">
               {t("buySubscription", "Buy Subscription")}
             </span>
-            <h1 className="mt-6 max-w-2xl font-display text-4xl leading-[0.95] tracking-[-0.04em] sm:text-5xl">
+            <h1 className="mt-6 max-w-2xl font-display text-4xl leading-tight sm:text-5xl">
               <span className="rose-section-title">{subscription.name}</span>
             </h1>
             <p className="mt-4 max-w-2xl text-base text-muted-foreground leading-8">
@@ -171,7 +169,7 @@ export default function Content({
           <div className="flex flex-wrap gap-2.5 lg:justify-end">
             {checkoutTags.map((item) => (
               <span
-                className="rounded-full border border-primary/12 bg-white/70 px-3.5 py-2 font-medium text-foreground/90 text-sm shadow-[0_14px_28px_-26px_oklch(0.64_0.16_11_/0.4)] dark:border-white/8 dark:bg-white/6"
+                className="rounded-md border border-primary/12 bg-white/70 px-3.5 py-2 font-medium text-foreground/90 text-sm shadow-[0_14px_28px_-26px_oklch(0.64_0.16_11_/0.4)] dark:border-white/8 dark:bg-white/6"
                 key={item}
               >
                 {item}
@@ -392,7 +390,7 @@ export default function Content({
             <PaymentMethods
               balance={false}
               onChange={(value: number) => handleChange("payment", value)}
-              value={params.payment!}
+              value={params.payment}
             />
           </div>
           <div className="mt-6 h-px bg-gradient-to-r from-primary/10 via-primary/35 to-transparent" />
@@ -402,13 +400,17 @@ export default function Content({
                 ...order,
                 quantity: params.quantity,
                 unit_price: subscription?.unit_price,
+                discount_rules: subscription?.discount,
+                unit_time: subscription?.unit_time,
                 show_original_price: subscription?.show_original_price,
               }}
             />
           </div>
           <Button
-            className="mt-6 h-12 w-full rounded-[1.15rem] font-semibold shadow-lg shadow-primary/20"
-            disabled={!isEmailValid.valid || loading || params.payment === -1}
+            className="mt-6 h-12 w-full font-semibold shadow-lg shadow-primary/20"
+            disabled={
+              !isEmailValid.valid || loading || params.payment === undefined
+            }
             onClick={handleSubmit}
             size="lg"
           >

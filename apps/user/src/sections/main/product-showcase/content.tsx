@@ -8,6 +8,7 @@ import { useTranslation } from "react-i18next";
 import { Display } from "@/components/display";
 import { SubscribeDetail } from "@/sections/subscribe/detail";
 import { useGlobalStore } from "@/stores/global";
+import { cardReveal, sectionReveal, sectionViewport } from "../motion";
 
 interface ProductShowcaseProps {
   subscriptionData: API.Subscribe[];
@@ -68,66 +69,41 @@ export function Content({ subscriptionData }: ProductShowcaseProps) {
 
   return (
     <motion.section
-      className="rose-shell px-6 py-7 sm:px-8 lg:px-10 lg:py-9"
-      initial={{ opacity: 0 }}
-      transition={{ duration: 0.5 }}
-      viewport={{ once: true }}
-      whileInView={{ opacity: 1 }}
+      className="rose-shell isolate px-6 py-7 sm:px-8 lg:px-10 lg:py-9"
+      initial="hidden"
+      variants={sectionReveal}
+      viewport={sectionViewport}
+      whileInView="visible"
     >
       <div className="rose-grid" />
-      <div className="-left-20 -top-24 pointer-events-none absolute h-64 w-64 rounded-full bg-primary/16 blur-3xl" />
-      <div className="pointer-events-none absolute right-8 bottom-8 h-44 w-44 rounded-full bg-rose-200/26 blur-3xl dark:bg-rose-400/10" />
-      <div className="mb-9 grid gap-5 xl:grid-cols-[0.76fr_0.24fr] xl:items-end">
+      <div className="mb-9 grid gap-5 xl:grid-cols-[0.68fr_0.32fr] xl:items-end">
         <div>
           <span className="rose-pill">
-            {t("product_showcase_badge", "Plan Selection")}
+            {t("product_showcase_badge", "Plans")}
           </span>
-          <motion.h2
-            className="mt-6 max-w-3xl font-display text-3xl leading-tight sm:text-[2.65rem]"
-            initial={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.5 }}
-            whileInView={{ opacity: 1, y: 0 }}
-          >
+          <h2 className="mt-6 max-w-3xl font-display text-3xl leading-tight sm:text-4xl">
             <span className="rose-section-title">
               {t(
                 "product_showcase_title",
-                "A few plans shaped around different rhythms of use"
+                "Choose a plan that matches your actual use."
               )}
             </span>
-          </motion.h2>
-          <motion.p
-            className="mt-4 max-w-2xl text-base text-muted-foreground leading-8"
-            initial={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            whileInView={{ opacity: 1, y: 0 }}
-          >
+          </h2>
+          <p className="mt-4 max-w-2xl text-base text-muted-foreground leading-8">
             {t(
               "product_showcase_description",
-              "Selection does not need to feel noisy. When duration, capacity, and price sit together, comparison becomes calmer."
+              "Duration, traffic, devices, and price are grouped so you can compare without jumping between pages."
             )}
-          </motion.p>
+          </p>
         </div>
-        <motion.p
-          className="max-w-sm border-primary/16 border-l pl-4 text-foreground/72 text-sm leading-7 xl:justify-self-end xl:border-r xl:border-l-0 xl:pr-4 xl:pl-0 xl:text-right"
-          initial={{ opacity: 0, y: -20 }}
-          transition={{ duration: 0.5, delay: 0.16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-        >
-          {t(
-            "product_showcase_note",
-            "If a plan is meant for longer use, it should also be easier to read at a glance."
-          )}
-        </motion.p>
       </div>
       <div className="mx-auto grid w-full gap-5 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
         {subscriptionData?.map((item, index) => (
           <motion.div
             className="w-full"
-            initial={{ opacity: 0, y: 50 }}
+            custom={index}
             key={item.id}
-            transition={{ duration: 0.5, delay: index * 0.1 }}
-            viewport={{ once: true, amount: 0.5 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            variants={cardReveal}
           >
             {(() => {
               const parsedDescription = parseSubscriptionDescription(
@@ -138,25 +114,25 @@ export function Content({ subscriptionData }: ProductShowcaseProps) {
               return (
                 <article
                   className={cn(
-                    "rose-panel group hover:-translate-y-1 flex h-full flex-col p-6 transition-all duration-300",
+                    "rose-panel main-plan-card group hover:-translate-y-1 flex h-full flex-col p-6 transition-all duration-300",
                     isHighlighted &&
-                      "border-primary/28 bg-linear-to-b from-primary/14 via-white/88 to-white/76 shadow-[0_26px_58px_-42px_oklch(0.64_0.16_11_/0.78)] dark:from-primary/12 dark:via-white/6 dark:to-white/4"
+                      "main-plan-card--highlight border-primary/28 bg-primary/8 shadow-[0_18px_44px_-34px_oklch(0.64_0.16_11_/0.52)] dark:bg-primary/10"
                   )}
                 >
-                  {isHighlighted && (
-                    <span className="absolute top-5 right-5 rounded-full border border-primary/18 bg-primary/10 px-3 py-1 font-semibold text-[0.72rem] text-primary uppercase tracking-[0.14em]">
-                      {t("product_showcase_highlight", "Balanced Pick")}
-                    </span>
-                  )}
                   <div className="flex items-start justify-between gap-4">
                     <div>
                       <p className="font-medium text-muted-foreground text-xs uppercase tracking-[0.16em]">
                         0{index + 1}
                       </p>
-                      <h3 className="mt-3 font-display text-2xl leading-none sm:text-[2rem]">
+                      <h3 className="mt-3 font-display text-2xl leading-none">
                         {item.name}
                       </h3>
                     </div>
+                    {isHighlighted && (
+                      <span className="shrink-0 rounded-md border border-primary/18 bg-primary/10 px-3 py-1 font-semibold text-[0.72rem] text-primary uppercase tracking-[0.12em]">
+                        {t("product_showcase_highlight", "Balanced Pick")}
+                      </span>
+                    )}
                   </div>
                   {parsedDescription.description && (
                     <p className="mt-5 max-w-sm text-foreground/72 text-sm leading-7">
@@ -164,7 +140,7 @@ export function Content({ subscriptionData }: ProductShowcaseProps) {
                     </p>
                   )}
                   {parsedDescription.features.length > 0 && (
-                    <div className="mt-6 rounded-[1.35rem] border border-primary/10 bg-white/56 p-4 dark:bg-white/4">
+                    <div className="mt-6 rounded-md border border-primary/10 bg-white/56 p-4 dark:bg-white/4">
                       <p className="font-medium text-muted-foreground text-xs uppercase tracking-[0.18em]">
                         {t("product_showcase_feature_label", "Included")}
                       </p>
@@ -178,7 +154,7 @@ export function Content({ subscriptionData }: ProductShowcaseProps) {
                             key={key}
                           >
                             {feature.icon ? (
-                              <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
+                              <div className="flex size-8 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
                                 <Icon
                                   className={cn("size-4", {
                                     "text-green-500":
@@ -198,7 +174,7 @@ export function Content({ subscriptionData }: ProductShowcaseProps) {
                       </ul>
                     </div>
                   )}
-                  <div className="mt-4 rounded-[1.35rem] border border-primary/10 bg-white/44 p-4 dark:bg-white/3">
+                  <div className="mt-4 rounded-md border border-primary/10 bg-white/44 p-4 dark:bg-white/3">
                     <SubscribeDetail
                       subscribe={{
                         ...item,
@@ -234,19 +210,14 @@ export function Content({ subscriptionData }: ProductShowcaseProps) {
                         t(item.unit_time || "Month", item.unit_time || "Month");
 
                       return (
-                        <motion.div
-                          animate={{ opacity: 1 }}
-                          className="space-y-2"
-                          initial={{ opacity: 0 }}
-                          transition={{ duration: 0.5, delay: 0.2 }}
-                        >
+                        <div className="space-y-2">
                           <p className="font-medium text-muted-foreground text-xs uppercase tracking-[0.16em]">
                             {t(
                               "product_showcase_price_label",
                               "Reference Price"
                             )}
                           </p>
-                          <h2 className="font-display text-3xl leading-none sm:text-[2.2rem]">
+                          <h2 className="font-display text-3xl leading-none">
                             <Display type="currency" value={displayPrice} />
                             <span className="font-medium text-base text-foreground/75">
                               {displayQuantity === 1
@@ -254,14 +225,14 @@ export function Content({ subscriptionData }: ProductShowcaseProps) {
                                 : `/${displayQuantity} ${unitTime}`}
                             </span>
                           </h2>
-                        </motion.div>
+                        </div>
                       );
                     })()}
-                    <motion.div className="mt-auto">
+                    <div className="mt-auto flex justify-end">
                       <Button
                         asChild
                         className={cn(
-                          "w-full rounded-[1.15rem] font-semibold shadow-lg",
+                          "w-full font-semibold shadow-sm sm:w-auto sm:min-w-36",
                           isHighlighted
                             ? "shadow-primary/15"
                             : "border-primary/14 bg-white/68 text-foreground hover:bg-white/90 dark:bg-white/6 dark:hover:bg-white/10"
@@ -275,7 +246,7 @@ export function Content({ subscriptionData }: ProductShowcaseProps) {
                           {t("product_showcase_action", "View Plan")}
                         </Link>
                       </Button>
-                    </motion.div>
+                    </div>
                   </div>
                 </article>
               );

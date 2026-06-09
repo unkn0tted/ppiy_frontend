@@ -1,7 +1,7 @@
-import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import { Icon } from "@workspace/ui/composed/icon";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
+import { cardReveal, sectionReveal, sectionViewport } from "./motion";
 
 export function GlobalMap() {
   const { t } = useTranslation("main");
@@ -11,7 +11,7 @@ export function GlobalMap() {
       title: t("global_map_pillar_network_title", "Routing Rhythm"),
       description: t(
         "global_map_pillar_network_desc",
-        "Switching and recovery stay calmer, even through longer sessions."
+        "Protocol and import options are kept close to the dashboard."
       ),
     },
     {
@@ -19,7 +19,7 @@ export function GlobalMap() {
       title: t("global_map_pillar_coverage_title", "Regional Spread"),
       description: t(
         "global_map_pillar_coverage_desc",
-        "Coverage can extend outward without increasing visual noise."
+        "Region labels and node details stay compact and readable."
       ),
     },
     {
@@ -27,72 +27,48 @@ export function GlobalMap() {
       title: t("global_map_pillar_experience_title", "Interaction Focus"),
       description: t(
         "global_map_pillar_experience_desc",
-        "Attention stays on the current task, so browsing feels more composed."
+        "Copy, scan, and import actions are placed where users expect them."
       ),
     },
   ];
 
   return (
     <motion.section
-      className="rose-shell px-6 py-7 sm:px-8 lg:px-10 lg:py-9"
-      initial={{ opacity: 0 }}
-      transition={{ duration: 0.5 }}
-      viewport={{ once: true }}
-      whileInView={{ opacity: 1 }}
+      className="rose-shell isolate px-6 py-7 sm:px-8 lg:px-10 lg:py-9"
+      initial="hidden"
+      variants={sectionReveal}
+      viewport={sectionViewport}
+      whileInView="visible"
     >
       <div className="rose-grid" />
-      <div className="-left-16 pointer-events-none absolute top-14 h-44 w-44 rounded-full bg-primary/16 blur-3xl" />
-      <div className="pointer-events-none absolute right-10 bottom-8 h-36 w-36 rounded-full bg-rose-200/24 blur-3xl dark:bg-rose-400/8" />
-      <div className="grid items-center gap-10 xl:grid-cols-[0.86fr_1.14fr]">
+      <div className="grid items-center gap-8 xl:grid-cols-[0.46fr_0.54fr] xl:gap-10">
         <div className="flex flex-col">
           <span className="rose-pill">
             {t("global_map_badge", "Global Network")}
           </span>
-          <motion.h2
-            className="mt-6 max-w-lg font-display text-3xl leading-tight sm:text-[2.65rem]"
-            initial={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.5 }}
-            whileInView={{ opacity: 1, y: 0 }}
-          >
+          <h2 className="mt-6 max-w-lg font-display text-3xl leading-tight sm:text-4xl">
             <span className="rose-section-title">
               {t("global_map_itle", "Wider Coverage, Lighter Expression")}
             </span>
-          </motion.h2>
-          <motion.p
-            className="mt-4 max-w-xl text-base text-muted-foreground leading-8 sm:text-lg"
-            initial={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            whileInView={{ opacity: 1, y: 0 }}
-          >
+          </h2>
+          <p className="mt-4 max-w-xl text-base text-muted-foreground leading-8 sm:text-lg">
             {t(
               "global_map_description",
-              "Routing and node selection are handled underneath, while the surface keeps only the information worth noticing."
+              "Region, protocol, and import information are arranged so connection setup stays predictable."
             )}
-          </motion.p>
-          <motion.p
-            className="mt-6 max-w-md border-primary/16 border-l pl-4 text-foreground/72 text-sm leading-7 sm:text-[0.95rem]"
-            initial={{ opacity: 0, y: -18 }}
-            transition={{ duration: 0.45, delay: 0.16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-          >
-            {t(
-              "global_map_note",
-              "As the underlying range expands, the presentation should become more restrained, not louder."
-            )}
-          </motion.p>
+          </p>
           <div className="mt-8 grid gap-3 sm:grid-cols-2">
             {notes.map((item, index) => (
               <motion.div
-                className={`rose-panel min-h-[168px] p-5 sm:p-6 ${
+                className={`rose-panel main-feature-card min-h-[156px] p-5 sm:p-6 ${
                   index === 2 ? "sm:col-span-2" : ""
                 }`}
-                initial={{ opacity: 0, y: 18 }}
+                custom={index}
                 key={item.title}
-                transition={{ duration: 0.35, delay: index * 0.08 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                variants={cardReveal}
               >
                 <div className="flex items-start gap-3">
-                  <div className="flex size-11 items-center justify-center rounded-2xl bg-primary/12 text-primary">
+                  <div className="flex size-11 items-center justify-center rounded-md bg-primary/10 text-primary">
                     <Icon className="size-5" icon={item.icon} />
                   </div>
                   <div>
@@ -107,62 +83,100 @@ export function GlobalMap() {
           </div>
         </div>
         <motion.div
-          animate={{ scale: 1, opacity: 1 }}
-          className="relative mx-auto w-full max-w-[44rem] xl:justify-self-end"
-          initial={{ scale: 0.94, opacity: 0 }}
-          transition={{
-            type: "spring",
-            stiffness: 100,
-            damping: 15,
-            delay: 0.25,
-          }}
+          className="relative mx-auto grid w-full max-w-[44rem] gap-4 xl:justify-self-end"
+          custom={1}
+          variants={cardReveal}
         >
-          <div className="rose-panel p-4 sm:p-5">
-            <div className="absolute inset-x-14 top-0 h-px bg-gradient-to-r from-transparent via-white/90 to-transparent dark:via-white/15" />
-            <div className="rounded-[2rem] border border-primary/12 bg-background/72 p-3 sm:p-5 dark:border-white/8 dark:bg-black/10">
-              <div className="mb-4 flex items-center justify-between gap-4 border-primary/10 border-b pb-4">
-                <div>
-                  <p className="font-medium text-[0.72rem] text-muted-foreground uppercase tracking-[0.2em]">
-                    {t("global_map_visual_eyebrow", "Routing Surface")}
-                  </p>
-                  <p className="mt-2 max-w-xs text-foreground/70 text-sm leading-relaxed">
-                    {t(
-                      "global_map_visual_description",
-                      "Complexity stays in the background so the interface can remain quieter in front."
-                    )}
-                  </p>
-                </div>
-                <div className="hidden size-11 rounded-full border border-primary/14 bg-white/72 shadow-[0_14px_34px_-26px_oklch(0.64_0.16_11_/0.5)] sm:block dark:bg-white/8" />
+          <div className="main-map-stage">
+            <div className="main-map-stage__grid" />
+            <div className="main-map-stage__route main-map-stage__route--one" />
+            <div className="main-map-stage__route main-map-stage__route--two" />
+            <div className="main-map-stage__route main-map-stage__route--three" />
+            <span className="main-map-stage__node main-map-stage__node--one" />
+            <span className="main-map-stage__node main-map-stage__node--two" />
+            <span className="main-map-stage__node main-map-stage__node--three" />
+            <span className="main-map-stage__node main-map-stage__node--four" />
+            <div className="flex items-center justify-between gap-4 border-primary/10 border-b pb-4 dark:border-white/10">
+              <div>
+                <p className="font-medium text-[0.72rem] text-muted-foreground uppercase tracking-[0.16em]">
+                  {t("global_map_visual_eyebrow", "Node overview")}
+                </p>
               </div>
-              <DotLottieReact
-                autoplay
-                className="w-full scale-[1.18] rounded-2xl"
-                loop
-                src="./assets/lotties/global-map.json"
-              />
+              <div className="flex size-11 items-center justify-center rounded-md border border-primary/12 bg-primary/10 text-primary">
+                <Icon className="size-5" icon="uil:map-marker" />
+              </div>
+            </div>
+            <div className="mt-5 grid gap-3">
+              {[
+                {
+                  region: t("global_map_region_asia", "Asia"),
+                  status: t("global_map_status_available", "Available"),
+                  icon: "uil:location-point",
+                },
+                {
+                  region: t("global_map_region_europe", "Europe"),
+                  status: t("global_map_status_available", "Available"),
+                  icon: "uil:location-point",
+                },
+                {
+                  region: t("global_map_region_america", "America"),
+                  status: t("global_map_status_available", "Available"),
+                  icon: "uil:location-point",
+                },
+              ].map((item) => (
+                <div
+                  className="main-map-region flex items-center justify-between gap-4 rounded-md border border-primary/10 bg-background/62 p-3 dark:border-white/8 dark:bg-white/4"
+                  key={item.region}
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="flex size-9 items-center justify-center rounded-md bg-primary/10 text-primary">
+                      <Icon className="size-4" icon={item.icon} />
+                    </div>
+                    <div>
+                      <p className="font-semibold">{item.region}</p>
+                      <p className="text-muted-foreground text-xs">
+                        {item.status}
+                      </p>
+                    </div>
+                  </div>
+                  <span className="h-2 w-16 rounded-full bg-primary/20">
+                    <span className="block h-full w-3/4 rounded-full bg-primary" />
+                  </span>
+                </div>
+              ))}
             </div>
           </div>
-          <div className="rose-panel rose-floating absolute top-6 left-0 hidden max-w-[240px] p-4 sm:block">
-            <p className="font-semibold text-sm">
-              {t("global_map_floating_left_title", "Routing Order")}
-            </p>
-            <p className="mt-2 text-muted-foreground text-sm leading-relaxed">
-              {t(
-                "global_map_floating_left_desc",
-                "Adjustments stay quieter in the background, without needing attention each time."
-              )}
-            </p>
-          </div>
-          <div className="rose-panel rose-floating-delay -bottom-4 absolute right-0 max-w-[240px] p-4">
-            <p className="font-semibold text-sm">
-              {t("global_map_floating_right_title", "Expanded Range")}
-            </p>
-            <p className="mt-2 text-muted-foreground text-sm leading-relaxed">
-              {t(
-                "global_map_floating_right_desc",
-                "Coverage extends outward while the front-end expression stays concise."
-              )}
-            </p>
+          <div className="grid gap-3 sm:grid-cols-2">
+            <motion.div
+              className="rose-panel main-feature-card p-4"
+              custom={2}
+              variants={cardReveal}
+            >
+              <p className="font-semibold text-sm">
+                {t("global_map_floating_left_title", "Import")}
+              </p>
+              <p className="mt-2 text-muted-foreground text-sm leading-relaxed">
+                {t(
+                  "global_map_floating_left_desc",
+                  "Subscription links and QR codes are available in the dashboard."
+                )}
+              </p>
+            </motion.div>
+            <motion.div
+              className="rose-panel main-feature-card p-4"
+              custom={3}
+              variants={cardReveal}
+            >
+              <p className="font-semibold text-sm">
+                {t("global_map_floating_right_title", "Protocols")}
+              </p>
+              <p className="mt-2 text-muted-foreground text-sm leading-relaxed">
+                {t(
+                  "global_map_floating_right_desc",
+                  "Switch protocol output before copying or scanning."
+                )}
+              </p>
+            </motion.div>
           </div>
         </motion.div>
       </div>

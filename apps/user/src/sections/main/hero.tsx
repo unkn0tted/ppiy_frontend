@@ -1,74 +1,94 @@
-import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import { Link } from "@tanstack/react-router";
 import { Button } from "@workspace/ui/components/button";
 import { Icon } from "@workspace/ui/composed/icon";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
+import type { CSSProperties } from "react";
 import { useTranslation } from "react-i18next";
-import { AmbientMist } from "@/components/ambient-mist";
 import { useGlobalStore } from "@/stores/global";
 
 export function Hero() {
   const { t } = useTranslation("main");
   const { common, user } = useGlobalStore();
   const { site } = common;
-  const heroCaption =
-    site.site_desc?.trim() ||
-    t("hero_caption", "Designed for longer sessions with a quieter surface.");
+  const prefersReducedMotion = useReducedMotion();
+  const statusItems = [
+    {
+      icon: "uil:shield-check",
+      title: t("hero_floating_security_title", "Stable routing"),
+      description: t(
+        "hero_floating_security_desc",
+        "Keep connection details organized without extra steps."
+      ),
+    },
+    {
+      icon: "uil:qrcode-scan",
+      title: t("hero_quick_import_title", "Quick import"),
+      description: t(
+        "hero_quick_import_desc",
+        "Copy, scan, or import your subscription from one place."
+      ),
+    },
+    {
+      icon: "uil:apps",
+      title: t("hero_floating_global_title", "Plan overview"),
+      description: t(
+        "hero_floating_global_desc",
+        "Traffic, expiry, and renewal actions stay easy to find."
+      ),
+    },
+  ];
 
   return (
     <motion.section
       animate={{ opacity: 1, y: 0 }}
-      className="rose-shell px-6 py-7 sm:px-8 sm:py-9 lg:px-10 lg:py-12"
-      initial={{ opacity: 0, y: 30 }}
-      transition={{ type: "spring", stiffness: 110, damping: 18 }}
-      viewport={{ once: true, amount: 0.2 }}
+      className="rose-shell main-hero isolate px-5 py-7 sm:px-8 sm:py-10 lg:px-10 lg:py-12"
+      initial={{ opacity: 0, y: 28 }}
+      transition={{ duration: 0.72, ease: "easeOut" }}
     >
       <div className="rose-grid" />
-      <AmbientMist variant="hero" />
-      <div className="pointer-events-none absolute inset-y-0 right-0 hidden w-[42%] bg-gradient-to-l from-primary/12 via-transparent to-transparent lg:block" />
-      <div className="-right-16 -top-20 pointer-events-none absolute h-56 w-56 rounded-full bg-primary/20 blur-3xl" />
-      <div className="-bottom-24 -left-8 pointer-events-none absolute h-64 w-64 rounded-full bg-rose-300/16 blur-3xl dark:bg-rose-400/10" />
-      <div className="grid items-center gap-12 lg:grid-cols-[0.94fr_1.06fr]">
-        <motion.div
-          animate={{ opacity: 1, y: 0 }}
-          className="flex flex-col items-start lg:pl-1"
-          initial={{ opacity: 0, y: 32 }}
-          transition={{
-            type: "spring",
-            stiffness: 96,
-            damping: 16,
-            delay: 0.12,
-          }}
-          viewport={{ once: true, amount: 0.3 }}
-        >
-          <span className="rose-pill">
-            {t("hero_badge", "Quiet Connectivity")}
-          </span>
-          <h1 className="mt-6 max-w-3xl font-display text-[2.9rem] leading-[0.92] tracking-[-0.05em] sm:text-6xl lg:text-[4.9rem]">
-            {t("welcome", "Welcome to")}
-            <br />
-            <span className="rose-section-title">{site.site_name}</span>
-          </h1>
-          <div className="mt-6 flex items-center gap-3 text-muted-foreground text-sm">
-            <span className="h-px w-10 bg-primary/24" />
-            <span>{heroCaption}</span>
-          </div>
-          <p className="mt-7 max-w-xl text-base text-foreground/78 leading-8 sm:text-lg">
-            {t(
-              "hero_description",
-              "Designed for longer sessions by keeping complex routing underneath and only the necessary content on the surface."
-            )}
-          </p>
-          <p className="mt-5 max-w-lg text-muted-foreground text-sm leading-7 sm:text-[0.95rem]">
-            {t(
-              "hero_supporting_copy",
-              "When the interface steps back a little, focus can stay with the task at hand."
-            )}
-          </p>
-          <div className="mt-9 flex flex-wrap items-center gap-3">
+      <div className="main-hero__aura" />
+      <div className="main-hero__scan" />
+      <div aria-hidden="true" className="main-hero__particles">
+        {Array.from({ length: 10 }).map((_, index) => (
+          <span
+            key={index}
+            style={{ "--particle-index": index } as CSSProperties}
+          />
+        ))}
+      </div>
+      <div className="grid min-h-[min(68vh,46rem)] items-center gap-8 lg:grid-cols-[minmax(0,0.92fr)_minmax(25rem,1.08fr)] lg:gap-10">
+        <div className="flex flex-col items-start lg:pl-1">
+          <motion.div
+            animate={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, x: -24 }}
+            transition={{ duration: 0.68, delay: 0.08, ease: "easeOut" }}
+          >
+            <span className="rose-pill">
+              {t("hero_badge", "Network access")}
+            </span>
+            <h1 className="mt-6 max-w-3xl font-display text-4xl leading-tight sm:text-5xl lg:text-6xl">
+              {t("welcome", "Welcome to")}
+              <br />
+              <span className="main-hero__title-gradient">
+                {site.site_name}
+              </span>
+            </h1>
+            <p className="mt-7 max-w-xl text-base text-foreground/78 leading-8 sm:text-lg">
+              {t(
+                "hero_description",
+                "Manage your subscription, import links, and view account status from a cleaner workspace."
+              )}
+            </p>
+          </motion.div>
+          <motion.div
+            animate={{ opacity: 1, y: 0 }}
+            className="mt-9 flex w-full max-w-xl flex-wrap items-center gap-3 sm:justify-start lg:justify-end"
+            initial={{ opacity: 0, y: 18 }}
+            transition={{ duration: 0.58, delay: 0.22, ease: "easeOut" }}
+          >
             <Button
               asChild
-              className="h-12 rounded-full px-6 font-semibold shadow-lg shadow-primary/20"
+              className="h-12 px-6 font-semibold shadow-primary/15 shadow-sm"
             >
               <Link to={user ? "/dashboard" : "/auth"}>
                 {t("started", "Get Started")}
@@ -77,7 +97,7 @@ export function Hero() {
             {!user && (
               <Button
                 asChild
-                className="h-12 rounded-full border-primary/14 bg-white/70 px-6 font-semibold text-foreground hover:bg-white/95 dark:bg-white/6 dark:hover:bg-white/10"
+                className="h-12 border-primary/14 bg-white/70 px-6 font-semibold text-foreground hover:bg-white/95 dark:bg-white/6 dark:hover:bg-white/10"
                 variant="outline"
               >
                 <Link to="/purchasing">
@@ -85,81 +105,169 @@ export function Hero() {
                 </Link>
               </Button>
             )}
-          </div>
-        </motion.div>
+          </motion.div>
+        </div>
         <motion.div
-          animate={{ opacity: 1, y: 0 }}
-          className="relative mx-auto w-full max-w-[36rem] lg:justify-self-end"
-          initial={{ opacity: 0, y: 36 }}
-          transition={{
-            type: "spring",
-            stiffness: 100,
-            damping: 16,
-            delay: 0.24,
-          }}
-          viewport={{ once: true, amount: 0.3 }}
+          animate={{ opacity: 1, scale: 1, x: 0 }}
+          className="main-hero__visual relative mx-auto w-full max-w-[42rem] lg:justify-self-end"
+          initial={{ opacity: 0, scale: 0.96, x: 24 }}
+          transition={{ duration: 0.78, delay: 0.16, ease: "easeOut" }}
         >
-          <div className="rose-panel p-4 sm:p-5">
-            <div className="absolute inset-x-12 top-0 h-px bg-gradient-to-r from-transparent via-white/90 to-transparent dark:via-white/15" />
-            <div className="rounded-[2rem] border border-primary/12 bg-background/72 p-4 shadow-[inset_0_1px_0_oklch(1_0_0_/0.7)] sm:p-6 dark:border-white/8 dark:bg-black/10">
-              <div className="mb-4 flex items-center justify-between gap-4 border-primary/10 border-b pb-4">
-                <div>
-                  <p className="font-medium text-[0.72rem] text-muted-foreground uppercase tracking-[0.2em]">
-                    {t("hero_visual_eyebrow", "Interface Tone")}
-                  </p>
-                  <p className="mt-2 max-w-xs text-foreground/70 text-sm leading-relaxed">
-                    {t(
-                      "hero_visual_description",
-                      "A quieter visual layer that keeps the foreground focused on what matters."
-                    )}
-                  </p>
+          <div aria-hidden="true" className="main-orbit">
+            <span className="main-orbit__ring main-orbit__ring--one" />
+            <span className="main-orbit__ring main-orbit__ring--two" />
+            <span className="main-orbit__ring main-orbit__ring--three" />
+            <span className="main-orbit__dot main-orbit__dot--one" />
+            <span className="main-orbit__dot main-orbit__dot--two" />
+            <span className="main-orbit__dot main-orbit__dot--three" />
+            <span className="main-orbit__dot main-orbit__dot--four" />
+          </div>
+
+          <div className="main-hero-console">
+            <div className="main-hero-console__header">
+              <div>
+                <p className="font-medium text-[0.72rem] text-muted-foreground uppercase tracking-[0.16em]">
+                  {t("hero_visual_eyebrow", "Workspace")}
+                </p>
+                <p className="mt-2 font-semibold text-2xl">
+                  {t("hero_visual_description", "Ready to connect")}
+                </p>
+              </div>
+              {site.site_logo ? (
+                <img
+                  alt=""
+                  className="size-12 rounded-md border border-primary/12 bg-background object-contain p-1.5"
+                  height={48}
+                  src={site.site_logo}
+                  width={48}
+                />
+              ) : (
+                <div className="flex size-12 items-center justify-center rounded-md border border-primary/12 bg-primary/10 text-primary">
+                  <Icon className="size-5" icon="uil:shield-check" />
                 </div>
-                <div className="hidden size-11 rounded-full border border-primary/14 bg-white/72 shadow-[0_14px_34px_-26px_oklch(0.64_0.16_11_/0.5)] sm:block dark:bg-white/8" />
-              </div>
-              <DotLottieReact
-                autoplay
-                className="w-full scale-[1.03]"
-                loop
-                src="./assets/lotties/network-security.json"
-              />
+              )}
+            </div>
+            <div className="main-hero-console__meter">
+              <span />
+            </div>
+            <div className="mt-5 grid gap-3">
+              {statusItems.map((item) => (
+                <motion.div
+                  animate={
+                    prefersReducedMotion
+                      ? undefined
+                      : {
+                          y: [0, -5, 0],
+                        }
+                  }
+                  className="main-status-card flex items-start gap-3 rounded-md border border-primary/10 bg-background/62 p-3 dark:border-white/8 dark:bg-white/4"
+                  key={item.title}
+                  transition={{
+                    duration: 4.8,
+                    ease: "easeInOut",
+                    repeat: Number.POSITIVE_INFINITY,
+                    repeatType: "mirror",
+                  }}
+                >
+                  <div className="flex size-9 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
+                    <Icon className="size-4" icon={item.icon} />
+                  </div>
+                  <div>
+                    <p className="font-semibold text-sm">{item.title}</p>
+                    <p className="mt-1 text-muted-foreground text-sm leading-relaxed">
+                      {item.description}
+                    </p>
+                  </div>
+                </motion.div>
+              ))}
             </div>
           </div>
-          <div className="rose-panel rose-floating -left-2 absolute top-6 hidden max-w-[240px] p-4 sm:block">
-            <div className="flex items-start gap-3">
-              <div className="flex size-11 items-center justify-center rounded-2xl bg-primary/12 text-primary">
-                <Icon className="size-5" icon="uil:shield-check" />
+
+          <motion.div
+            animate={
+              prefersReducedMotion
+                ? undefined
+                : {
+                    y: [0, -12, 0],
+                    rotate: [0, 0.35, 0],
+                  }
+            }
+            className="main-hero-floating main-hero-floating--usage"
+            transition={{
+              duration: 6,
+              ease: "easeInOut",
+              repeat: Number.POSITIVE_INFINITY,
+              repeatType: "mirror",
+            }}
+          >
+            <div className="flex items-center justify-between gap-4 text-sm">
+              <span className="text-muted-foreground">
+                {t("hero_tag_speed", "Subscription")}
+              </span>
+              <span className="font-semibold text-primary">
+                {t("hero_tag_design", "Active")}
+              </span>
+            </div>
+            <div className="mt-4 h-2 rounded-full bg-primary/10">
+              <div className="h-full w-2/3 rounded-full bg-primary" />
+            </div>
+            <div className="mt-4 grid grid-cols-3 gap-3 text-sm">
+              <div>
+                <p className="text-muted-foreground">{t("users", "Users")}</p>
+                <p className="mt-1 font-semibold">
+                  {t("hero_status_online", "Online")}
+                </p>
+              </div>
+              <div>
+                <p className="text-muted-foreground">
+                  {t("servers", "Servers")}
+                </p>
+                <p className="mt-1 font-semibold">
+                  {t("hero_status_auto", "Auto")}
+                </p>
+              </div>
+              <div>
+                <p className="text-muted-foreground">
+                  {t("locations", "Locations")}
+                </p>
+                <p className="mt-1 font-semibold">
+                  {t("hero_status_global", "Global")}
+                </p>
+              </div>
+            </div>
+          </motion.div>
+
+          <motion.div
+            animate={
+              prefersReducedMotion
+                ? undefined
+                : {
+                    y: [0, 10, 0],
+                    rotate: [0, -0.45, 0],
+                  }
+            }
+            className="main-hero-floating main-hero-floating--route hidden sm:block"
+            transition={{
+              duration: 7,
+              ease: "easeInOut",
+              repeat: Number.POSITIVE_INFINITY,
+              repeatType: "mirror",
+            }}
+          >
+            <div className="flex items-center gap-3">
+              <div className="main-signal-icon">
+                <Icon className="size-4" icon="uil:bolt-alt" />
               </div>
               <div>
                 <p className="font-semibold text-sm">
-                  {t("hero_floating_security_title", "Steady Routing")}
+                  {t("hero_status_auto", "Auto")}
                 </p>
-                <p className="mt-1 text-muted-foreground text-sm leading-relaxed">
-                  {t(
-                    "hero_floating_security_desc",
-                    "Smoother switching so longer sessions feel less interrupted."
-                  )}
+                <p className="mt-1 text-muted-foreground text-xs">
+                  {t("hero_floating_security_title", "Stable routing")}
                 </p>
               </div>
             </div>
-          </div>
-          <div className="rose-panel rose-floating-delay -bottom-5 absolute right-0 max-w-[250px] p-4">
-            <div className="flex items-start gap-3">
-              <div className="flex size-11 items-center justify-center rounded-2xl bg-primary/12 text-primary">
-                <Icon className="size-5" icon="uil:apps" />
-              </div>
-              <div>
-                <p className="font-semibold text-sm">
-                  {t("hero_floating_global_title", "Measured Interface")}
-                </p>
-                <p className="mt-1 text-muted-foreground text-sm leading-relaxed">
-                  {t(
-                    "hero_floating_global_desc",
-                    "Information is kept lighter so the current action stays in view."
-                  )}
-                </p>
-              </div>
-            </div>
-          </div>
+          </motion.div>
         </motion.div>
       </div>
     </motion.section>

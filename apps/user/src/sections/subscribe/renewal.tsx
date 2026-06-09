@@ -15,7 +15,7 @@ import { Separator } from "@workspace/ui/components/separator";
 import { preCreateOrder, renewal } from "@workspace/ui/services/user/order";
 import { useDebounce } from "ahooks";
 import { LoaderCircle } from "lucide-react";
-import { useCallback, useEffect, useRef, useState, useTransition } from "react";
+import { useCallback, useEffect, useState, useTransition } from "react";
 import { useTranslation } from "react-i18next";
 import CouponInput from "@/sections/subscribe/coupon-input";
 import DurationSelector from "@/sections/subscribe/duration-selector";
@@ -36,18 +36,15 @@ export default function Renewal({ id, subscribe }: Readonly<RenewalProps>) {
   const [open, setOpen] = useState<boolean>(false);
   const [params, setParams] = useState<Partial<API.RenewalOrderRequest>>({
     quantity: 1,
-    payment: -1,
+    payment: undefined,
     coupon: "",
     user_subscribe_id: id,
   });
   const [loading, startTransition] = useTransition();
-  const lastSuccessOrderRef = useRef<API.PreOrderResponse | undefined>(
-    undefined
-  );
   const debouncedCoupon = useDebounce(params.coupon, { wait: 400 });
 
   const { data: order } = useQuery({
-    enabled: !!subscribe.id && open && params.payment !== -1,
+    enabled: !!subscribe.id && open && params.payment !== undefined,
     queryKey: [
       "preCreateOrder",
       subscribe.id,
@@ -66,14 +63,9 @@ export default function Renewal({ id, subscribe }: Readonly<RenewalProps>) {
           { skipErrorHandler: true }
         );
         const result = data.data;
-        if (result) {
-          lastSuccessOrderRef.current = result;
-        }
         return result;
       } catch (_error) {
-        if (lastSuccessOrderRef.current) {
-          return lastSuccessOrderRef.current;
-        }
+        return;
       }
     },
     retry: false,
@@ -105,6 +97,8 @@ export default function Renewal({ id, subscribe }: Readonly<RenewalProps>) {
   );
 
   const handleSubmit = useCallback(async () => {
+    if (params.payment === undefined) return;
+
     startTransition(async () => {
       try {
         const response = await renewal(params as API.RenewalOrderRequest);
@@ -145,6 +139,8 @@ export default function Renewal({ id, subscribe }: Readonly<RenewalProps>) {
                   ...order,
                   quantity: params.quantity,
                   unit_price: subscribe?.unit_price,
+                  discount_rules: subscribe?.discount,
+                  unit_time: subscribe?.unit_time,
                   show_original_price: subscribe?.show_original_price,
                 }}
               />
@@ -169,12 +165,12 @@ export default function Renewal({ id, subscribe }: Readonly<RenewalProps>) {
                 onChange={(value) => {
                   handleChange("payment", value);
                 }}
-                value={params.payment as number}
+                value={params.payment}
               />
             </div>
             <Button
               className="sticky bottom-0 left-0 w-full md:relative md:mt-6"
-              disabled={loading}
+              disabled={loading || params.payment === undefined}
               onClick={handleSubmit}
             >
               {loading && <LoaderCircle className="mr-2 animate-spin" />}

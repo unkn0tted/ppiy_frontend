@@ -23,7 +23,7 @@ export default function UserLayout() {
       <SidebarLeft className="sticky top-[92px] hidden w-56 border-r-0 bg-transparent lg:flex" />
       <SidebarInset
         className={cn(
-          "relative min-h-[calc(100vh-92px)] rounded-[1.75rem] border border-primary/14 bg-card/75 p-5 shadow-[0_24px_70px_-50px_oklch(0.675_0.165_10.4)] backdrop-blur-sm sm:p-7",
+          "relative min-h-[calc(100vh-92px)] rounded-xl border border-primary/14 bg-card/75 p-5 shadow-[0_24px_70px_-50px_oklch(0.675_0.165_10.4)] backdrop-blur-sm sm:p-7",
           {
             "user-layout__inset--subscribe p-4 sm:p-6 xl:p-7": isSubscribePage,
           }

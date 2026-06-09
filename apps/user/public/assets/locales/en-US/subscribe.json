@@ -49,14 +49,13 @@
   "resetTrafficDescription": "Reset traffic to zero, and start a new billing cycle",
   "resetTrafficTitle": "Reset Traffic",
   "showcase": {
-    "bundle": "{{quantity}} {{unit}} bundle",
     "highlights": "Highlights",
     "instantAccess": "Instant Access",
     "livePlans": "{{count}} live plans",
     "metricPlans": "Plans",
     "metricStart": "Starting at",
-    "subtitle": "all for you.",
-    "title": "Pick your next high-speed lane"
+    "subtitle": "Compare duration, traffic, devices, and price before you purchase.",
+    "title": "Choose a plan for your usage"
   },
   "subscriptionNotFound": "Subscription not found",
   "unsubscribe": {

@@ -30,8 +30,8 @@ export default function ResetTraffic({
   const { getUserInfo } = useGlobalStore();
   const navigate = useNavigate();
   const [open, setOpen] = useState<boolean>(false);
-  const [params, setParams] = useState<API.ResetTrafficOrderRequest>({
-    payment: -1,
+  const [params, setParams] = useState<Partial<API.ResetTrafficOrderRequest>>({
+    payment: undefined,
     user_subscribe_id: id,
   });
   const [loading, startTransition] = useTransition();
@@ -82,11 +82,15 @@ export default function ResetTraffic({
           </div>
           <Button
             className="fixed bottom-0 left-0 w-full rounded-none md:relative md:mt-6"
-            disabled={loading}
+            disabled={loading || params.payment === undefined}
             onClick={async () => {
+              if (params.payment === undefined) return;
+
               startTransition(async () => {
                 try {
-                  const response = await resetTraffic(params);
+                  const response = await resetTraffic(
+                    params as API.ResetTrafficOrderRequest
+                  );
                   const orderNo = response.data.data?.order_no;
                   if (orderNo) {
                     getUserInfo();

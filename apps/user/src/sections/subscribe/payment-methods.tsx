@@ -13,7 +13,7 @@ import { memo, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
 interface PaymentMethodsProps {
-  value: number;
+  value?: number;
   onChange: (value: number) => void;
   balance?: boolean;
 }
@@ -30,7 +30,11 @@ const PaymentMethods: React.FC<PaymentMethodsProps> = ({
     queryFn: async () => {
       const { data } = await getAvailablePaymentMethods();
       const list = data.data?.list || [];
-      return balance ? list : list.filter((item) => item.id !== -1);
+      const available = balance ? list : list.filter((item) => item.id !== -1);
+      return [
+        ...available.filter((item) => item.id !== -1),
+        ...available.filter((item) => item.id === -1),
+      ];
     },
   });
 
@@ -39,11 +43,11 @@ const PaymentMethods: React.FC<PaymentMethodsProps> = ({
   // Prefer non-balance methods when possible.
   useEffect(() => {
     if (!data || data.length === 0) return;
-    const valid = data.some((m) => String(m.id) === String(value));
+    const valid =
+      value !== undefined && data.some((m) => String(m.id) === String(value));
     if (valid) return;
 
-    const preferred = data.find((m) => m.id !== -1)?.id ?? data[0]!.id;
-    onChange(preferred);
+    onChange(data[0]!.id);
   }, [data, onChange, value]);
   return (
     <>
@@ -55,7 +59,7 @@ const PaymentMethods: React.FC<PaymentMethodsProps> = ({
         onValueChange={(val) => {
           onChange(Number(val));
         }}
-        value={String(value)}
+        value={value === undefined ? undefined : String(value)}
       >
         {data?.map((item) => (
           <div className="relative" key={item.id}>
