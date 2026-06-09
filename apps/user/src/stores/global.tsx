@@ -5,10 +5,12 @@ import { create } from "zustand";
 export interface GlobalStore {
   common: API.GetGlobalConfigResponse;
   user?: API.User;
+  isLoadingUser: boolean;
   setCommon: (common: Partial<API.GetGlobalConfigResponse>) => void;
   setUser: (user?: API.User) => void;
   getUserInfo: () => Promise<void>;
-  getUserSubscribe: (short: string, token: string) => string[];
+  clearUserLoading: () => void;
+  getUserSubscribe: (short: string, token: string, type?: string) => string[];
   getAppSubLink: (url: string, schema?: string) => string;
 }
 
@@ -23,19 +25,28 @@ function createSubscribeUrl({
   token,
   panDomain,
   subscribePath,
+  type,
 }: {
   domain: string;
   short: string;
   token: string;
   panDomain?: boolean;
   subscribePath?: string;
+  type?: string;
 }): string {
-  const hostname = panDomain ? `${short}.${domain}` : domain;
+  const hostname = panDomain
+    ? type
+      ? `${short}.${type}.${domain}`
+      : `${short}.${domain}`
+    : domain;
   const url = new URL(
     `https://${hostname}${normalizeSubscribePath(subscribePath)}`
   );
 
   url.searchParams.set("token", token);
+  if (type) {
+    url.searchParams.set("type", type);
+  }
 
   return url.toString();
 }
@@ -147,6 +158,7 @@ export const useGlobalStore = create<GlobalStore>((set, get) => ({
     web_ad: false,
   },
   user: undefined,
+  isLoadingUser: true,
   setCommon: (common) =>
     set((state) => ({
       common: {
@@ -156,14 +168,20 @@ export const useGlobalStore = create<GlobalStore>((set, get) => ({
     })),
   setUser: (user) => set({ user }),
   getUserInfo: async () => {
+    set({ isLoadingUser: true });
     try {
       const { data } = await queryUserInfo();
       set({ user: data.data });
     } catch (error) {
       console.error("Failed to refresh user:", error);
+    } finally {
+      set({ isLoadingUser: false });
     }
   },
-  getUserSubscribe: (short: string, token: string) => {
+  clearUserLoading: () => {
+    set({ isLoadingUser: false });
+  },
+  getUserSubscribe: (short: string, token: string, type?: string) => {
     const { pan_domain, subscribe_domain, subscribe_path } =
       get().common.subscribe || {};
     const fallbackDomain = extractDomain(window.location.origin, pan_domain);
@@ -183,6 +201,7 @@ export const useGlobalStore = create<GlobalStore>((set, get) => ({
         token,
         panDomain: pan_domain,
         subscribePath: subscribe_path,
+        type,
       })
     );
   },
