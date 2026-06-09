@@ -58,6 +58,8 @@
     "title": "Choose a plan for your usage"
   },
   "subscriptionNotFound": "Subscription not found",
+  "subscriptionUnavailable": "Not available for purchase",
+  "subscriptionUnavailableDescription": "This subscription is no longer available for purchase.",
   "unsubscribe": {
     "cancel": "Cancel",
     "confirm": "Confirm",

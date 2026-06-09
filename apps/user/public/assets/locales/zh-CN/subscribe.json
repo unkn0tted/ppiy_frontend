@@ -58,6 +58,8 @@
     "title": "选择适合使用量的套餐"
   },
   "subscriptionNotFound": "未找到订阅",
+  "subscriptionUnavailable": "暂不可购买",
+  "subscriptionUnavailableDescription": "该订阅当前已停止销售，暂不可购买或续订。",
   "unsubscribe": {
     "cancel": "取消",
     "confirm": "确认",

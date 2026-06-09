@@ -1,6 +1,7 @@
 import { getSubscription } from "@workspace/ui/services/user/portal";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { isSubscribeVisible } from "@/utils/subscribe";
 import { Content } from "./content";
 
 export function ProductShowcase() {
@@ -19,7 +20,7 @@ export function ProductShowcase() {
             skipErrorHandler: true,
           }
         );
-        setSubscriptionList(data.data?.list || []);
+        setSubscriptionList((data.data?.list || []).filter(isSubscribeVisible));
       } catch (error) {
         console.error("Failed to fetch subscriptions:", error);
       } finally {

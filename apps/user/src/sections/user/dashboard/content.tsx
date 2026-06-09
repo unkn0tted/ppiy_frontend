@@ -29,6 +29,7 @@ import { Tabs, TabsList, TabsTrigger } from "@workspace/ui/components/tabs";
 import { Icon } from "@workspace/ui/composed/icon";
 import { cn } from "@workspace/ui/lib/utils";
 import { getClient } from "@workspace/ui/services/common/common";
+import { querySubscribeList } from "@workspace/ui/services/user/subscribe";
 import {
   queryUserSubscribe,
   resetUserSubscribeToken,
@@ -43,6 +44,7 @@ import { toast } from "sonner";
 import { Display } from "@/components/display";
 import { useGlobalStore } from "@/stores/global";
 import { getPlatform } from "@/utils/common";
+import { isSubscribeSellable } from "@/utils/subscribe";
 import Subscribe from "../../subscribe";
 import Renewal from "../../subscribe/renewal";
 import ResetTraffic from "../../subscribe/reset-traffic";
@@ -83,7 +85,7 @@ const protocolOptions: Array<{
 ];
 
 export default function Content() {
-  const { t } = useTranslation("dashboard");
+  const { t, i18n } = useTranslation("dashboard");
   const { getUserSubscribe, getAppSubLink } = useGlobalStore();
 
   const [protocol, setProtocol] = useState<SubscriptionProtocol>("vless");
@@ -98,6 +100,17 @@ export default function Content() {
       return data.data?.list || [];
     },
   });
+  const { data: subscribeList = [] } = useQuery({
+    queryKey: ["querySubscribeList", i18n.language],
+    queryFn: async () => {
+      const { data } = await querySubscribeList(
+        { language: i18n.language },
+        { skipErrorHandler: true }
+      );
+      return data.data?.list || [];
+    },
+  });
+  const subscribeById = new Map(subscribeList.map((item) => [item.id, item]));
   const { data: applications } = useQuery({
     queryKey: ["getClient"],
     queryFn: async () => {
@@ -311,6 +324,7 @@ export default function Content() {
               item.status === 3 && item.expire_time !== 0;
             const shouldShowWatermark =
               item.status === 2 || item.status === 4 || isActuallyExpired;
+            const currentSubscribe = subscribeById.get(item.subscribe_id);
 
             return (
               <Card
@@ -419,9 +433,11 @@ export default function Content() {
                         id={item.id}
                         replacement={item.subscribe.replacement}
                       />
-                      {item.expire_time !== 0 && item.subscribe.sell && (
-                        <Renewal id={item.id} subscribe={item.subscribe} />
-                      )}
+                      {item.expire_time !== 0 &&
+                        currentSubscribe &&
+                        isSubscribeSellable(currentSubscribe) && (
+                          <Renewal id={item.id} subscribe={currentSubscribe} />
+                        )}
                       <Unsubscribe
                         allowDeduction={item.subscribe.allow_deduction}
                         id={item.id}

@@ -8,6 +8,7 @@ import { useTranslation } from "react-i18next";
 import { Display } from "@/components/display";
 import { SubscribeDetail } from "@/sections/subscribe/detail";
 import { useGlobalStore } from "@/stores/global";
+import { isSubscribeSellable, isSubscribeVisible } from "@/utils/subscribe";
 import { cardReveal, sectionReveal, sectionViewport } from "../motion";
 
 interface ProductShowcaseProps {
@@ -48,14 +49,15 @@ function parseSubscriptionDescription(value: unknown): ParsedDescription {
 export function Content({ subscriptionData }: ProductShowcaseProps) {
   const { t } = useTranslation("main");
   const { user } = useGlobalStore();
+  const visibleSubscriptionData = subscriptionData.filter(isSubscribeVisible);
   const highlightedIndex = (() => {
-    const discountedIndex = subscriptionData.findIndex(
+    const discountedIndex = visibleSubscriptionData.findIndex(
       (item) => (item.discount?.length ?? 0) > 0
     );
 
     return discountedIndex >= 0
       ? discountedIndex
-      : Math.min(1, subscriptionData.length - 1);
+      : Math.min(1, visibleSubscriptionData.length - 1);
   })();
 
   const unitTimeMap: Record<string, string> = {
@@ -66,6 +68,8 @@ export function Content({ subscriptionData }: ProductShowcaseProps) {
     NoLimit: t("NoLimit", "No Limit"),
     Year: t("Year", "Year"),
   };
+
+  if (visibleSubscriptionData.length === 0) return null;
 
   return (
     <motion.section
@@ -98,7 +102,7 @@ export function Content({ subscriptionData }: ProductShowcaseProps) {
         </div>
       </div>
       <div className="mx-auto grid w-full gap-5 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
-        {subscriptionData?.map((item, index) => (
+        {visibleSubscriptionData.map((item, index) => (
           <motion.div
             className="w-full"
             custom={index}
@@ -110,6 +114,7 @@ export function Content({ subscriptionData }: ProductShowcaseProps) {
                 item.description
               );
               const isHighlighted = index === highlightedIndex;
+              const canPurchase = isSubscribeSellable(item);
 
               return (
                 <article
@@ -230,21 +235,28 @@ export function Content({ subscriptionData }: ProductShowcaseProps) {
                     })()}
                     <div className="mt-auto flex justify-end">
                       <Button
-                        asChild
+                        asChild={canPurchase}
                         className={cn(
                           "w-full font-semibold shadow-sm sm:w-auto sm:min-w-36",
                           isHighlighted
                             ? "shadow-primary/15"
                             : "border-primary/14 bg-white/68 text-foreground hover:bg-white/90 dark:bg-white/6 dark:hover:bg-white/10"
                         )}
+                        disabled={!canPurchase}
                         variant={isHighlighted ? "default" : "outline"}
                       >
-                        <Link
-                          search={user ? undefined : { id: item.id }}
-                          to={user ? "/subscribe" : "/purchasing"}
-                        >
-                          {t("product_showcase_action", "View Plan")}
-                        </Link>
+                        {canPurchase ? (
+                          <Link
+                            search={user ? undefined : { id: item.id }}
+                            to={user ? "/subscribe" : "/purchasing"}
+                          >
+                            {t("product_showcase_action", "View Plan")}
+                          </Link>
+                        ) : (
+                          <span>
+                            {t("product_showcase_sales_closed", "Sales Closed")}
+                          </span>
+                        )}
                       </Button>
                     </div>
                   </div>

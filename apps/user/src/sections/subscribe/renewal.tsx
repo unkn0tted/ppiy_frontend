@@ -21,6 +21,7 @@ import CouponInput from "@/sections/subscribe/coupon-input";
 import DurationSelector from "@/sections/subscribe/duration-selector";
 import PaymentMethods from "@/sections/subscribe/payment-methods";
 import { useGlobalStore } from "@/stores/global";
+import { isSubscribeSellable } from "@/utils/subscribe";
 import { SubscribeBilling } from "./billing";
 import { SubscribeDetail } from "./detail";
 
@@ -33,6 +34,7 @@ export default function Renewal({ id, subscribe }: Readonly<RenewalProps>) {
   const { t } = useTranslation("subscribe");
   const { getUserInfo } = useGlobalStore();
   const navigate = useNavigate();
+  const canRenew = isSubscribeSellable(subscribe);
   const [open, setOpen] = useState<boolean>(false);
   const [params, setParams] = useState<Partial<API.RenewalOrderRequest>>({
     quantity: 1,
@@ -44,7 +46,7 @@ export default function Renewal({ id, subscribe }: Readonly<RenewalProps>) {
   const debouncedCoupon = useDebounce(params.coupon, { wait: 400 });
 
   const { data: order } = useQuery({
-    enabled: !!subscribe.id && open && params.payment !== undefined,
+    enabled: canRenew && !!subscribe.id && open && params.payment !== undefined,
     queryKey: [
       "preCreateOrder",
       subscribe.id,
@@ -97,7 +99,7 @@ export default function Renewal({ id, subscribe }: Readonly<RenewalProps>) {
   );
 
   const handleSubmit = useCallback(async () => {
-    if (params.payment === undefined) return;
+    if (!canRenew || params.payment === undefined) return;
 
     startTransition(async () => {
       try {
@@ -111,12 +113,14 @@ export default function Renewal({ id, subscribe }: Readonly<RenewalProps>) {
         /* empty */
       }
     });
-  }, [params, getUserInfo, navigate]);
+  }, [canRenew, params, getUserInfo, navigate]);
 
   return (
     <Dialog onOpenChange={setOpen} open={open}>
       <DialogTrigger asChild>
-        <Button size="sm">{t("renew", "Renew")}</Button>
+        <Button disabled={!canRenew} size="sm">
+          {t("renew", "Renew")}
+        </Button>
       </DialogTrigger>
       <DialogContent className="flex h-full flex-col overflow-y-auto md:h-auto md:max-w-screen-lg">
         <DialogHeader>
@@ -147,34 +151,45 @@ export default function Renewal({ id, subscribe }: Readonly<RenewalProps>) {
             </CardContent>
           </Card>
           <div className="flex flex-col justify-between text-sm">
-            <div className="mb-6 grid gap-3">
-              <DurationSelector
-                discounts={subscribe?.discount}
-                onChange={(value) => {
-                  handleChange("quantity", value);
-                }}
-                quantity={params.quantity!}
-                showOriginalPrice={subscribe?.show_original_price}
-                unitTime={subscribe?.unit_time}
-              />
-              <CouponInput
-                coupon={params.coupon}
-                onChange={(value) => handleChange("coupon", value)}
-              />
-              <PaymentMethods
-                onChange={(value) => {
-                  handleChange("payment", value);
-                }}
-                value={params.payment}
-              />
-            </div>
+            {canRenew ? (
+              <div className="mb-6 grid gap-3">
+                <DurationSelector
+                  discounts={subscribe?.discount}
+                  onChange={(value) => {
+                    handleChange("quantity", value);
+                  }}
+                  quantity={params.quantity!}
+                  showOriginalPrice={subscribe?.show_original_price}
+                  unitTime={subscribe?.unit_time}
+                />
+                <CouponInput
+                  coupon={params.coupon}
+                  onChange={(value) => handleChange("coupon", value)}
+                />
+                <PaymentMethods
+                  onChange={(value) => {
+                    handleChange("payment", value);
+                  }}
+                  value={params.payment}
+                />
+              </div>
+            ) : (
+              <div className="mb-6 rounded-md border border-destructive/20 bg-destructive/5 p-4 text-destructive text-sm">
+                {t(
+                  "subscriptionUnavailableDescription",
+                  "This subscription is no longer available for purchase."
+                )}
+              </div>
+            )}
             <Button
               className="sticky bottom-0 left-0 w-full md:relative md:mt-6"
-              disabled={loading || params.payment === undefined}
+              disabled={!canRenew || loading || params.payment === undefined}
               onClick={handleSubmit}
             >
               {loading && <LoaderCircle className="mr-2 animate-spin" />}
-              {t("buyNow", "Buy Now")}
+              {canRenew
+                ? t("buyNow", "Buy Now")
+                : t("subscriptionUnavailable", "Not available for purchase")}
             </Button>
           </div>
         </div>

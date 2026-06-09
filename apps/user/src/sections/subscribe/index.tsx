@@ -7,11 +7,11 @@ import Empty from "@workspace/ui/composed/empty";
 import { Icon } from "@workspace/ui/composed/icon";
 import { cn } from "@workspace/ui/lib/utils";
 import { querySubscribeList } from "@workspace/ui/services/user/subscribe";
-import { queryUserSubscribe } from "@workspace/ui/services/user/user";
 import type { TFunction } from "i18next";
 import { type CSSProperties, type ReactNode, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Display } from "@/components/display";
+import { isSubscribeSellable, isSubscribeVisible } from "@/utils/subscribe";
 import Purchase from "./purchase";
 
 type ParsedFeature = {
@@ -182,24 +182,7 @@ export default function Subscribe() {
     },
   });
 
-  const { data: userSubscriptions } = useQuery({
-    queryKey: ["queryUserSubscribe"],
-    queryFn: async () => {
-      const { data } = await queryUserSubscribe();
-      return data.data?.list || [];
-    },
-  });
-
-  // Get IDs of plans the user has already purchased
-  const purchasedPlanIds = new Set(
-    userSubscriptions?.map((sub) => sub.subscribe_id) || []
-  );
-
-  // Show plan if: (1) show is true, or (2) user has purchased it
-  const filteredData =
-    subscribeList?.filter(
-      (item) => item.show || purchasedPlanIds.has(item.id)
-    ) ?? [];
+  const filteredData = subscribeList?.filter(isSubscribeVisible) ?? [];
   const startingPrice =
     filteredData.length > 0
       ? Math.min(...filteredData.map((item) => item.unit_price))
@@ -410,12 +393,18 @@ function CardPlan({
 
             <Button
               className="subscribe-card__button !bg-transparent hover:!bg-transparent w-full"
+              disabled={!isSubscribeSellable(item)}
               onClick={() => {
+                if (!isSubscribeSellable(item)) {
+                  return;
+                }
                 onPurchase(item);
               }}
             >
               <span className="relative z-10">
-                {t("showcase.instantAccess", "Instant Access")}
+                {isSubscribeSellable(item)
+                  ? t("showcase.instantAccess", "Instant Access")
+                  : t("subscriptionUnavailable", "Not available for purchase")}
               </span>
               <Icon
                 className="relative z-10 size-5"

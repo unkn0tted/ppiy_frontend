@@ -18,6 +18,7 @@ import { SubscribeDetail } from "@/sections/subscribe/detail";
 import DurationSelector from "@/sections/subscribe/duration-selector";
 import PaymentMethods from "@/sections/subscribe/payment-methods";
 import { useGlobalStore } from "@/stores/global";
+import { isSubscribePurchasable } from "@/utils/subscribe";
 
 export default function Content({
   subscription,
@@ -42,6 +43,7 @@ export default function Content({
     "border-primary/12 bg-white/75 shadow-[0_18px_34px_-28px_oklch(0.64_0.16_11_/0.4)] dark:border-white/8 dark:bg-white/6";
   const { common } = useGlobalStore();
   const navigate = useNavigate();
+  const canPurchase = isSubscribePurchasable(subscription);
   const [params, setParams] = useState<
     Omit<API.PortalPurchaseRequest, "payment"> & { payment?: number }
   >({
@@ -61,7 +63,7 @@ export default function Content({
   const debouncedCoupon = useDebounce(params.coupon, { wait: 400 });
 
   const { data: order } = useQuery({
-    enabled: !!subscription?.id && params.payment !== undefined,
+    enabled: canPurchase && !!subscription?.id && params.payment !== undefined,
     queryKey: [
       "prePurchaseOrder",
       subscription?.id,
@@ -109,7 +111,7 @@ export default function Content({
   );
 
   const handleSubmit = useCallback(async () => {
-    if (params.payment === undefined) return;
+    if (!canPurchase || params.payment === undefined) return;
 
     startTransition(async () => {
       try {
@@ -129,7 +131,7 @@ export default function Content({
         console.log(error);
       }
     });
-  }, [params, navigate]);
+  }, [canPurchase, params, navigate]);
 
   if (!subscription) {
     return (
@@ -374,25 +376,34 @@ export default function Content({
           <h2 className="mt-3 font-display text-2xl leading-tight">
             {t("paymentMethod", "Payment Method")}
           </h2>
-          <div className="mt-6 grid gap-6">
-            <DurationSelector
-              discounts={subscription?.discount}
-              onChange={(value: number) => handleChange("quantity", value)}
-              quantity={params.quantity!}
-              unitTime={
-                unitTimeMap[subscription.unit_time!] || subscription.unit_time
-              }
-            />
-            <CouponInput
-              coupon={params.coupon}
-              onChange={(value: string) => handleChange("coupon", value)}
-            />
-            <PaymentMethods
-              balance={false}
-              onChange={(value: number) => handleChange("payment", value)}
-              value={params.payment}
-            />
-          </div>
+          {canPurchase ? (
+            <div className="mt-6 grid gap-6">
+              <DurationSelector
+                discounts={subscription?.discount}
+                onChange={(value: number) => handleChange("quantity", value)}
+                quantity={params.quantity!}
+                unitTime={
+                  unitTimeMap[subscription.unit_time!] || subscription.unit_time
+                }
+              />
+              <CouponInput
+                coupon={params.coupon}
+                onChange={(value: string) => handleChange("coupon", value)}
+              />
+              <PaymentMethods
+                balance={false}
+                onChange={(value: number) => handleChange("payment", value)}
+                value={params.payment}
+              />
+            </div>
+          ) : (
+            <div className="mt-6 rounded-md border border-destructive/20 bg-destructive/5 p-4 text-destructive text-sm">
+              {t(
+                "subscriptionUnavailableDescription",
+                "This subscription is no longer available for purchase."
+              )}
+            </div>
+          )}
           <div className="mt-6 h-px bg-gradient-to-r from-primary/10 via-primary/35 to-transparent" />
           <div className="mt-6">
             <SubscribeBilling
@@ -409,13 +420,17 @@ export default function Content({
           <Button
             className="mt-6 h-12 w-full font-semibold shadow-lg shadow-primary/20"
             disabled={
-              !isEmailValid.valid || loading || params.payment === undefined
+              !(canPurchase && isEmailValid.valid) ||
+              loading ||
+              params.payment === undefined
             }
             onClick={handleSubmit}
             size="lg"
           >
             {loading && <LoaderCircle className="mr-2 animate-spin" />}
-            {t("buyNow", "Buy Now")}
+            {canPurchase
+              ? t("buyNow", "Buy Now")
+              : t("subscriptionUnavailable", "Not available for purchase")}
           </Button>
         </motion.section>
       </div>

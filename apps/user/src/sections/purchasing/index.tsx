@@ -5,6 +5,7 @@ import Empty from "@workspace/ui/composed/empty";
 import { getSubscription } from "@workspace/ui/services/user/portal";
 import { useTranslation } from "react-i18next";
 import { Content as ProductShowcaseContent } from "@/sections/main/product-showcase/content";
+import { isSubscribeVisible } from "@/utils/subscribe";
 import Content from "./content";
 
 export default function Purchasing() {
@@ -25,7 +26,7 @@ export default function Purchasing() {
     },
   });
 
-  const subscriptionList = data.filter((item: API.Subscribe) => item.show);
+  const subscriptionList = data.filter(isSubscribeVisible);
   const selectedId = Number(id);
   const hasSelectedId = Number.isFinite(selectedId) && selectedId > 0;
   const subscription = hasSelectedId
