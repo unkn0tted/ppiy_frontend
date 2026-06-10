@@ -73,7 +73,7 @@ export function Content({ subscriptionData }: ProductShowcaseProps) {
 
   return (
     <motion.section
-      className="rose-shell isolate px-6 py-7 sm:px-8 lg:px-10 lg:py-9"
+      className="rose-shell isolate hidden px-6 py-7 sm:block sm:px-8 lg:px-10 lg:py-9"
       initial="hidden"
       variants={sectionReveal}
       viewport={sectionViewport}

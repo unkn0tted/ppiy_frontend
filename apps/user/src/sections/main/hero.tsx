@@ -97,7 +97,7 @@ export function Hero() {
             {!user && (
               <Button
                 asChild
-                className="h-12 border-primary/14 bg-white/70 px-6 font-semibold text-foreground hover:bg-white/95 dark:bg-white/6 dark:hover:bg-white/10"
+                className="hidden h-12 border-primary/14 bg-white/70 px-6 font-semibold text-foreground hover:bg-white/95 sm:inline-flex dark:bg-white/6 dark:hover:bg-white/10"
                 variant="outline"
               >
                 <Link to="/purchasing">
@@ -232,38 +232,6 @@ export function Hero() {
                 </p>
                 <p className="mt-1 font-semibold">
                   {t("hero_status_global", "Global")}
-                </p>
-              </div>
-            </div>
-          </motion.div>
-
-          <motion.div
-            animate={
-              prefersReducedMotion
-                ? undefined
-                : {
-                    y: [0, 10, 0],
-                    rotate: [0, -0.45, 0],
-                  }
-            }
-            className="main-hero-floating main-hero-floating--route hidden sm:block"
-            transition={{
-              duration: 7,
-              ease: "easeInOut",
-              repeat: Number.POSITIVE_INFINITY,
-              repeatType: "mirror",
-            }}
-          >
-            <div className="flex items-center gap-3">
-              <div className="main-signal-icon">
-                <Icon className="size-4" icon="uil:bolt-alt" />
-              </div>
-              <div>
-                <p className="font-semibold text-sm">
-                  {t("hero_status_auto", "Auto")}
-                </p>
-                <p className="mt-1 text-muted-foreground text-xs">
-                  {t("hero_floating_security_title", "Stable routing")}
                 </p>
               </div>
             </div>

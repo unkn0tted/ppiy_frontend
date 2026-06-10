@@ -184,16 +184,20 @@ h4,
   }
 
   .rose-pill {
+    width: fit-content;
+    max-width: 100%;
+    align-self: flex-start;
     display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.4rem;
     border-radius: var(--rose-radius-control);
     border: 1px solid oklch(0.86 0.028 10 / 0.75);
     background: oklch(1 0 0 / 0.62);
-    padding: 0.45rem 0.8rem;
-    font-size: 0.68rem;
+    padding: 0.36rem 0.58rem;
+    font-size: 0.66rem;
     font-weight: 650;
-    letter-spacing: 0.12em;
+    line-height: 1;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
     color: var(--primary);
     box-shadow: inset 0 1px 0 oklch(1 0 0 / 0.72);
@@ -608,25 +612,6 @@ h4,
   .main-hero-floating--usage {
     width: min(100%, 25rem);
     margin: -0.35rem 0 0 auto;
-  }
-
-  .main-hero-floating--route {
-    position: absolute;
-    top: 2.1rem;
-    left: 0.75rem;
-    min-width: 12rem;
-  }
-
-  .main-signal-icon {
-    display: flex;
-    width: 2.25rem;
-    height: 2.25rem;
-    align-items: center;
-    justify-content: center;
-    border-radius: var(--rose-radius-control);
-    background: oklch(0.7 0.13 10 / 0.12);
-    color: var(--primary);
-    box-shadow: inset 0 1px 0 oklch(1 0 0 / 0.42);
   }
 
   .main-feature-card,
@@ -2265,10 +2250,6 @@ h4,
 
   .main-hero-console {
     transform: none;
-  }
-
-  .main-hero-floating--route {
-    left: 0;
   }
 
   .subscribe-card__main {
