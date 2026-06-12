@@ -13,6 +13,7 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@workspace/ui/components/dropdown-menu";
+import { Icon } from "@workspace/ui/composed/icon";
 import { useTranslation } from "react-i18next";
 import { useGlobalStore } from "@/stores/global";
 import { Logout } from "@/utils/common";
@@ -25,10 +26,14 @@ export function UserNav() {
     return (
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button size="icon" variant="default">
+          <Button
+            className="size-10 border border-primary/18 bg-background/90 p-1 shadow-primary/10 shadow-sm hover:border-primary/30 hover:bg-accent/65"
+            size="icon"
+            variant="ghost"
+          >
             <Avatar className="size-8">
               <AvatarImage alt={user?.avatar ?? ""} src={user?.avatar ?? ""} />
-              <AvatarFallback className="rounded-none bg-transparent">
+              <AvatarFallback className="bg-linear-to-br from-primary via-rose-500 to-pink-500 font-medium text-primary-foreground">
                 {user?.auth_methods?.[0]?.auth_identifier
                   .toUpperCase()
                   .charAt(0)}
@@ -36,12 +41,26 @@ export function UserNav() {
             </Avatar>
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="w-56" forceMount>
+        <DropdownMenuContent align="end" className="w-64" forceMount>
           <DropdownMenuLabel className="font-normal">
-            <div className="flex flex-col space-y-1">
-              <p className="font-medium text-sm leading-none">
-                {user?.auth_methods?.[0]?.auth_identifier}
-              </p>
+            <div className="flex items-center gap-2">
+              <Avatar className="size-10">
+                <AvatarImage
+                  alt={user?.avatar ?? ""}
+                  src={user?.avatar ?? ""}
+                />
+                <AvatarFallback className="bg-linear-to-br from-primary via-rose-500 to-pink-500 text-primary-foreground">
+                  {user?.auth_methods?.[0]?.auth_identifier
+                    .toUpperCase()
+                    .charAt(0)}
+                </AvatarFallback>
+              </Avatar>
+              <div className="flex min-w-0 flex-col space-y-1">
+                <p className="truncate font-medium text-sm leading-none">
+                  {user?.auth_methods?.[0]?.auth_identifier}
+                </p>
+                <p className="text-muted-foreground text-xs">Admin</p>
+              </div>
               {/* <p className='text-xs leading-none text-muted-foreground'>ID: {user?.id}</p> */}
             </div>
           </DropdownMenuLabel>
@@ -62,8 +81,12 @@ export function UserNav() {
             <DropdownMenuItem>New Team</DropdownMenuItem>
           </DropdownMenuGroup> */}
           <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={Logout}>
-            {t("logout", "Logout")}
+          <DropdownMenuItem
+            className="flex cursor-pointer items-center gap-2 py-2 text-destructive focus:text-destructive"
+            onClick={Logout}
+          >
+            <Icon className="size-4 flex-none" icon="uil:exit" />
+            <span className="grow">{t("logout", "Logout")}</span>
             <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
           </DropdownMenuItem>
         </DropdownMenuContent>

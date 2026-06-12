@@ -82,7 +82,7 @@ export function SidebarLeft({
     const ParentButton = (
       <SidebarMenuButton
         aria-label={nav.title}
-        className="h-8 justify-center"
+        className="h-9 justify-center rounded-md"
         isActive={false}
         size="sm"
       >
@@ -106,12 +106,12 @@ export function SidebarLeft({
         <HoverCardContent
           align="start"
           avoidCollisions
-          className="z-[9999] w-64 p-0"
+          className="z-[9999] w-64 overflow-hidden p-0"
           collisionPadding={8}
           side="right"
           sideOffset={10}
         >
-          <div className="flex items-center gap-2 border-b px-3 py-2">
+          <div className="flex items-center gap-2 border-primary/10 border-b bg-primary/5 px-3 py-2 dark:border-white/10 dark:bg-white/5">
             {"icon" in nav && (nav as any).icon ? (
               <Icon className="size-4" icon={(nav as any).icon} />
             ) : null}
@@ -125,9 +125,9 @@ export function SidebarLeft({
               <li key={item.title}>
                 <Link
                   className={[
-                    "flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-sm",
+                    "flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-sm transition-colors",
                     isActiveUrl(item.url)
-                      ? "bg-accent text-accent-foreground"
+                      ? "bg-primary/10 text-primary"
                       : "hover:bg-accent/60",
                   ].join(" ")}
                   to={item.url}
@@ -144,23 +144,31 @@ export function SidebarLeft({
   };
 
   return (
-    <Sidebar className="border-r-0" collapsible="icon" {...props}>
-      <SidebarHeader className="p-2">
+    <Sidebar
+      className="border-r-0 bg-transparent p-3 pr-0"
+      collapsible="icon"
+      {...props}
+    >
+      <SidebarHeader className="rose-shell mb-3 p-2">
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton asChild className="h-10" size="sm">
+            <SidebarMenuButton
+              asChild
+              className="h-11 rounded-md hover:bg-accent/70"
+              size="sm"
+            >
               <Link to="/">
-                <div className="flex aspect-square size-6 items-center justify-center rounded-lg">
+                <div className="flex aspect-square size-8 items-center justify-center rounded-md bg-white/65 ring-1 ring-primary/16 dark:bg-white/5 dark:ring-white/10">
                   <img
                     alt="logo"
-                    className="size-full"
+                    className="size-6 rounded-md"
                     height={24}
                     src={site.site_logo || "/favicon.svg"}
                     width={24}
                   />
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-semibold text-xs">
+                  <span className="truncate font-display font-semibold text-sm">
                     {site.site_name}
                   </span>
                   <span className="truncate text-xs opacity-70">
@@ -173,7 +181,7 @@ export function SidebarLeft({
         </SidebarMenu>
       </SidebarHeader>
 
-      <SidebarContent className="py-2">
+      <SidebarContent className="rose-shell p-2">
         <SidebarMenu>
           {!isMobile && state === "collapsed"
             ? navs.map((nav) => (
@@ -188,9 +196,9 @@ export function SidebarLeft({
                     <SidebarGroup className={cn("py-1")} key={nav.title}>
                       <SidebarMenuButton
                         className={cn(
-                          "mb-2 flex h-8 w-full items-center justify-between hover:bg-accent/60 hover:text-accent-foreground"
+                          "mb-1 flex h-9 w-full items-center justify-between rounded-md text-muted-foreground hover:bg-accent/70 hover:text-accent-foreground data-[active=true]:bg-primary/10 data-[active=true]:text-primary"
                         )}
-                        isActive={false}
+                        isActive={isGroupActive(nav)}
                         onClick={() => handleToggleGroup(nav.title)}
                         size="sm"
                         style={{ fontWeight: 500 }}
@@ -211,13 +219,13 @@ export function SidebarLeft({
                         />
                       </SidebarMenuButton>
                       {isOpen && (
-                        <SidebarGroupContent className="px-4">
+                        <SidebarGroupContent className="px-2">
                           <SidebarMenu>
                             {nav.items?.map((item: any) => (
                               <SidebarMenuItem key={item.title}>
                                 <SidebarMenuButton
                                   asChild
-                                  className="h-8"
+                                  className="h-9 rounded-md transition-colors data-[active=true]:bg-primary/10 data-[active=true]:font-medium data-[active=true]:text-primary"
                                   isActive={isActiveUrl(item.url)}
                                   size="sm"
                                   tooltip={item.title}
@@ -250,7 +258,7 @@ export function SidebarLeft({
                         <SidebarMenuItem>
                           <SidebarMenuButton
                             asChild={"url" in nav && !!(nav as any).url}
-                            className="h-8"
+                            className="h-9 rounded-md transition-colors data-[active=true]:bg-primary/10 data-[active=true]:font-medium data-[active=true]:text-primary"
                             isActive={
                               "url" in nav && (nav as any).url
                                 ? isActiveUrl((nav as any).url)

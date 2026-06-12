@@ -7,11 +7,12 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@workspace/ui/components/breadcrumb";
-import { Separator } from "@workspace/ui/components/separator";
 import { SidebarTrigger } from "@workspace/ui/components/sidebar";
+import { Icon } from "@workspace/ui/composed/icon";
 import { LanguageSwitch } from "@workspace/ui/composed/language-switch";
 import { ThemeSwitch } from "@workspace/ui/composed/theme-switch";
 import { Fragment, useMemo } from "react";
+import { useGlobalStore } from "@/stores/global";
 import { findNavByUrl, useNavs } from "./navs";
 import TimezoneSwitch from "./timezone-switch";
 import { UserNav } from "./user-nav";
@@ -19,37 +20,74 @@ import { UserNav } from "./user-nav";
 export function Header() {
   const pathname = useLocation({ select: (location) => location.pathname });
   const navs = useNavs();
+  const { common } = useGlobalStore();
+  const { site } = common;
   const items = useMemo(() => findNavByUrl(navs, pathname), [pathname]);
   return (
-    <header className="sticky top-0 z-50 flex h-14 shrink-0 items-center gap-2 bg-background">
-      <div className="flex flex-1 items-center gap-2 px-3">
-        <SidebarTrigger />
-        <Separator className="mr-2 h-4" orientation="vertical" />
-        <Breadcrumb>
-          <BreadcrumbList>
-            {items.map((item, index) => (
-              <Fragment key={item?.title}>
-                {index !== items.length - 1 && (
+    <header className="sticky top-0 z-50 shrink-0 bg-background/90 px-3 pt-3 pb-3 backdrop-blur-md sm:px-5">
+      <div className="rose-nav-shell px-3 py-2 sm:px-4">
+        <div className="flex items-center gap-3">
+          <div className="flex min-w-0 flex-1 items-center gap-3">
+            <SidebarTrigger className="border border-primary/12 bg-white/60 shadow-none hover:border-primary/25 hover:bg-white/90 dark:border-white/8 dark:bg-white/5 dark:hover:bg-white/10" />
+            <Link
+              className="hidden min-w-0 items-center gap-2.5 font-semibold text-sm tracking-tight sm:flex"
+              to="/dashboard"
+            >
+              <img
+                alt="logo"
+                className="size-8 rounded-md ring-1 ring-primary/18"
+                height={32}
+                src={site.site_logo || "/favicon.svg"}
+                width={32}
+              />
+              <span className="truncate font-display text-foreground">
+                {site.site_name}
+              </span>
+            </Link>
+            <div className="hidden h-8 w-px bg-primary/12 md:block dark:bg-white/10" />
+            <Breadcrumb className="min-w-0">
+              <BreadcrumbList className="flex-nowrap overflow-hidden">
+                {items.length ? (
+                  items.map((item, index) => (
+                    <Fragment key={item?.title}>
+                      {index !== items.length - 1 && (
+                        <BreadcrumbItem className="min-w-0">
+                          <BreadcrumbLink asChild>
+                            <Link
+                              className="truncate"
+                              to={item?.url || "/dashboard"}
+                            >
+                              {item?.title}
+                            </Link>
+                          </BreadcrumbLink>
+                        </BreadcrumbItem>
+                      )}
+                      {index < items.length - 1 && <BreadcrumbSeparator />}
+                      {index === items.length - 1 && (
+                        <BreadcrumbPage className="truncate font-medium">
+                          {item?.title}
+                        </BreadcrumbPage>
+                      )}
+                    </Fragment>
+                  ))
+                ) : (
                   <BreadcrumbItem>
-                    <BreadcrumbLink asChild>
-                      <Link to={item?.url || "/dashboard"}>{item?.title}</Link>
-                    </BreadcrumbLink>
+                    <BreadcrumbPage className="inline-flex items-center gap-1.5 font-medium">
+                      <Icon className="size-4 text-primary" icon="uil:apps" />
+                      Dashboard
+                    </BreadcrumbPage>
                   </BreadcrumbItem>
                 )}
-                {index < items.length - 1 && <BreadcrumbSeparator />}
-                {index === items.length - 1 && (
-                  <BreadcrumbPage>{item?.title}</BreadcrumbPage>
-                )}
-              </Fragment>
-            ))}
-          </BreadcrumbList>
-        </Breadcrumb>
-      </div>
-      <div className="flex items-center gap-2 px-3">
-        <LanguageSwitch />
-        <TimezoneSwitch />
-        <ThemeSwitch />
-        <UserNav />
+              </BreadcrumbList>
+            </Breadcrumb>
+          </div>
+          <div className="app-quick-actions flex shrink-0 items-center gap-1 rounded-md border border-primary/10 bg-white/55 p-1 dark:border-white/8 dark:bg-white/5">
+            <LanguageSwitch />
+            <TimezoneSwitch />
+            <ThemeSwitch />
+          </div>
+          <UserNav />
+        </div>
       </div>
     </header>
   );

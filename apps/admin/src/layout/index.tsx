@@ -19,12 +19,20 @@ export default function DashboardLayout() {
   }, []);
 
   return (
-    <SidebarProvider defaultOpen={open}>
+    <SidebarProvider
+      className="relative min-h-svh overflow-hidden bg-transparent"
+      defaultOpen={open}
+    >
+      <div className="rose-grid opacity-20" />
       <SidebarLeft />
-      <SidebarInset className="relative flex-grow overflow-hidden">
+      <SidebarInset className="relative flex-grow overflow-hidden bg-transparent">
         <Header />
-        <div className="h-[calc(100vh-56px)] flex-grow gap-4 overflow-auto p-4">
-          <Outlet />
+        <div className="h-[calc(100vh-76px)] flex-grow overflow-auto px-3 pb-5 sm:px-5">
+          <div className="rose-shell min-h-full p-3 sm:p-5">
+            <div className="relative flex min-h-[calc(100vh-116px)] flex-col gap-4">
+              <Outlet />
+            </div>
+          </div>
         </div>
       </SidebarInset>
     </SidebarProvider>
