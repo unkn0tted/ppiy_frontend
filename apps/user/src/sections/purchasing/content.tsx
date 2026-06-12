@@ -10,7 +10,13 @@ import { prePurchaseOrder, purchase } from "@workspace/ui/services/user/portal";
 import { useDebounce } from "ahooks";
 import { motion } from "framer-motion";
 import { LoaderCircle } from "lucide-react";
-import { useCallback, useEffect, useState, useTransition } from "react";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+  useTransition,
+} from "react";
 import { useTranslation } from "react-i18next";
 import { SubscribeBilling } from "@/sections/subscribe/billing";
 import CouponInput from "@/sections/subscribe/coupon-input";
@@ -18,6 +24,10 @@ import { SubscribeDetail } from "@/sections/subscribe/detail";
 import DurationSelector from "@/sections/subscribe/duration-selector";
 import PaymentMethods from "@/sections/subscribe/payment-methods";
 import { useGlobalStore } from "@/stores/global";
+import {
+  getEmailDomainWhitelist,
+  isEmailDomainAllowed,
+} from "@/utils/email-domain";
 import { isSubscribePurchasable } from "@/utils/subscribe";
 
 export default function Content({
@@ -42,6 +52,10 @@ export default function Content({
   const fieldClassName =
     "border-primary/12 bg-white/75 shadow-[0_18px_34px_-28px_oklch(0.64_0.16_11_/0.4)] dark:border-white/8 dark:bg-white/6";
   const { common } = useGlobalStore();
+  const domainWhitelist = useMemo(
+    () => getEmailDomainWhitelist(common.auth.email.domain_suffix_list),
+    [common.auth.email.domain_suffix_list]
+  );
   const navigate = useNavigate();
   const canPurchase = isSubscribePurchasable(subscription);
   const [params, setParams] = useState<
@@ -225,12 +239,11 @@ export default function Content({
                       });
                       return;
                     }
-
                     if (common.auth.email.enable_domain_suffix) {
-                      const domain = email.split("@")[1];
-                      const isValid = common.auth.email?.domain_suffix_list
-                        .split("\n")
-                        .includes(domain || "");
+                      const isValid = isEmailDomainAllowed(
+                        email,
+                        domainWhitelist
+                      );
                       if (!isValid) {
                         setIsEmailValid({
                           valid: false,

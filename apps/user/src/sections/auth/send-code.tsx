@@ -7,10 +7,12 @@ import {
 } from "@workspace/ui/services/common/common";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
 import { useGlobalStore } from "@/stores/global";
 
 interface SendCodeProps {
   type: "email" | "phone";
+  disabled?: boolean;
   params: {
     email?: string;
     type?: 1 | 2;
@@ -18,7 +20,11 @@ interface SendCodeProps {
     telephone?: string;
   };
 }
-export default function SendCode({ type, params }: SendCodeProps) {
+export default function SendCode({
+  type,
+  params,
+  disabled: disabledProp,
+}: SendCodeProps) {
   const { t } = useTranslation("auth");
   const { common } = useGlobalStore();
   const { verify_code_interval } = common.verify_code;
@@ -88,20 +94,27 @@ export default function SendCode({ type, params }: SendCodeProps) {
   };
 
   const handleSendCode = async () => {
-    if (type === "email") {
-      getEmailCode();
-    } else {
-      getPhoneCode();
+    try {
+      if (type === "email") {
+        await getEmailCode();
+      } else {
+        await getPhoneCode();
+      }
+    } catch (error: any) {
+      toast.error(
+        error?.response?.data?.message || error?.message || "An error occurred"
+      );
     }
   };
-  const disabled =
+  const isDisabled =
+    disabledProp ||
     seconds > 0 ||
     (type === "email"
       ? !params.email
       : !(params.telephone && params.telephone_area_code));
 
   return (
-    <Button disabled={disabled} onClick={handleSendCode} type="button">
+    <Button disabled={isDisabled} onClick={handleSendCode} type="button">
       {seconds > 0 ? `${seconds}s` : t("get", "Get Code")}
     </Button>
   );

@@ -8,14 +8,27 @@ import {
   FormMessage,
 } from "@workspace/ui/components/form";
 import { Input } from "@workspace/ui/components/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@workspace/ui/components/select";
 import { Icon } from "@workspace/ui/composed/icon";
 import { Markdown } from "@workspace/ui/composed/markdown";
 import type { Dispatch, SetStateAction } from "react";
-import { useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { z } from "zod";
 import { useGlobalStore } from "@/stores/global";
+import {
+  getEmailDomainWhitelist,
+  isEmailDomainAllowed,
+  joinEmailAddress,
+  splitEmailAddress,
+} from "@/utils/email-domain";
 import SendCode from "../send-code";
 import type { TurnstileRef } from "../turnstile";
 import CloudFlareTurnstile from "../turnstile";
@@ -36,15 +49,26 @@ export default function RegisterForm({
   const { t } = useTranslation("auth");
   const { common } = useGlobalStore();
   const { verify, auth, invite } = common;
+  const domainWhitelist = useMemo(
+    () => getEmailDomainWhitelist(auth.email.domain_suffix_list),
+    [auth.email.domain_suffix_list]
+  );
+  const firstDomain = domainWhitelist.at(0) || "";
+  const enableDomainWhitelist = auth.email.enable_domain_suffix;
+  const useDomainSelect = enableDomainWhitelist && domainWhitelist.length > 0;
+  const initialEmail = initialValues?.email || "";
+  const { localPart: initialLocalPart, domain: initialDomain } =
+    splitEmailAddress(initialEmail);
+  const initialSelectedDomain =
+    domainWhitelist.find((domain) => domain === initialDomain) || firstDomain;
+  const defaultEmail = useDomainSelect
+    ? joinEmailAddress(initialLocalPart, initialSelectedDomain)
+    : initialEmail;
 
-  const handleCheckUser = async (email: string) => {
+  const handleCheckUser = (email: string) => {
     try {
-      if (!auth.email.enable_domain_suffix) return true;
-      const domain = email.split("@")[1];
-      const isValid = auth.email?.domain_suffix_list
-        .split("\n")
-        .includes(domain || "");
-      return isValid;
+      if (!enableDomainWhitelist) return true;
+      return isEmailDomainAllowed(email, domainWhitelist);
     } catch (error) {
       console.log("Error checking user:", error);
       return false;
@@ -85,9 +109,43 @@ export default function RegisterForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
       ...initialValues,
+      email: defaultEmail,
       invite: localStorage.getItem("invite") || "",
     },
   });
+  const [selectedDomain, setSelectedDomain] = useState<string>(
+    initialSelectedDomain
+  );
+
+  useEffect(() => {
+    if (!useDomainSelect) {
+      setSelectedDomain("");
+      return;
+    }
+
+    const { domain, localPart } = splitEmailAddress(form.getValues("email"));
+    const nextDomain = domainWhitelist.includes(domain) ? domain : firstDomain;
+
+    setSelectedDomain(nextDomain);
+    if (localPart) {
+      const nextEmail = joinEmailAddress(localPart, nextDomain);
+      if (form.getValues("email") !== nextEmail) {
+        form.setValue("email", nextEmail, { shouldValidate: true });
+      }
+    }
+  }, [domainWhitelist, firstDomain, form, useDomainSelect]);
+
+  const buildWhitelistedEmail = (value: string, fallbackDomain: string) => {
+    const { localPart, domain } = splitEmailAddress(value);
+    const nextDomain = domainWhitelist.includes(domain)
+      ? domain
+      : fallbackDomain;
+
+    return {
+      domain: nextDomain,
+      email: joinEmailAddress(localPart, nextDomain),
+    };
+  };
 
   const turnstile = useRef<TurnstileRef>(null);
   const handleSubmit = form.handleSubmit((data) => {
@@ -113,14 +171,65 @@ export default function RegisterForm({
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input
-                      placeholder={t(
-                        "placeholders.email",
-                        "Enter your email..."
-                      )}
-                      type="email"
-                      {...field}
-                    />
+                    {useDomainSelect ? (
+                      <div className="flex">
+                        <Input
+                          className="rounded-r-none"
+                          name={field.name}
+                          onBlur={field.onBlur}
+                          onChange={(event) => {
+                            const { domain, email } = buildWhitelistedEmail(
+                              event.target.value,
+                              selectedDomain || firstDomain
+                            );
+                            setSelectedDomain(domain);
+                            field.onChange(email);
+                          }}
+                          placeholder={t(
+                            "placeholders.emailName",
+                            "Enter email name..."
+                          )}
+                          type="text"
+                          value={splitEmailAddress(field.value).localPart}
+                        />
+                        <Select
+                          onValueChange={(domain) => {
+                            setSelectedDomain(domain);
+                            const { localPart } = splitEmailAddress(
+                              field.value
+                            );
+                            field.onChange(joinEmailAddress(localPart, domain));
+                            form.trigger("email");
+                          }}
+                          value={selectedDomain || firstDomain}
+                        >
+                          <SelectTrigger className="h-9 w-40 rounded-l-none border-l-0">
+                            <SelectValue
+                              placeholder={t(
+                                "placeholders.emailSuffix",
+                                "Select suffix"
+                              )}
+                            />
+                          </SelectTrigger>
+                          <SelectContent align="end">
+                            {domainWhitelist.map((domain) => (
+                              <SelectItem key={domain} value={domain}>
+                                @{domain}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    ) : (
+                      <Input
+                        placeholder={t(
+                          "placeholders.email",
+                          "Enter your email..."
+                        )}
+                        type="email"
+                        {...field}
+                      />
+                    )}
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -181,6 +290,13 @@ export default function RegisterForm({
                           value={field.value as string}
                         />
                         <SendCode
+                          disabled={
+                            enableDomainWhitelist &&
+                            !isEmailDomainAllowed(
+                              form.watch("email") || "",
+                              domainWhitelist
+                            )
+                          }
                           params={{
                             email: form.watch("email"),
                             type: 1,
