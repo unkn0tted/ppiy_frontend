@@ -10,10 +10,23 @@ import { useTranslation } from "react-i18next";
 import { useGlobalStore } from "@/stores/global";
 import EmailAuthForm from "./email/auth-form";
 
+function stripSiteName(value: string, siteName: string) {
+  return value
+    .replaceAll(siteName, "")
+    .replace(/^[\s,，.。:：|｜-]+|[\s,，.。:：|｜-]+$/g, "")
+    .trim();
+}
+
 export default function Auth() {
   const { t } = useTranslation("auth");
   const { common, user } = useGlobalStore();
   const { site } = common;
+  const sanitizedSiteDescription = site.site_name
+    ? stripSiteName(site.site_desc || "", site.site_name)
+    : site.site_desc;
+  const authDescription =
+    sanitizedSiteDescription ||
+    t("login.description", "Enter your credentials to continue");
 
   const navigate = useNavigate();
   useEffect(() => {
@@ -36,41 +49,41 @@ export default function Auth() {
                 src={site.site_logo || "/favicon.svg"}
                 width={44}
               />
-              <span className="font-display text-2xl">
-                <span className="rose-section-title">{site.site_name}</span>
-              </span>
             </Link>
-            <span className="rose-pill mt-10">{t("login.title", "Login")}</span>
+            <span className="rose-pill mt-8">Admin</span>
             <h1 className="mt-6 max-w-xl font-display text-5xl leading-tight">
-              <span className="rose-section-title">{site.site_name}</span>
+              <span className="rose-section-title">
+                {site.site_name || t("login.title", "Login")}
+              </span>
             </h1>
             <p className="mt-5 max-w-xl text-lg text-muted-foreground leading-8">
-              {site.site_desc ||
-                t("login.description", "Enter your credentials to continue")}
+              {authDescription}
             </p>
-          </div>
-          <div className="rose-panel mt-8 p-5">
-            <div className="flex items-center justify-between gap-4 border-primary/10 border-b pb-4 dark:border-white/10">
-              <div>
-                <p className="font-medium text-muted-foreground text-xs uppercase tracking-[0.14em]">
-                  Admin
-                </p>
-                <p className="mt-2 font-semibold text-lg">
-                  {t("login.description", "Enter your credentials to continue")}
-                </p>
-              </div>
-              <div className="flex size-11 items-center justify-center rounded-md bg-primary/10 text-primary">
-                <Icon className="size-5" icon="uil:shield-check" />
-              </div>
-            </div>
-            <div className="mt-5 overflow-hidden rounded-md border border-primary/10 bg-background/62 dark:border-white/8 dark:bg-white/4">
+            <div className="mt-8 overflow-hidden rounded-md border border-primary/10 bg-white/55 dark:border-white/8 dark:bg-white/5">
               <DotLottieReact
                 autoplay
-                className="mx-auto aspect-[4/3] w-full max-w-md"
+                className="mx-auto aspect-[4/3] w-full max-w-sm"
                 loop
                 src="./assets/lotties/login.json"
               />
             </div>
+          </div>
+          <div className="mt-6 grid grid-cols-3 gap-3">
+            {[
+              { icon: "uil:shield-check", title: "Admin" },
+              { icon: "uil:lock-access", title: t("check.title", "Verify") },
+              { icon: "uil:setting", title: t("login.title", "Login") },
+            ].map((item) => (
+              <div
+                className="flex min-h-24 flex-col items-center justify-center gap-3 rounded-md border border-primary/10 bg-white/58 px-3 py-4 text-center dark:border-white/8 dark:bg-white/5"
+                key={item.title}
+              >
+                <div className="flex size-11 items-center justify-center rounded-md bg-primary/10 text-primary">
+                  <Icon className="size-5" icon={item.icon} />
+                </div>
+                <p className="font-semibold text-sm">{item.title}</p>
+              </div>
+            ))}
           </div>
         </section>
 
@@ -92,14 +105,8 @@ export default function Auth() {
                   <span className="rose-section-title">{site.site_name}</span>
                 </span>
               </Link>
-              <span className="rose-pill mt-6">
-                {t("login.title", "Login")}
-              </span>
-              <h1 className="mt-5 font-display text-4xl leading-tight sm:text-5xl">
-                <span className="rose-section-title">{site.site_name}</span>
-              </h1>
-              <div className="mt-4 text-muted-foreground text-sm leading-7 sm:text-base">
-                {t("login.description", "Enter your credentials to continue")}
+              <div className="mt-6 lg:mt-0">
+                <span className="rose-pill">Admin</span>
               </div>
               <div className="mt-8">
                 <EmailAuthForm />

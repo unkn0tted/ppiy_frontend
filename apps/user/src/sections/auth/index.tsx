@@ -1,5 +1,6 @@
 "use client";
 
+import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import { Link } from "@tanstack/react-router";
 import {
   Tabs,
@@ -16,32 +17,35 @@ import EmailAuthForm from "./email/auth-form";
 import { OAuthMethods } from "./oauth-methods";
 import PhoneAuthForm from "./phone/auth-form";
 
+function stripSiteName(value: string, siteName: string) {
+  return value
+    .replaceAll(siteName, "")
+    .replace(/^[\s,，.。:：|｜-]+|[\s,，.。:：|｜-]+$/g, "")
+    .trim();
+}
+
 export default function Main() {
   const { t } = useTranslation("auth");
   const { t: tMain } = useTranslation("main");
   const { common } = useGlobalStore();
   const { site, auth } = common;
+  const sanitizedSiteDescription = site.site_name
+    ? stripSiteName(site.site_desc || "", site.site_name)
+    : site.site_desc;
+  const authDescription =
+    sanitizedSiteDescription || t("authTagline", "Welcome back");
   const features = [
     {
       icon: "uil:users-alt",
       title: tMain("users", "Users"),
-      description: tMain("users_description", "Trusted by users worldwide"),
     },
     {
       icon: "uil:server",
       title: tMain("servers", "Servers"),
-      description: tMain(
-        "servers_description",
-        "High-performance servers globally"
-      ),
     },
     {
       icon: "uil:map-marker",
       title: tMain("locations", "Locations"),
-      description: tMain(
-        "locations_description",
-        "Available in multiple regions"
-      ),
     },
   ];
 
@@ -64,8 +68,8 @@ export default function Main() {
       <div className="mx-auto grid min-h-[calc(100vh-2.5rem)] max-w-6xl gap-6 lg:grid-cols-[1.05fr_0.95fr]">
         <section className="rose-shell hidden flex-col justify-between p-8 lg:flex xl:p-10">
           <div>
-            <Link className="group inline-flex items-center gap-3" to="/">
-              {site.site_logo && (
+            {site.site_logo && (
+              <Link className="group inline-flex items-center gap-3" to="/">
                 <img
                   alt="logo"
                   className="rounded-md ring-1 ring-primary/18 transition-all duration-200 group-hover:ring-primary/35"
@@ -73,64 +77,36 @@ export default function Main() {
                   src={site.site_logo}
                   width={44}
                 />
-              )}
-              <span className="font-display text-2xl">
-                <span className="rose-section-title">{site.site_name}</span>
-              </span>
-            </Link>
-            <span className="rose-pill mt-10">
-              {t("verifyAccount", "Verify Your Account")}
-            </span>
+              </Link>
+            )}
+            <span className="rose-pill mt-8">{t("login.title", "Login")}</span>
             <h1 className="mt-6 max-w-xl font-display text-5xl leading-tight">
-              <span className="rose-section-title">{site.site_name}</span>
+              <span className="rose-section-title">
+                {site.site_name || t("login.title", "Login")}
+              </span>
             </h1>
             <p className="mt-5 max-w-xl text-lg text-muted-foreground leading-8">
-              {site.site_desc ||
-                t("verifyAccountDesc", "Please login or register to continue")}
+              {authDescription}
             </p>
-          </div>
-          <div className="rose-panel mt-8 p-5">
-            <div className="flex items-center justify-between gap-4 border-primary/10 border-b pb-4 dark:border-white/10">
-              <div>
-                <p className="font-medium text-muted-foreground text-xs uppercase tracking-[0.14em]">
-                  {t("login.title", "Login")}
-                </p>
-                <p className="mt-2 font-semibold text-lg">
-                  {t(
-                    "verifyAccountDesc",
-                    "Please login or register to continue"
-                  )}
-                </p>
-              </div>
-              <div className="flex size-11 items-center justify-center rounded-md bg-primary/10 text-primary">
-                <Icon className="size-5" icon="uil:lock-access" />
-              </div>
-            </div>
-            <div className="mt-5 grid gap-3">
-              {AUTH_METHODS.map((method) => (
-                <div
-                  className="flex items-center justify-between rounded-md border border-primary/10 bg-background/62 px-4 py-3 text-sm dark:border-white/8 dark:bg-white/4"
-                  key={method.key}
-                >
-                  <span>{t(`methods.${method.key}`)}</span>
-                  <Icon className="size-4 text-primary" icon="uil:check" />
-                </div>
-              ))}
+            <div className="mt-8 overflow-hidden rounded-md border border-primary/10 bg-white/55 dark:border-white/8 dark:bg-white/5">
+              <DotLottieReact
+                autoplay
+                className="mx-auto aspect-[4/3] w-full max-w-sm"
+                loop
+                src="./assets/lotties/login.json"
+              />
             </div>
           </div>
-          <div className="mt-8 grid gap-3 xl:grid-cols-5">
+          <div className="mt-6 grid grid-cols-3 gap-3">
             {features.map((item) => (
               <div
-                className="rose-panel p-4 xl:even:col-span-3 xl:odd:col-span-2 xl:first:col-span-2"
+                className="flex min-h-24 flex-col items-center justify-center gap-3 rounded-md border border-primary/10 bg-white/58 px-3 py-4 text-center dark:border-white/8 dark:bg-white/5"
                 key={item.title}
               >
                 <div className="flex size-11 items-center justify-center rounded-md bg-primary/10 text-primary">
                   <Icon className="size-5" icon={item.icon} />
                 </div>
-                <p className="mt-5 font-semibold">{item.title}</p>
-                <p className="mt-2 text-muted-foreground text-sm leading-relaxed">
-                  {item.description}
-                </p>
+                <p className="font-semibold text-sm">{item.title}</p>
               </div>
             ))}
           </div>
@@ -156,14 +132,14 @@ export default function Main() {
                   <span className="rose-section-title">{site.site_name}</span>
                 </span>
               </Link>
-              <span className="rose-pill mt-6">
-                {t("verifyAccount", "Verify Your Account")}
-              </span>
-              <h1 className="mt-5 font-display text-4xl leading-tight sm:text-5xl">
-                <span className="rose-section-title">{site.site_name}</span>
-              </h1>
-              <div className="mt-4 text-muted-foreground text-sm leading-7 sm:text-base">
-                {t("verifyAccountDesc", "Please login or register to continue")}
+              <div className="mt-6 lg:mt-0">
+                <span className="rose-pill">{t("login.title", "Login")}</span>
+                <h2 className="mt-5 font-display font-semibold text-2xl leading-tight">
+                  {t(
+                    "verifyAccountDesc",
+                    "Please login or register to continue"
+                  )}
+                </h2>
               </div>
               <div className="mt-8">
                 {AUTH_METHODS.length === 1
