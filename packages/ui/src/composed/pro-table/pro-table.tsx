@@ -38,13 +38,13 @@ import { Pagination } from "@workspace/ui/composed/pro-table/pagination";
 import { SortableRow } from "@workspace/ui/composed/pro-table/sortable-row";
 import { ProTableWrapper } from "@workspace/ui/composed/pro-table/wrapper";
 import { cn } from "@workspace/ui/lib/utils";
-import { useSize } from "ahooks";
 import { GripVertical, ListRestart, Loader, RefreshCcw } from "lucide-react";
 import type React from "react";
 import {
   Fragment,
   useEffect,
   useImperativeHandle,
+  useMemo,
   useRef,
   useState,
 } from "react";
@@ -127,47 +127,53 @@ export function ProTable<
   });
   const loading = useRef(false);
 
+  const tableColumns = useMemo(
+    () =>
+      [
+        ...(onSort
+          ? [
+              {
+                id: "sortable",
+                header: (
+                  <GripVertical className="h-4 w-4 cursor-move text-gray-500 hover:text-gray-700" />
+                ),
+                enableSorting: false,
+                enableHiding: false,
+              },
+            ]
+          : []),
+        ...(actions?.batchRender ? [createSelectColumn<TData, TValue>()] : []),
+        ...columns.map(
+          (column) =>
+            ({
+              enableSorting: false,
+              ...column,
+            }) as ColumnDef<TData, TValue>
+        ),
+        ...(actions?.render
+          ? ([
+              {
+                id: "actions",
+                header: texts?.actions,
+                cell: ({ row }) => (
+                  <div className="flex items-center justify-end gap-2">
+                    {actions.render?.(row.original).map((item, index) => (
+                      <Fragment key={index}>{item}</Fragment>
+                    ))}
+                  </div>
+                ),
+                enableSorting: false,
+                enableHiding: false,
+              },
+            ] as ColumnDef<TData, TValue>[])
+          : []),
+      ] as ColumnDef<TData, TValue>[],
+    [actions, columns, onSort, texts?.actions]
+  );
+
   const table = useReactTable({
     data,
-    columns: [
-      ...(onSort
-        ? [
-            {
-              id: "sortable",
-              header: (
-                <GripVertical className="h-4 w-4 cursor-move text-gray-500 hover:text-gray-700" />
-              ),
-              enableSorting: false,
-              enableHiding: false,
-            },
-          ]
-        : []),
-      ...(actions?.batchRender ? [createSelectColumn<TData, TValue>()] : []),
-      ...columns.map(
-        (column) =>
-          ({
-            enableSorting: false,
-            ...column,
-          }) as ColumnDef<TData, TValue>
-      ),
-      ...(actions?.render
-        ? ([
-            {
-              id: "actions",
-              header: texts?.actions,
-              cell: ({ row }) => (
-                <div className="flex items-center justify-end gap-2">
-                  {actions?.render?.(row.original).map((item, index) => (
-                    <Fragment key={index}>{item}</Fragment>
-                  ))}
-                </div>
-              ),
-              enableSorting: false,
-              enableHiding: false,
-            },
-          ] as ColumnDef<TData, TValue>[])
-        : []),
-    ] as ColumnDef<TData, TValue>[],
+    columns: tableColumns,
     onPaginationChange: setPagination,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -219,8 +225,6 @@ export function ProTable<
     table.resetRowSelection();
     table.resetPagination();
   };
-  const ref = useRef<HTMLDivElement>(null);
-  const size = useSize(ref);
 
   useImperativeHandle(action, () => ({
     refresh: fetchData,
@@ -242,7 +246,7 @@ export function ProTable<
   const selectedCount = selectedRows.length;
 
   return (
-    <div className="flex flex-col gap-4" ref={ref}>
+    <div className="flex min-w-0 flex-col gap-4">
       {!header?.hidden && (
         <div className="flex flex-wrap-reverse items-center justify-between gap-4">
           <div>
@@ -283,12 +287,7 @@ export function ProTable<
         </Alert>
       )}
 
-      <div
-        className="relative w-auto overflow-x-auto rounded-md border"
-        style={{
-          width: size?.width,
-        }}
-      >
+      <div className="relative w-full min-w-0 overflow-x-auto rounded-md border">
         <ProTableWrapper data={data} onSort={onSort} setData={setData}>
           <Table className="w-full">
             <TableHeader>
